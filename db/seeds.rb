@@ -5,3 +5,27 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+# owners
+owners = [
+  "Matt Makarowsky",
+  "Jeremy Abbot",
+  "Kevin Kern",
+  "Brock Tillotson",
+  "Daniel McGunnigle",
+  "Joe Whitaker",
+  "Jordan Highland",
+  "Keenan Lopez",
+  "Brandon Troxel",
+  "Dennis Ranck",
+  "Woody Toms",
+  "Mike Rich",
+  "Matt Flack",
+  "Tim Sampson",
+  "Jared Maybee",
+  "Eric Kjemperud",
+]
+
+owners.each do |owner|
+  x = Owner.create(name: owner)
+end
