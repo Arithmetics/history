@@ -1,6 +1,6 @@
 class OwnersController < ApplicationController
   def index
-    @owners = Owner.all
-    render json: @owners
+    @owners = Owner.all.includes(:fantasy_teams)
+    render json: @owners, include: 'fantasy_teams'
   end
 end
