@@ -1,11 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  year: 
-  owner: one
+squad_one:
+  name: "Greatest Show"
+  year: 2012
+  owner: valid
 
-two:
-  name: MyString
-  year: 
-  owner: two
+squad_two:
+  name: "The Bakery"
+  year: 2013
+  owner: valid
