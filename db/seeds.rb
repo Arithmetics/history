@@ -14,3 +14,10 @@ team_rows.each do |row|
     puts x.fantasy_teams
   end
 end
+
+# players (2011 -- 2018)
+CSV.foreach("#{Rails.root}/db/seed_files/2011_2018_players.csv", :headers => true) do |row|
+  birthdate = Date::strptime(row["birthdate"], "%m/%d/%Y")
+  x = Player.create(id: row["profile_id"], name: row["name"], birthdate: birthdate)
+  puts "#{x.name} - #{x.id} - #{x.birthdate}"
+end
