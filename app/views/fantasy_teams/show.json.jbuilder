@@ -1,3 +1,5 @@
+
+
 json.fantasy_team do
   json.extract! @fantasy_team, :id, :name, :year
 
