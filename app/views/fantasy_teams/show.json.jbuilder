@@ -8,7 +8,7 @@ json.fantasy_team do
   json.fantasy_starts do
     @fantasy_team.fantasy_starts.group_by(&:week).each do |week, starts|
       json.set! week do
-        json.array! starts do |start|
+        json.array! starts.sort_by{|start| order.index(start.position)} do |start|
           json.extract! start, :id, :week, :position, :points
           json.player start.player, partial: "players/player", as: :player
         end
