@@ -5,9 +5,7 @@ class PlayersController < ApplicationController
   end
 
   def show
-    @player = Player.find(params[:id])
-
-    render json: @player
+    @player = Player.includes(fantasy_starts: {fantasy_team: :owner}).find(params[:id])
   end
 
   ########## private #########
