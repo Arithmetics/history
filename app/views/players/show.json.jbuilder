@@ -3,10 +3,10 @@ json.player do
 
   json.fantasy_starts do
     json.array! @player.fantasy_starts do |start|
-      json.extract! start, :week, :position, :points
+      json.extract! start, :week, :position, :points, :year
 
       json.fantasy_team do
-        json.extract! start.fantasy_team, :name
+        json.extract! start.fantasy_team, :name, :id
       end
 
       json.owner do
