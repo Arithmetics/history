@@ -61,3 +61,41 @@ CSV.foreach("#{Rails.root}/db/seed_files/2011_2018_fantasy_starts.csv", :headers
     end
   end
 end
+
+# fantasy_games 2011-2018
+CSV.foreach("#{Rails.root}/db/seed_files/2011_2018_fantasy_games.csv", :headers => true) do |row|
+  away_team = FantasyTeam.find_by(name: row["away_team"], year: row["year"])
+
+  if away_team == nil
+    puts "couldnt find a away team"
+    puts row["away_team"]
+    exit(false)
+  end
+
+  puts away_team.name
+
+  home_team = FantasyTeam.find_by(name: row["home_team"], year: row["year"])
+
+  if home_team == nil
+    puts "couldnt find a home team"
+    puts row["home_team"]
+    exit(false)
+  end
+
+  puts home_team.name
+
+  x = FantasyGame.create(
+    away_fantasy_team: away_team,
+    away_score: row["away_points"].to_f,
+    home_score: row["home_points"].to_f,
+    home_fantasy_team: home_team,
+    year: row["year"],
+    week: row["week"],
+  )
+  if !x.valid?
+    puts "could not create fantasy_start \n #{x} \n #{x.errors}"
+    exit(false)
+  else
+    puts x
+  end
+end

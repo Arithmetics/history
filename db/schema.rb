@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_29_035240) do
+ActiveRecord::Schema.define(version: 2019_10_14_000305) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "fantasy_games", force: :cascade do |t|
+    t.integer "year"
+    t.integer "week"
+    t.bigint "away_fantasy_team_id"
+    t.bigint "home_fantasy_team_id"
+    t.float "away_score"
+    t.float "home_score"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["away_fantasy_team_id"], name: "index_fantasy_games_on_away_fantasy_team_id"
+    t.index ["home_fantasy_team_id"], name: "index_fantasy_games_on_home_fantasy_team_id"
+  end
 
   create_table "fantasy_starts", force: :cascade do |t|
     t.float "points"
@@ -51,6 +64,8 @@ ActiveRecord::Schema.define(version: 2019_09_29_035240) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "fantasy_games", "fantasy_teams", column: "away_fantasy_team_id"
+  add_foreign_key "fantasy_games", "fantasy_teams", column: "home_fantasy_team_id"
   add_foreign_key "fantasy_starts", "fantasy_teams"
   add_foreign_key "fantasy_starts", "players"
   add_foreign_key "fantasy_teams", "owners"

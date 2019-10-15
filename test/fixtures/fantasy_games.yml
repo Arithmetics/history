@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  year: 1
+  week: 1
+  away_owner_id: 1
+  home_owner_id: 1
+  away_score: 1.5
+  home_score: 1.5
+
+two:
+  year: 1
+  week: 1
+  away_owner_id: 1
+  home_owner_id: 1
+  away_score: 1.5
+  home_score: 1.5
