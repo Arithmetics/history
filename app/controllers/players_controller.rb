@@ -5,7 +5,7 @@ class PlayersController < ApplicationController
   end
 
   def show
-    @player = Player.includes(fantasy_starts: {fantasy_team: :owner}).find(params[:id])
+    @player = Player.includes(fantasy_starts: { fantasy_team: :owner }, purchases: {fantasy_team: :owner}).find(params[:id])
   end
 
   ########## private #########
