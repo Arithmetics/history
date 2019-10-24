@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   resources :owners
   resources :players
   resources :fantasy_teams
+  resources :purchases
 end

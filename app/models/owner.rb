@@ -5,6 +5,9 @@ class Owner < ApplicationRecord
   has_many :fantasy_teams
   has_many :away_fantasy_games, through: :fantasy_teams
   has_many :home_fantasy_games, through: :fantasy_teams
+  
+  has_many :purchases, through: :fantasy_teams
+
 
   def cumulative_stats
     total_points = 0

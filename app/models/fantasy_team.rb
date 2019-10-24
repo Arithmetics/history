@@ -1,6 +1,7 @@
 class FantasyTeam < ApplicationRecord
   belongs_to :owner
   has_many :fantasy_starts
+  has_many :purchases
   has_many :away_fantasy_games, :class_name => "FantasyGame", :foreign_key => "away_fantasy_team_id"
   has_many :home_fantasy_games, :class_name => "FantasyGame", :foreign_key => "home_fantasy_team_id"
 
