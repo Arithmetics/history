@@ -6,8 +6,12 @@ json.fantasy_team do
   json.owner @fantasy_team.owner, partial: "owners/owner", as: :owner
 
   json.purchases do
-    json.array! @fantasy_team.purchases.order(year: :desc) do |purchase|
+    json.array! @fantasy_team.purchases.order(price: :desc) do |purchase|
       json.extract! purchase, :id, :price, :position, :year
+
+      json.player do
+        json.extract! purchase.player, :id, :name
+      end
     end
   end
 
