@@ -5,18 +5,20 @@ json.fantasy_team do
 
   json.owner @fantasy_team.owner, partial: "owners/owner", as: :owner
 
+  json.purchases do
+    json.array! @fantasy_team.purchases.order(year: :desc) do |purchase|
+      json.extract! purchase, :id, :price, :position, :year
+    end
+  end
+
   json.fantasy_starts do
     @fantasy_team.fantasy_starts.group_by(&:week).each do |week, starts|
       json.set! week do
-        json.array! starts.sort_by{|start| order.index(start.position)} do |start|
+        json.array! starts.sort_by { |start| order.index(start.position) } do |start|
           json.extract! start, :id, :week, :position, :points
           json.player start.player, partial: "players/player", as: :player
         end
-        #  starts.sort_by { |s| order.index(s.position) }
       end
     end
-
-    # has_ones:
-    # json.contact @property.contact
   end
 end
