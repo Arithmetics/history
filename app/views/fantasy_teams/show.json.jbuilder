@@ -1,7 +1,20 @@
 order = ["QB", "RB", "WR", "TE", "Q/R/W/T", "DEF", "K", "BN", "RES"]
+all_fantasy_games = (@fantasy_team.away_fantasy_games) + (@fantasy_team.home_fantasy_games)
 
 json.fantasy_team do
   json.extract! @fantasy_team, :id, :name, :year
+
+  json.fantasy_games do
+    json.array! all_fantasy_games do |game|
+      json.extract! game, :id, :away_score, :home_score
+      json.home_team do
+        json.extract! game.home_fantasy_team, :id, :name
+      end
+      json.away_team do
+        json.extract! game.away_fantasy_team, :id, :name
+      end
+    end
+  end
 
   json.owner @fantasy_team.owner, partial: "owners/owner", as: :owner
 
