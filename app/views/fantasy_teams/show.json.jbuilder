@@ -5,8 +5,8 @@ json.fantasy_team do
   json.extract! @fantasy_team, :id, :name, :year
 
   json.fantasy_games do
-    json.array! all_fantasy_games do |game|
-      json.extract! game, :id, :away_score, :home_score
+    json.array! all_fantasy_games.sort { |a, b| a.week <=> b.week } do |game|
+      json.extract! game, :id, :away_score, :home_score, :week
       json.home_team do
         json.extract! game.home_fantasy_team, :id, :name
       end
@@ -39,3 +39,4 @@ json.fantasy_team do
     end
   end
 end
+
