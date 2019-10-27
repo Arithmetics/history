@@ -4,6 +4,11 @@ all_fantasy_games = (@fantasy_team.away_fantasy_games) + (@fantasy_team.home_fan
 json.fantasy_team do
   json.extract! @fantasy_team, :id, :name, :year
 
+  json.cuumulative_stats do
+    json.set! "season_points", @fantasy_team.season_points
+    json.set! "season_wins", @fantasy_team.season_wins
+  end
+
   json.fantasy_games do
     json.array! all_fantasy_games.sort { |a, b| a.week <=> b.week } do |game|
       json.extract! game, :id, :away_score, :home_score, :week
@@ -39,4 +44,3 @@ json.fantasy_team do
     end
   end
 end
-

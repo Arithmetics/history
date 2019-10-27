@@ -9,12 +9,20 @@ class FantasyTeam < ApplicationRecord
   validates :year, presence: true
 
   def season_points
-    puts self.name
     points = 0
     away_fantasy_games = self.away_fantasy_games.where(week: 1..13)
     home_fantasy_games = self.home_fantasy_games.where(week: 1..13)
     away_fantasy_games.each { |game| points += game.away_score }
     home_fantasy_games.each { |game| points += game.home_score }
     return points
+  end
+
+  def season_wins
+    wins = 0
+    away_fantasy_games = self.away_fantasy_games.where(week: 1..13)
+    home_fantasy_games = self.home_fantasy_games.where(week: 1..13)
+    away_fantasy_games.each { |game| (game.away_score > game.home_score) ? wins += 1 : nil }
+    home_fantasy_games.each { |game| (game.home_score > game.away_score) ? wins += 1 : nil }
+    return wins
   end
 end
