@@ -77,20 +77,11 @@ year,week,away_team,away_points,home_team,home_points
 2011,13,The Arian Brotherhood,106.50,Maclin on Your Girl,78.38
 2011,13,Best in Schaub,107.96,Living In a Van By The Rivers,125.84
 2011,13,CjCj 30mil,93.98,Hood niggas,97.64
-2011,14,Making Sure You Ain't Last,48.20,Maclin on Your Girl,141.08
-2011,14,Best in Schaub,107.40,Greatest Show on Turf,139.48
-2011,14,Occupy The Endzone,123.12,Living In a Van By The Rivers,111.60
+2011,14,Greatest Show on Turf,139.48,Best in Schaub,107.40
 2011,14,lights CAMera action,109.34,The Arian Brotherhood,43.82
 2011,15,Bro Flacco,56.76,Greatest Show on Turf,122.30
 2011,15,lights CAMera action,77.54,The Real McCoy,132.64
-2011,15,Hood niggas,58.06,Occupy The Endzone,87.94
-2011,15,CjCj 30mil,117.72,Maclin on Your Girl,98.20
-2011,16,Making Sure You Ain't Last,93.18,Living In a Van By The Rivers,108.56
-2011,16,The Real McCoy,85.88,Greatest Show on Turf,110.24
-2011,16,CjCj 30mil,81.64,Occupy The Endzone,84.88
-2011,16,lights CAMera action,104.98,Bro Flacco,103.58
-2011,16,Best in Schaub,75.24,The Arian Brotherhood,112.14
-2011,16,Hood niggas,87.46,Maclin on Your Girl,125.26
+2011,16,Greatest Show on Turf,110.24,The Real McCoy,85.88
 2012,1,GreenGrapesWhiteWine,93.52,One Team One Dream,57.90
 2012,1,Fuck you JHIGH,96.26,RANDY MOSS THE BOSS HUUAHHHHH,108.54
 2012,1,BRO FLACCO,120.92,Michael Bush League,108.88
@@ -170,19 +161,10 @@ year,week,away_team,away_points,home_team,home_points
 2012,13,ABC Easy as RGIII,97.42,Welker Texas Ranger,112.04
 2012,13,It's not just Luck,123.82,Stephen's Howling in the Wayne,105.32
 2012,14,GreenGrapesWhiteWine,120.84,It's not just Luck,140.84
-2012,14,BRO FLACCO,86.18,One Team One Dream,97.82
-2012,14,RANDY MOSS THE BOSS HUUAHHHHH,111.16,McGunnigle - Motley Cruz,121.66
-2012,14,Stephen's Howling in the Wayne,87.96,Michael Bush League,80.84
-2012,15,Welker Texas Ranger,119.62,One Team One Dream,84.68
-2012,15,It's not just Luck,100.78,The Romosapiens,114.94
-2012,15,Stephen's Howling in the Wayne,90.84,Fuck you JHIGH,62.58
-2012,15,ABC Easy as RGIII,94.30,McGunnigle - Motley Cruz,108.18
-2012,16,GreenGrapesWhiteWine,115.74,RANDY MOSS THE BOSS HUUAHHHHH,137.44
-2012,16,Fuck you JHIGH,72.70,One Team One Dream,101.32
-2012,16,McGunnigle - Motley Cruz,114.68,The Romosapiens,90.26
-2012,16,Stephen's Howling in the Wayne,103.30,Welker Texas Ranger,100.46
-2012,16,Michael Bush League,69.68,BRO FLACCO,108.06
-2012,16,It's not just Luck,93.10,ABC Easy as RGIII,96.58
+2012,14,McGunnigle - Motley Cruz,121.66,RANDY MOSS THE BOSS HUUAHHHHH,111.16
+2012,15,The Romosapiens,114.94,It's not just Luck,100.78
+2012,15,McGunnigle - Motley Cruz,108.18,ABC Easy as RGIII,94.30
+2012,16,The Romosapiens,90.26,McGunnigle - Motley Cruz,114.68
 2013,1,Grandma's Fine Cutlery,117.26,Cooper Clux Clan,42.96
 2013,1,The Bush Playoff Push,132.36,Hakuna Ma-Ngata,95.58
 2013,1,The Walking Dez,105.20,Wilson and the Volleyballs,95.76
@@ -261,20 +243,11 @@ year,week,away_team,away_points,home_team,home_points
 2013,13,DeMarco Polo,152.30,Wilson and the Volleyballs,95.08
 2013,13,Wine Her Dine Her 49er,58.90,Teenage Newton Ninja Turtles,87.12
 2013,13,Saved by the Bell,79.88,Cooper Clux Clan,87.10
-2013,14,Grandma's Fine Cutlery,114.08,Wine Her Dine Her 49er,106.70
 2013,14,The Bush Playoff Push,103.04,Teenage Newton Ninja Turtles,74.20
-2013,14,Speedo-Licious,145.68,The Walking Dez,87.40
-2013,14,Cooper Clux Clan,88.86,Wilson and the Volleyballs,112.00
-2013,15,Grandma's Fine Cutlery,106.88,Saved by the Bell,102.50
-2013,15,Speedo-Licious,124.60,Shady McCoy,153.50
+2013,14,The Walking Dez,87.40,Speedo-Licious,145.68
 2013,15,DeMarco Polo,90.80,The Bush Playoff Push,153.16
-2013,15,Wilson and the Volleyballs,92.50,Hakuna Ma-Ngata,108.56
-2013,16,Grandma's Fine Cutlery,77.10,Hakuna Ma-Ngata,65.46
+2013,15,Speedo-Licious,124.60,Shady McCoy,153.50
 2013,16,The Bush Playoff Push,64.64,Shady McCoy,107.92
-2013,16,The Walking Dez,86.06,Teenage Newton Ninja Turtles,99.74
-2013,16,Cooper Clux Clan,49.52,Wine Her Dine Her 49er,87.24
-2013,16,DeMarco Polo,107.64,Speedo-Licious,122.70
-2013,16,Saved by the Bell,77.00,Wilson and the Volleyballs,85.76
 2014,1,Another Hillarious Season,66.62,Cooper Clux Clan,124.18
 2014,1,Struggle City,106.96,Beats by Tre,156.40
 2014,1,The Inconvenient Truth,90.96,The Real Slim Brady,61.98
@@ -353,20 +326,11 @@ year,week,away_team,away_points,home_team,home_points
 2014,13,the full Nelson,91.24,Switches and Bitches,102.36
 2014,13,The Real Slim Brady,120.28,Beats by Tre,165.56
 2014,13,Cops and Rodgers,104.72,Cooper Clux Clan,67.60
-2014,14,Manning United FC,75.46,The Real McCoy,115.42
 2014,14,Cops and Rodgers,71.84,Flaccoroni and Cheese,140.50
-2014,14,Cooper Clux Clan,83.24,The Real Slim Brady,110.52
-2014,14,the full Nelson,79.00,The Inconvenient Truth,67.48
-2014,15,Another Hillarious Season,77.36,The Real Slim Brady,75.04
-2014,15,the full Nelson,84.46,Struggle City,99.98
-2014,15,Beats by Tre,136.02,The Real McCoy,90.56
-2014,15,Flaccoroni and Cheese,83.20,Switches and Bitches,117.60
-2014,16,Another Hillarious Season,61.24,Struggle City,90.38
-2014,16,Flaccoroni and Cheese,96.90,The Real McCoy,112.52
-2014,16,Cops and Rodgers,65.42,Manning United FC,62.34
-2014,16,Beats by Tre,107.32,Switches and Bitches,109.00
-2014,16,the full Nelson,82.48,The Real Slim Brady,49.96
-2014,16,Cooper Clux Clan,89.40,The Inconvenient Truth,99.00
+2014,14,The Real McCoy,115.42,Manning United FC,75.46
+2014,15,Switches and Bitches,117.60,Flaccoroni and Cheese,83.20
+2014,15,The Real McCoy,90.56,Beats by Tre,136.02
+2014,16,Switches and Bitches,109.00,Beats by Tre,107.32
 2015,1,Mark Instagram It,107.86,Lynch Don't Kill My Vibe,100.36
 2015,1,Ridin Dirty in the DMC,105.46,TEFLON TOM,125.06
 2015,1,Yippee Kai A Justin Tucker,81.70,Saved by the Bell,66.64
@@ -445,20 +409,11 @@ year,week,away_team,away_points,home_team,home_points
 2015,13,Don't Vontaze Me Breaux,75.26,Saved by the Bell,95.22
 2015,13,Gronk if you have RB Blues,107.18,Lynch Don't Kill My Vibe,138.90
 2015,13,Welcome to the Space Jameis,121.92,Valar Almorris,96.96
-2015,14,Valar Almorris,127.90,TEFLON TOM,92.34
-2015,14,Edward ForteHands,98.68,Lynch Don't Kill My Vibe,109.42
-2015,14,Saved by the Bell,82.44,Yippee Kai A Justin Tucker,80.86
+2015,14,Yippee Kai A Justin Tucker,80.86,Saved by the Bell,82.44
 2015,14,Don't Vontaze Me Breaux,125.54,Hyde your Kids Hyde your Wife,78.78
-2015,15,Mark Instagram It,84.00,Valar Almorris,96.78
+2015,15,Welcome to the Space Jameis,107.22,Saved by the Bell,99.10
 2015,15,Don't Vontaze Me Breaux,88.60,Ridin Dirty in the DMC,120.60
-2015,15,Gronk if you have RB Blues,102.52,Lynch Don't Kill My Vibe,97.70
-2015,15,Saved by the Bell,99.10,Welcome to the Space Jameis,107.22
-2015,16,Mark Instagram It,74.46,Lynch Don't Kill My Vibe,100.76
 2015,16,Welcome to the Space Jameis,103.38,Ridin Dirty in the DMC,121.50
-2015,16,Edward ForteHands,112.92,TEFLON TOM,80.86
-2015,16,Hyde your Kids Hyde your Wife,92.00,Yippee Kai A Justin Tucker,84.52
-2015,16,Valar Almorris,77.76,Gronk if you have RB Blues,114.44
-2015,16,Saved by the Bell,91.80,Don't Vontaze Me Breaux,99.86
 2016,1,JEFFERY,85.36,Zeke Squad,103.70
 2016,1,Devonta FreeDatMan,61.10,Run LGB,97.56
 2016,1,Ware and ACL Tears,119.76,The Law Offices of Ryan n Ryan,117.50
@@ -537,19 +492,10 @@ year,week,away_team,away_points,home_team,home_points
 2016,13,Water under the Bridgewater,108.94,The Law Offices of Ryan n Ryan,95.66
 2016,13,Cam On Em 1 Time,82.38,Zeke Squad,103.18
 2016,13,Dak to the Future,103.22,The Forte Year Old Virgin,98.08
-2016,14,The Law Offices of Ryan n Ryan,100.30,Devonta FreeDatMan,71.60
-2016,14,Zeke Squad,85.78,Run LGB,82.12
-2016,14,Yippee Kai A Justin Tucker,87.64,Ware and ACL Tears,100.06
+2016,14,Run LGB,82.12,Zeke Squad,85.78
 2016,14,Dak to the Future,83.82,Water under the Bridgewater,137.28
-2016,15,JEFFERY,86.44,Ware and ACL Tears,90.40
 2016,15,The Forte Year Old Virgin,106.50,Zeke Squad,87.20
-2016,15,The Law Offices of Ryan n Ryan,82.20,Cooper's Hall,69.60
-2016,15,Cam On Em 1 Time,76.68,Water under the Bridgewater,100.78
-2016,16,JEFFERY,96.34,Cooper's Hall,55.42
-2016,16,Yippee Kai A Justin Tucker,60.74,Devonta FreeDatMan,96.30
-2016,16,Dak to the Future,144.74,Run LGB,137.00
-2016,16,Cam On Em 1 Time,81.20,Zeke Squad,86.20
-2016,16,The Law Offices of Ryan n Ryan,78.48,Ware and ACL Tears,93.30
+2016,15,Water under the Bridgewater,100.78,Cam On Em 1 Time,76.68
 2016,16,The Forte Year Old Virgin,98.90,Water under the Bridgewater,120.88
 2017,1,JEFFERY,98.66,Hurricane Ajayi,59.66
 2017,1,In Zeke We Trust,71.62,Cooks Me Baby One More Time,83.52
@@ -629,20 +575,11 @@ year,week,away_team,away_points,home_team,home_points
 2017,13,Jaboo Coming Thru,138.26,Got my Siemian on Kelce,110.20
 2017,13,Hurricane Ajayi,92.20,Inglorious Staffords,90.94
 2017,13,Mayfield's Bakery,86.40,Get Your Tyreek On,83.20
-2017,14,Get Your Tyreek On,102.26,In Zeke We Trust,79.88
-2017,14,Water under the Bridgewater,83.66,Hurricane Ajayi,110.42
-2017,14,Cooks Me Baby One More Time,69.48,Inglorious Staffords,104.86
-2017,14,Jaqen Hgharoppolo,138.38,Yippee Kai A Justin Tucker,65.06
-2017,15,JEFFERY,110.78,Inglorious Staffords,123.24
-2017,15,Got my Siemian on Kelce,88.20,Hurricane Ajayi,71.94
+2017,14,Yippee Kai A Justin Tucker,65.06,Jaqen Hgharoppolo,138.38
+2017,14,Inglorious Staffords,104.86,Cooks Me Baby One More Time,69.48
 2017,15,Mayfield's Bakery,116.08,Jaqen Hgharoppolo,106.64
-2017,15,Get Your Tyreek On,113.30,Jaboo Coming Thru,74.04
-2017,16,JEFFERY,102.38,Jaqen Hgharoppolo,91.70
-2017,16,Water under the Bridgewater,69.70,In Zeke We Trust,55.22
-2017,16,Jaboo Coming Thru,10.00,Hurricane Ajayi,93.76
+2017,15,Inglorious Staffords,123.24,JEFFERY,110.78
 2017,16,Mayfield's Bakery,85.76,Inglorious Staffords,76.84
-2017,16,Yippee Kai A Justin Tucker,64.06,Cooks Me Baby One More Time,66.82
-2017,16,Get Your Tyreek On,91.82,Got my Siemian on Kelce,120.50
 2018,1,JEFFERY,125.36,Spice Gurley,124.20
 2018,1,JuJuJuliooooo,107.24,Dakstreet's Back,149.78
 2018,1,Bottom Feeder Baby,102.70,Max 30 characters No profanity,110.30
@@ -721,17 +658,8 @@ year,week,away_team,away_points,home_team,home_points
 2018,13,MAN FUQ KJEMP,93.38,Stone Cold Kittle,116.78
 2018,13,Bros Exposing Lying Hoz,113.78,Fournetteflix and Chill,130.70
 2018,13,Mayfield's Bakery,102.08,Hotel-Odell-Golladay Inn,96.78
-2018,14,Bros Exposing Lying Hoz,133.08,Fournetteflix and Chill,141.12
-2018,14,Bottom Feeder Baby,76.94,JuJuJuliooooo,89.38
-2018,14,Hotel-Odell-Golladay Inn,62.28,Max 30 characters No profanity,121.44
-2018,14,Dakstreet's Back,100.72,Mayfield's Bakery,130.70
-2018,15,JEFFERY,84.32,Fournetteflix and Chill,81.48
-2018,15,JuJuJuliooooo,97.46,MAN FUQ KJEMP,66.66
-2018,15,Max 30 characters No profanity,84.96,Spice Gurley,139.36
-2018,15,Mayfield's Bakery,126.24,Stone Cold Kittle,95.38
-2018,16,JEFFERY,136.72,Mayfield's Bakery,141.48
-2018,16,Max 30 characters No profanity,122.38,MAN FUQ KJEMP,132.50
-2018,16,Stone Cold Kittle,119.18,Fournetteflix and Chill,76.48
-2018,16,JuJuJuliooooo,148.50,Spice Gurley,127.30
-2018,16,Hotel-Odell-Golladay Inn,78.24,Bottom Feeder Baby,86.18
-2018,16,Dakstreet's Back,87.26,Bros Exposing Lying Hoz,100.48
+2018,14,Mayfield's Bakery,130.70,Dakstreet's Back,100.72
+2018,14,Fournetteflix and Chill,141.12,Bros Exposing Lying Hoz,133.08
+2018,15,Stone Cold Kittle,95.38,Mayfield's Bakery,126.24
+2018,15,Fournetteflix and Chill,81.48,JEFFERY,84.32
+2018,16,Mayfield's Bakery,141.48,JEFFERY,136.72
