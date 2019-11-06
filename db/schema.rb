@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_16_041901) do
+ActiveRecord::Schema.define(version: 2019_11_05_040344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,6 +76,29 @@ ActiveRecord::Schema.define(version: 2019_10_16_041901) do
     t.index ["player_id"], name: "index_purchases_on_player_id"
   end
 
+  create_table "season_stats", force: :cascade do |t|
+    t.integer "year"
+    t.integer "games_played"
+    t.integer "passing_completions"
+    t.integer "passing_attempts"
+    t.integer "passing_yards"
+    t.integer "passing_touchdowns"
+    t.integer "interceptions"
+    t.integer "rushing_attempts"
+    t.integer "rushing_yards"
+    t.integer "rushing_touchdowns"
+    t.integer "receiving_yards"
+    t.integer "receptions"
+    t.integer "receiving_touchdowns"
+    t.integer "fumbles_lost"
+    t.float "age_at_season"
+    t.integer "experience_at_season"
+    t.bigint "player_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["player_id"], name: "index_season_stats_on_player_id"
+  end
+
   add_foreign_key "fantasy_games", "fantasy_teams", column: "away_fantasy_team_id"
   add_foreign_key "fantasy_games", "fantasy_teams", column: "home_fantasy_team_id"
   add_foreign_key "fantasy_starts", "fantasy_teams"
@@ -83,4 +106,5 @@ ActiveRecord::Schema.define(version: 2019_10_16_041901) do
   add_foreign_key "fantasy_teams", "owners"
   add_foreign_key "purchases", "fantasy_teams"
   add_foreign_key "purchases", "players"
+  add_foreign_key "season_stats", "players"
 end
