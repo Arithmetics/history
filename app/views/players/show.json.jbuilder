@@ -18,6 +18,8 @@ json.player do
   json.season_stats do
     json.array! @player.season_stats.order(year: :desc) do |stat|
       json.extract! stat, :games_played, :year, :passing_completions, :passing_attempts, :passing_yards, :passing_touchdowns, :interceptions, :rushing_attempts, :rushing_yards, :rushing_touchdowns, :receiving_yards, :receptions, :receiving_touchdowns, :fumbles_lost, :age_at_season, :experience_at_season
+      json.(stat, :calculate_season_fantasy_points)
+      json.(stat, :calculate_season_fantasy_points_ppr)
     end
   end
 
