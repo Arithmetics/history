@@ -1,0 +1,14 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "rake",
+      "type": "Ruby",
+      "request": "launch",
+      "program": "/Users/brocktillotson/Documents/code/history/lib/tasks/scrape_real_games.rake"
+    }
+  ]
+}
