@@ -25,4 +25,38 @@ class FantasyTeam < ApplicationRecord
     home_fantasy_games.each { |game| (game.home_score > game.away_score) ? wins += 1 : nil }
     return wins
   end
+
+  def made_playoffs?
+    if self.away_fantasy_games.where(week: 14..15).length > 0 || self.home_fantasy_games.where(week: 14..15).length > 0
+      return true
+    end
+    return false
+  end
+
+  def made_finals?
+    if self.away_fantasy_games.where(week: 16).length > 0 || self.home_fantasy_games.where(week: 16).length > 0
+      return true
+    end
+    return false
+  end
+
+  def won_championship?
+    away_finals = self.away_fantasy_games.where(week: 16)
+
+    home_finals = home_fantasy_games.where(week: 16)
+
+    away_finals.each do |final|
+      if final.away_score > final.home_score
+        return true
+      end
+    end
+
+    home_finals.each do |final|
+      if final.home_score > final.away_score
+        return true
+      end
+    end
+
+    return false
+  end
 end

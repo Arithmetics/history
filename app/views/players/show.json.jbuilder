@@ -16,7 +16,7 @@ json.player do
   end
 
   json.season_stats do
-    json.array! @player.season_stats.order(year: :desc) do |stat|
+    json.array! @player.season_stats.order(year: :desc).select { |s| s.year > 2010 } do |stat|
       json.extract! stat, :games_played, :year, :passing_completions, :passing_attempts, :passing_yards, :passing_touchdowns, :interceptions, :rushing_attempts, :rushing_yards, :rushing_touchdowns, :receiving_yards, :receptions, :receiving_touchdowns, :fumbles_lost, :age_at_season, :experience_at_season, :fantasy_points_reg, :fantasy_points_ppr, :rank_reg, :rank_ppr
     end
   end
