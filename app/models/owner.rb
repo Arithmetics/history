@@ -8,6 +8,53 @@ class Owner < ApplicationRecord
 
   has_many :purchases, through: :fantasy_teams
 
+  def versus_records
+    all_games_edit = []
+    @away_fantasy_games = self.away_fantasy_games
+    @home_fantasy_games = self.home_fantasy_games
+    @away_fantasy_games.each do |game|
+      new_game = { year: game.year, week: game.week, versus: game.home_fantasy_team.owner, win?: false }
+      if game.away_score > game.home_score
+        new_game[:win?] = true
+      end
+
+      all_games_edit.push(new_game)
+    end
+    @home_fantasy_games.each do |game|
+      new_game = { year: game.year, week: game.week, versus: game.away_fantasy_team.owner, win?: false }
+      if game.home_score > game.away_score
+        new_game[:win?] = true
+      end
+      all_games_edit.push(new_game)
+    end
+    all_games_edit.sort_by! { |game| [game[:year], game[:week]] }
+    game_records = {}
+    all_games_edit.each do |game|
+      versus_owner_id = game[:versus].id
+      if game_records[versus_owner_id] == nil
+        game_records[versus_owner_id] = { id: game[:versus].id, name: game[:versus].name, wins: 0, losses: 0, streak: 0 }
+      end
+      if game[:win?]
+        game_records[versus_owner_id][:wins] += 1
+        if game_records[versus_owner_id][:streak] > 0
+          game_records[versus_owner_id][:streak] += 1
+        else
+          game_records[versus_owner_id][:streak] = 1
+        end
+      else
+        game_records[versus_owner_id][:losses] += 1
+        if game_records[versus_owner_id][:streak] < 0
+          game_records[versus_owner_id][:streak] -= 1
+        else
+          game_records[versus_owner_id][:streak] = -1
+        end
+      end
+    end
+    versus_records = []
+    game_records.each { |k, record| versus_records.push(record) }
+    return versus_records
+  end
+
   def cumulative_stats
     total_points = 0
     total_games = 0
