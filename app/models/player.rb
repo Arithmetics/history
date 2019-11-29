@@ -3,4 +3,60 @@ class Player < ApplicationRecord
   has_many :purchases
   has_many :season_stats
   validates :name, presence: true
+
+
+  def career_stats
+    position = ""
+    total_starts = 0
+    total_benchings = 0
+    total_points = 0
+    total_auction_money = 0
+    highest_auction_money = 0
+    best_start = 0
+    best_reg_rank = 999
+    best_ppr_rank = 999
+    
+    self.fantasy_starts.each do |start|
+      if ["QB", "RB", "WR", "TE", "Q/R/W/T", "K", "DEF"].include?(start.position)
+        total_starts += 1
+        total_points += start.points
+        if best_start < start.points
+          best_start = start.points
+        end
+      end
+    end
+
+    self.purchases.each do |purchase|
+      total_auction_money += purchase.price
+      if highest_auction_money < purchase.price
+        highest_auction_money = purchase.price
+      end
+    end
+
+    self.season_stats.select { |s| s.year > 2010 }.each do |stat|
+      position = stat.position
+      if best_reg_rank > stat.rank_reg
+        best_reg_rank = stat.rank_reg
+      end
+
+      if best_ppr_rank > stat.rank_ppr
+        best_ppr_rank = stat.rank_ppr
+      end
+    end
+
+    career_stats = {}
+    career_stats["position"] = position
+    career_stats["total_starts"] = total_starts
+    career_stats["total_points"] = total_points.round(2)
+    career_stats["total_auction_money"] = total_auction_money
+    career_stats["highest_auction_money"] = highest_auction_money
+    career_stats["best_start"] = best_start
+    career_stats["best_reg_rank"] = best_reg_rank
+    career_stats["best_ppr_rank"] = best_ppr_rank
+
+    return career_stats
+  end
+
+
+
 end

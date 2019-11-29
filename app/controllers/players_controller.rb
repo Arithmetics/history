@@ -1,7 +1,6 @@
 class PlayersController < ApplicationController
   def index
-    @players = Player.all
-    render json: @players
+    @players = Player.includes(fantasy_starts: { fantasy_team: :owner }, purchases: {fantasy_team: :owner}, season_stats: {}).all
   end
 
   def show
