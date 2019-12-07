@@ -10,6 +10,9 @@ class Player < ApplicationRecord
     total_starts = 0
     total_benchings = 0
     total_points = 0
+    playoff_points = 0
+    finals_points = 0
+    championships = 0
     total_auction_money = 0
     highest_auction_money = 0
     best_start = 0
@@ -22,6 +25,16 @@ class Player < ApplicationRecord
         total_points += start.points
         if best_start < start.points
           best_start = start.points
+        end
+        if [14,15,16].include?(start.week)
+          playoff_points += start.points
+        end
+        if start.week == 16
+          finals_points += start.points
+
+          if start.fantasy_team.won_game?(start.week)
+            championships += 1
+          end
         end
       end
     end
@@ -47,7 +60,11 @@ class Player < ApplicationRecord
     career_stats = {}
     career_stats["position"] = position
     career_stats["total_starts"] = total_starts
+    career_stats["playoff_points"] = playoff_points.round(2)
+    career_stats["finals_points"] = finals_points.round(2)
     career_stats["total_points"] = total_points.round(2)
+    career_stats["championships"] = championships.round(2)
+    
     career_stats["total_auction_money"] = total_auction_money
     career_stats["highest_auction_money"] = highest_auction_money
     career_stats["best_start"] = best_start

@@ -8,6 +8,31 @@ class FantasyTeam < ApplicationRecord
   validates :name, presence: true
   validates :year, presence: true
 
+  def won_game?(week)
+    away_fantasy_game = self.away_fantasy_games.where(week: week).first
+    home_fantasy_game = self.home_fantasy_games.where(week: week).first
+
+    if away_fantasy_game != nil
+      if away_fantasy_game.away_score > away_fantasy_game.home_score
+        return true
+      end
+      return false
+    end
+
+    if home_fantasy_game != nil
+      if home_fantasy_game.home_score > home_fantasy_game.away_score
+        return true
+      end
+      return false
+    end
+    return false
+  end
+
+  def played_in_week?(week)
+    away_fantasy_game = self.away_fantasy_games.where(week: week)
+    home_fantasy_game = self.home_fantasy_games.where(week: week)
+  end
+
   def season_points
     points = 0
     away_fantasy_games = self.away_fantasy_games.where(week: 1..13)

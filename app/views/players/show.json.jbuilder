@@ -1,5 +1,6 @@
 json.player do
   json.extract! @player, :id, :name, :birthdate
+  json.set! "career_stats", @player.career_stats.deep_transform_keys! { |key| key.camelize(:lower) }
 
   json.purchases do
     json.array! @player.purchases.order(year: :desc) do |purchase|

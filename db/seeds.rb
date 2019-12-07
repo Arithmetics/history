@@ -193,3 +193,17 @@ SeasonStat.all.each do |stat|
   stat.rank_ppr = SeasonStat.where("fantasy_points_ppr >= ? AND year = ? AND position = ?", stat.fantasy_points_ppr, stat.year, stat.position).count
   stat.save!
 end
+
+
+
+## remove fantasy_starts that dont have a fantasy_game (this should be put in the model next)
+
+FantasyStart.all.each do |start|
+  week = start.week
+  home_game = start.fantasy_team.home_fantasy_games.where(week: week).first
+  away_game = start.fantasy_team.away_fantasy_games.where(week: week).first
+
+  if home_game == nil && away_game == nil
+    start.delete
+  end
+end
