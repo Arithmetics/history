@@ -3,6 +3,7 @@ require "nokogiri"
 require "csv"
 require "pp"
 
+
 def get_owners_teams(year, driver, owners)
   driver.navigate.to "https://fantasy.nfl.com/league/400302/history/#{year}/owners"
   sleep(3)

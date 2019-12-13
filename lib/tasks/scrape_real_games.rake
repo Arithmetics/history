@@ -1,9 +1,28 @@
 require "nokogiri"
 require "open-uri"
 require "csv"
+require "uri"
 
 namespace :scraping do
   desc "Stuff to do with nfl.com player stat scraping"
+  task get_pic_ids: :environment do
+    players = Player.all
+    player_pics = {}
+    players.each do |player|
+      puts player.id
+      href = get_profile_href(player.id)
+      puts href
+      player_pics[player.id] = href
+    end
+
+    CSV.open(Rails.root.join("db", "seed_files", "profile_pics.csv"), "wb") do |csv|
+      player_pics.each do |k, v|
+        csv << [k, v]
+      end
+    end
+  end
+
+  desc "blah"
   task fixed_rb_stats: :environment do
     new_rb_seasons = []
     all_players = Player.all
@@ -38,8 +57,6 @@ namespace :scraping do
       end
     end
   end
-
-  
 end
 
 def get_seasons_played(doc)
@@ -234,6 +251,17 @@ def get_season_games(profile_id, year)
   end
 
   return season_games
+end
+
+def get_profile_href(player_id)
+  doc = Nokogiri::HTML(open("http://www.nfl.com/player/toddgurley/#{player_id.to_s}/profile"))
+  photo_img = doc&.css(".player-photo")&.css("img")
+  if photo_img[0] != nil
+    x = photo_img[0]&.attributes["src"]&.value
+    return URI(x).path.split("/").last.split(".").first
+  end
+
+  return ""
 end
 
 # data = CSV.read("./97062_starts.csv", { encoding: "UTF-8", headers: true, header_converters: :symbol, converters: :all })
