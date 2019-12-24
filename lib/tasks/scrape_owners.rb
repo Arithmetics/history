@@ -52,3 +52,5 @@ CSV.open("../../db/seeds/teams.csv", "wb") do |csv|
 end
 
 driver.quit
+
+

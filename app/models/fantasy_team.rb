@@ -7,6 +7,8 @@ class FantasyTeam < ApplicationRecord
 
   validates :name, presence: true
   validates :year, presence: true
+  validates :owner, uniqueness: { scope: :year,
+    message: "only one team per owner per year" }
 
   def won_game?(week)
     away_fantasy_game = self.away_fantasy_games.where(week: week).first

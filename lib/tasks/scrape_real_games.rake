@@ -4,7 +4,7 @@ require "csv"
 require "uri"
 
 namespace :scraping do
-  desc "Stuff to do with nfl.com player stat scraping"
+  desc "get profile picture ids for all players"
   task get_pic_ids: :environment do
     players = Player.all
     player_pics = {}
@@ -22,7 +22,7 @@ namespace :scraping do
     end
   end
 
-  desc "blah"
+  desc "get fixed rb stats"
   task fixed_rb_stats: :environment do
     new_rb_seasons = []
     all_players = Player.all
