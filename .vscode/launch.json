@@ -5,10 +5,13 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "rake",
+      "name": "Rake data_additions:get_auction_ids",
       "type": "Ruby",
       "request": "launch",
-      "program": "/Users/brocktillotson/Documents/code/history/lib/tasks/scrape_real_games.rake"
+      "cwd": "${workspaceRoot}",
+      "program": "/usr/local/bin/rake",
+      "useBundler": true,
+      "args": ["data_additions:get_auction_ids"]
     }
   ]
 }

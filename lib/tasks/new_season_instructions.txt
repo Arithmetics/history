@@ -1,0 +1,12 @@
+Designed to be run after week 1 has been completed
+
+1. create #{year}_raw_auction.csv
+2. run rake:data_additions:get_auction_ids
+3. go through file and update all weird ids
+4. manually create all rookies in #{year}_rookies.csv
+
+
+...
+
+
+1. 

@@ -56,3 +56,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # brock
 gem "rack-cors", :require => 'rack/cors'
+gem "ruby-debug-ide"
+gem 'debase'

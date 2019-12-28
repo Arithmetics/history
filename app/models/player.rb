@@ -4,6 +4,16 @@ class Player < ApplicationRecord
   has_many :season_stats
   validates :name, presence: true
 
+  def self.find_name_match(year, name)
+    id_matches = []
+    potentials = Player.where(name: name)
+    potentials.each do |player|
+      if player.fantasy_starts.where(year: year).count > 0
+        id_matches.push(player.id)
+      end
+    end
+    return id_matches
+  end
 
   def career_stats
     position = ""
@@ -18,7 +28,7 @@ class Player < ApplicationRecord
     best_start = 0
     best_reg_rank = 999
     best_ppr_rank = 999
-    
+
     self.fantasy_starts.each do |start|
       if ["QB", "RB", "WR", "TE", "Q/R/W/T", "K", "DEF"].include?(start.position)
         total_starts += 1
@@ -26,7 +36,7 @@ class Player < ApplicationRecord
         if best_start < start.points
           best_start = start.points
         end
-        if [14,15,16].include?(start.week)
+        if [14, 15, 16].include?(start.week)
           playoff_points += start.points
         end
         if start.week == 16
@@ -64,7 +74,7 @@ class Player < ApplicationRecord
     career_stats["finals_points"] = finals_points.round(2)
     career_stats["total_points"] = total_points.round(2)
     career_stats["championships"] = championships.round(2)
-    
+
     career_stats["total_auction_money"] = total_auction_money
     career_stats["highest_auction_money"] = highest_auction_money
     career_stats["best_start"] = best_start
@@ -73,7 +83,4 @@ class Player < ApplicationRecord
 
     return career_stats
   end
-
-
-
 end
