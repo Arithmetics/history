@@ -12,6 +12,8 @@ namespace :data_additions do
       driver = driver_start(current_league_url)
       check_owners(driver, current_league_url)
       insert_new_teams(driver, current_league_url)
+      insert_new_players()
+      insert_auction()
     rescue
       # could rollback here
       raise "error executing data gathering tasks"
@@ -21,26 +23,7 @@ namespace :data_additions do
   desc "potential player id matches for auction"
   task get_auction_ids: :environment do
     begin
-      year = 2019
-
-      final_file = "#{Rails.root}/lib/assets/#{year}_final_auction.csv"
-      CSV.open(final_file, "w+") do |writer|
-        raw_file = "#{year}_raw_auction"
-        CSV.foreach("#{Rails.root}/lib/assets/#{raw_file}.csv", :headers => true) do |row|
-          owner_name = row["owner_name"]
-          price = row["price"]
-          player_name = row["player_name"]
-
-          potential_id_matches = Player.find_name_match((year - 1), player_name)
-          message = "TooMany:#{potential_id_matches.join(":")}"
-          if potential_id_matches.length == 0
-            message = "NotFound"
-          elsif potential_id_matches.length == 1
-            message = potential_id_matches[0]
-          end
-          writer << [owner_name, price, player_name, message]
-        end
-      end
+      get_potential_ids()
     rescue
       raise "error getting id matches"
     end
@@ -84,6 +67,30 @@ def check_owners(driver, current_league_url)
   puts "Owners look good.... proceeding..."
 end
 
+def get_potential_ids
+  year = Date.today.year
+  final_file = "#{Rails.root}/lib/assets/#{year}_final_auction.csv"
+  CSV.open(final_file, "w+") do |writer|
+    raw_file = "#{year}_raw_auction"
+    CSV.foreach("#{Rails.root}/lib/assets/#{raw_file}.csv", :headers => true) do |row|
+      owner_name = row["owner_name"]
+      price = row["price"]
+      player_name = row["player_name"]
+      position = row["position"]
+
+      potential_id_matches = Player.find_name_match((year - 1), player_name)
+      message = "TooMany:#{potential_id_matches.join(":")}"
+      if potential_id_matches.length == 0
+        message = "NotFound"
+      elsif potential_id_matches.length == 1
+        message = potential_id_matches[0]
+      end
+      writer << ["owner_name", "price", "position", "player_name", "player_id"]
+      writer << [owner_name, price, position, player_name, message]
+    end
+  end
+end
+
 def insert_new_teams(driver, current_league_url)
   driver.navigate.to "#{current_league_url}/owners"
 
@@ -110,4 +117,18 @@ def insert_new_teams(driver, current_league_url)
 
     puts "New teams inserted... proceeding..."
   end
+end
+
+def insert_new_players()
+  year = Date.today.year
+  filepath = "#{Rails.root}/lib/assets/#{year}_new_players.csv"
+  Player.insert_new_players(filepath)
+  puts "New players inserted for #{year}... proceeding..."
+end
+
+def insert_auction()
+  year = Date.today.year
+  filepath = "#{Rails.root}/lib/assets/#{year}_final_auction.csv"
+  Purchase.insert_auction(filepath)
+  puts "Auction for #{year} inserted... proceeding..."
 end

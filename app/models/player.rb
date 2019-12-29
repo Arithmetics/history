@@ -4,17 +4,6 @@ class Player < ApplicationRecord
   has_many :season_stats
   validates :name, presence: true
 
-  def self.find_name_match(year, name)
-    id_matches = []
-    potentials = Player.where(name: name)
-    potentials.each do |player|
-      if player.fantasy_starts.where(year: year).count > 0
-        id_matches.push(player.id)
-      end
-    end
-    return id_matches
-  end
-
   def career_stats
     position = ""
     total_starts = 0
@@ -82,5 +71,33 @@ class Player < ApplicationRecord
     career_stats["best_ppr_rank"] = best_ppr_rank
 
     return career_stats
+  end
+
+  def self.insert_new_players(filepath)
+    ActiveRecord::Base.transaction do
+      CSV.foreach(filepath, :headers => true) do |row|
+        owner_name = row["owner_name"]
+        price = row["price"].to_i
+        player_name = row["name"]
+        player_id = row["profile_id"].to_i
+        birthdate = row["birthdate"]
+        picture_id = row["picture_id"]
+
+        player = Player.new(name: player_name, id: player_id, birthdate: birthdate, picture_id: picture_id)
+
+        player.save!
+      end
+    end
+  end
+
+  def self.find_name_match(year, name)
+    id_matches = []
+    potentials = Player.where(name: name)
+    potentials.each do |player|
+      if player.fantasy_starts.where(year: year).count > 0
+        id_matches.push(player.id)
+      end
+    end
+    return id_matches
   end
 end
