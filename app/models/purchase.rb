@@ -6,9 +6,8 @@ class Purchase < ApplicationRecord
   validates :player, uniqueness: { scope: :year,
                                    message: "can only be purchased once a year" }
 
-  def self.insert_auction(filepath)
+  def self.insert_auction(filepath, year)
     ActiveRecord::Base.transaction do
-      year = Date.today.year
 
       CSV.foreach(filepath, :headers => true) do |row|
         owner_name = row["owner_name"]

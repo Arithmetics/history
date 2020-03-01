@@ -77,7 +77,6 @@ class Player < ApplicationRecord
     ActiveRecord::Base.transaction do
       CSV.foreach(filepath, :headers => true) do |row|
         owner_name = row["owner_name"]
-        price = row["price"].to_i
         player_name = row["name"]
         player_id = row["profile_id"].to_i
         birthdate = row["birthdate"]

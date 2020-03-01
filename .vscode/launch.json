@@ -12,6 +12,15 @@
       "program": "/usr/local/bin/rake",
       "useBundler": true,
       "args": ["data_additions:get_auction_ids"]
+    },
+    {
+      "name": "Rake data_additions:new_reg_week",
+      "type": "Ruby",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "program": "/usr/local/bin/rake",
+      "useBundler": true,
+      "args": ["data_additions:new_reg_week"]
     }
   ]
 }

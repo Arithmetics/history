@@ -4,26 +4,53 @@ require "open-uri"
 require "csv"
 require "uri"
 
+### NEW SEASON ###
+
+# 1. create /lib/assets/year_raw_auction.csv based on the auction
+
+# 2. run get_potential_ids to get final auction file
+
+# 3. check file for any unmatched or double matches players, and fix all the error rows
+
+# 4. create /lib/assets/year_new_players.csv based on the auction rookies and new drafts that were unmatched
+
+# 5. run season_start
+
 namespace :data_additions do
   desc "start up season"
   task season_start: :environment do
     begin
       current_league_url = "https://fantasy.nfl.com/league/400302"
+      year = 2019
       driver = driver_start(current_league_url)
       check_owners(driver, current_league_url)
-      insert_new_teams(driver, current_league_url)
-      insert_new_players()
-      insert_auction()
+      insert_new_teams(driver, current_league_url, year)
+      insert_new_players(year)
+      insert_auction(year)
     rescue
-      # could rollback here
       raise "error executing data gathering tasks"
+    end
+  end
+
+  desc "add a new regular season week"
+  task new_reg_week: :environment do
+    begin
+      year = 2019
+      week = 14
+      current_league_url = "https://fantasy.nfl.com/league/400302"
+      driver = driver_start(current_league_url)
+      verify_current_week(driver, current_league_url, week)
+      # in progress here
+    rescue
+      raise "error adding a new league week"
     end
   end
 
   desc "potential player id matches for auction"
   task get_auction_ids: :environment do
     begin
-      get_potential_ids()
+      year = 2019
+      get_potential_ids(year)
     rescue
       raise "error getting id matches"
     end
@@ -67,8 +94,7 @@ def check_owners(driver, current_league_url)
   puts "Owners look good.... proceeding..."
 end
 
-def get_potential_ids
-  year = Date.today.year
+def get_potential_ids(year)
   final_file = "#{Rails.root}/lib/assets/#{year}_final_auction.csv"
   CSV.open(final_file, "w+") do |writer|
     raw_file = "#{year}_raw_auction"
@@ -91,7 +117,7 @@ def get_potential_ids
   end
 end
 
-def insert_new_teams(driver, current_league_url)
+def insert_new_teams(driver, current_league_url, year)
   driver.navigate.to "#{current_league_url}/owners"
 
   doc = Nokogiri::HTML(driver.page_source)
@@ -111,7 +137,7 @@ def insert_new_teams(driver, current_league_url)
         if owner == nil
           raise "Missing owner: #{k}!"
         end
-        FantasyTeam.create!(owner: owner, year: Date.today.year, name: v)
+        FantasyTeam.create!(owner: owner, year: year, name: v)
       end
     end
 
@@ -119,16 +145,32 @@ def insert_new_teams(driver, current_league_url)
   end
 end
 
-def insert_new_players()
-  year = Date.today.year
+def insert_new_players(year)
   filepath = "#{Rails.root}/lib/assets/#{year}_new_players.csv"
   Player.insert_new_players(filepath)
   puts "New players inserted for #{year}... proceeding..."
 end
 
-def insert_auction()
-  year = Date.today.year
+def insert_auction(year)
   filepath = "#{Rails.root}/lib/assets/#{year}_final_auction.csv"
-  Purchase.insert_auction(filepath)
+  Purchase.insert_auction(filepath, year)
   puts "Auction for #{year} inserted... proceeding..."
+end
+
+def verify_current_week(driver, current_league_url, week)
+  driver.navigate.to "#{current_league_url}?standingsTab=standings&standingsType=overall"
+  sleep(2)
+  doc = Nokogiri::HTML(driver.page_source)
+  ts = doc.css(".teamRecord")
+  team_record = doc.css(".teamRecord")[6].text()
+  games = team_record.split("-")
+  weeks_played = 0
+  games.each do |game|
+    weeks_played += game.to_i
+  end
+
+  if weeks_played != (week - 1)
+    throw("Something may be wrong with your set week, please check or override verify_current_week \n weeks played: #{weeks_played}, set week #{week}")
+  end
+  return nil
 end
