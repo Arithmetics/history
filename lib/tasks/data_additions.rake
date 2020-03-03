@@ -44,8 +44,7 @@ namespace :data_additions do
       check_owners(driver, current_league_url)
       update_teams(driver, current_league_url, year)
       get_fantasy_games(driver, current_league_url, year, week)
-      # go through each roster for the week and find all unknown players
-      # insert all unknown players
+      find_and_create_unknown_players(driver, current_league_url, year, week)
       # go back through all rosters and add all fantsy_starts
       # mega update of all season_stats for every player in the db
     rescue
@@ -256,5 +255,25 @@ def get_fantasy_games(driver, current_league_url, year, week)
     end
 
     puts "Week's Fantasy Games inserted... proceeding..."
+  end
+end
+
+def find_and_create_unknown_players(driver, current_league_url, year, week)
+  team_numbers = *(1..12)
+
+  team_numbers.each do |team_number|
+    driver.navigate.to "#{current_league_url}/team/#{team_number}/gamecenter?gameCenterTab=track&trackType=sbs&week=#{week}"
+    sleep(2)
+    doc = Nokogiri::HTML(driver.page_source)
+    box = doc.css("#teamMatchupBoxScore")
+    left_roster = box.css(".teamWrap-1")
+    all_player_links = left_roster.css(".playerNameFirstInitialLastName").css("a")
+  end
+
+  begin
+    ActiveRecord::Base.transaction do
+    end
+
+    puts "All new players were inserted... proceeding..."
   end
 end
