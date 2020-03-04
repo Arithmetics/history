@@ -16,6 +16,10 @@ require "uri"
 
 # 5. run season_start
 
+### NEW WEEK ###
+
+# 1. run new_reg_week
+
 namespace :data_additions do
   desc "start up season"
   task season_start: :environment do
@@ -44,8 +48,8 @@ namespace :data_additions do
       check_owners(driver, current_league_url)
       update_teams(driver, current_league_url, year)
       get_fantasy_games(driver, current_league_url, year, week)
-      find_and_create_unknown_players(driver, current_league_url, year, week)
-      # go back through all rosters and add all fantsy_starts
+      find_and_create_unknown_players(driver, current_league_url, week)
+      get_fantasy_starts(driver, current_league_url, year, week)
       # mega update of all season_stats for every player in the db
     rescue
       raise "error adding a new league week"
@@ -258,8 +262,10 @@ def get_fantasy_games(driver, current_league_url, year, week)
   end
 end
 
-def find_and_create_unknown_players(driver, current_league_url, year, week)
+def find_and_create_unknown_players(driver, current_league_url, week)
   team_numbers = *(1..12)
+
+  weeks_player_ids = []
 
   team_numbers.each do |team_number|
     driver.navigate.to "#{current_league_url}/team/#{team_number}/gamecenter?gameCenterTab=track&trackType=sbs&week=#{week}"
@@ -268,12 +274,105 @@ def find_and_create_unknown_players(driver, current_league_url, year, week)
     box = doc.css("#teamMatchupBoxScore")
     left_roster = box.css(".teamWrap-1")
     all_player_links = left_roster.css(".playerNameFirstInitialLastName").css("a")
+
+    all_player_links.each do |link|
+      href = link["href"]
+      id = href.split("=").last
+      weeks_player_ids.push(id)
+    end
+  end
+
+  unknown_ids = []
+
+  weeks_player_ids.each do |id|
+    player = Player.find(id)
+    if player != nil
+      unknown_ids.push(id)
+    end
+  end
+
+  new_players = []
+
+  unknown_ids.each do |id|
+    new_players.push(scrape_unknown_player(driver, id))
   end
 
   begin
     ActiveRecord::Base.transaction do
+      unknown_players.each do |player|
+        puts "Saving new player: #{player}"
+        player.save!
+      end
     end
 
     puts "All new players were inserted... proceeding..."
+  end
+end
+
+def scrape_unknown_player(driver, id)
+  driver.navigate.to "http://www.nfl.com/player/mattryan/#{id}/profile"
+  doc = Nokogiri::HTML(driver.page_source)
+  new_player = Player.new
+  new_player.id = id
+  new_player.name = doc.css(".player-name").text.strip
+  birthdate_string = doc.css(".player-info").css("p")[3].text.split(" ")[1]
+  new_player.birthdate = Date.strptime(birthdate_string, "%m/%d/%Y")
+  new_player.picture_id = doc.css(".player-photo").css("img")["src"].split("/").last.gsub(".png", "")
+
+  return new_player
+end
+
+def get_fantasy_starts(driver, current_league_url, year, week)
+  team_numbers = *(1..12)
+
+  new_fantasy_starts = []
+
+  team_numbers.each do |team_number|
+    driver.navigate.to "#{current_league_url}/team/#{team_number}/gamecenter?gameCenterTab=track&trackType=sbs&week=#{week}"
+    sleep(2)
+    doc = Nokogiri::HTML(driver.page_source)
+    box = doc.css("#teamMatchupBoxScore")
+    left_roster = box.css(".teamWrap-1")
+
+    team_name = left_roster.css("h4")
+    fantasy_team = FantasyTeam.find_by(:name, team_name, year: year)
+    if fantasy_team == nil
+      throw "Unknown fantasy team: #{team_name}"
+    end
+
+    starter_rows = left_roster.css("#tableWrap-1").css("tbody").css("tr")
+    starter_rows.each do |row|
+      position = row.css(".teamPosition").text
+      player_id = row.css(".playerNameAndInfo").css("a")["href"].split("=").last.to_i
+      fantasy_points = row.css(".playerTotal").text.to_f
+
+      player = Player.find(player_id)
+
+      if player == nil
+        throw "Unknown player found: #{player_id}"
+      end
+
+      new_start = FantasyStart.new(
+        points: fantasy_points,
+        fantasy_team: fantasy_team,
+        player: player,
+        year: year,
+        week: week,
+        position: position,
+      )
+
+      new_fantasy_starts.push(new_start)
+    end
+  end
+
+  begin
+    ActiveRecord::Base.transaction do
+      new_fantasy_starts.each do |start|
+        puts "Saving new start: #{start}"
+        start.save!
+      end
+    end
+
+    puts "All new fantasy starts were inserted... proceeding..."
   end
 end
