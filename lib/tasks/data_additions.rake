@@ -27,11 +27,18 @@ namespace :data_additions do
       current_league_url = "https://fantasy.nfl.com/league/400302"
       year = 2019
       driver = driver_start(current_league_url)
+
       check_owners(driver, current_league_url)
+      puts "check_owners passed"
       insert_new_teams(driver, current_league_url, year)
+      "insert_new_teams passed"
       insert_new_players(year)
-      # new players need season_stats
+      "insert_new players passed"
       insert_auction(year)
+      "insert_auction passed"
+      # refresh all season stats or just new players?
+
+      "season has begun!"
     rescue
       raise "error executing data gathering tasks"
     end
@@ -41,16 +48,24 @@ namespace :data_additions do
   task new_reg_week: :environment do
     begin
       year = 2019
-      week = 14
+      week = 1
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
-      verify_current_week(driver, current_league_url, week)
-      check_owners(driver, current_league_url)
-      update_teams(driver, current_league_url, year)
-      get_fantasy_games(driver, current_league_url, year, week)
-      find_and_create_unknown_players(driver, current_league_url, week)
+
+      # verify_current_week(driver, current_league_url, week)
+      puts "verify_current_week passed"
+      # check_owners(driver, current_league_url)
+      puts "check_owners passed"
+      # update_teams(driver, current_league_url, year)
+      puts "update_teams passed"
+      # get_fantasy_games(driver, current_league_url, year, week)
+      puts "get_fantasy_games passed"
+      # find_and_create_unknown_players(driver, current_league_url, week)
+      puts "find_and_create_unknown_players passed"
       get_fantasy_starts(driver, current_league_url, year, week)
+      puts "get_fantasy_starts passed"
       # mega update of all season_stats for every player in the db
+
     rescue
       raise "error adding a new league week"
     end
@@ -108,11 +123,12 @@ def insert_new_teams(driver, current_league_url, year)
   team_map = get_current_teams(driver, current_league_url)
   begin
     ActiveRecord::Base.transaction do
-      team_key.each do |k, v|
+      team_map.each do |k, v|
         owner = Owner.find_by_name(k)
         if owner == nil
           raise "Missing owner: #{k}!"
         end
+        puts "Creating new team: #{v} for owner #{owner.name}"
         FantasyTeam.create!(owner: owner, year: year, name: v)
       end
     end
@@ -126,7 +142,7 @@ def update_teams(driver, current_league_url, year)
 
   begin
     ActiveRecord::Base.transaction do
-      team_key.each do |k, v|
+      team_map.each do |k, v|
         owner = Owner.find_by_name(k)
         if owner == nil
           raise "Missing owner: #{k}!"
@@ -153,12 +169,13 @@ def get_current_teams(driver, current_league_url)
   doc = Nokogiri::HTML(driver.page_source)
   owner_table = doc.css("#leagueOwners")
   rows = owner_table.css("tbody").css("tr")
-  team_key = {}
+  team_map = {}
   rows.each do |row|
     owner = row.css(".userName").text
     team = row.css(".teamName").text
-    team_key[owner] = team
+    team_map[owner] = team
   end
+  return team_map
 end
 
 def insert_new_players(year)
@@ -250,9 +267,9 @@ def get_fantasy_games(driver, current_league_url, year, week)
         FantasyGame.create!(
           year: year,
           week: week,
-          away_team: away_team,
+          away_fantasy_team: away_team,
           away_score: away_team_score,
-          home_team: home_team,
+          home_fantasy_team: home_team,
           home_score: home_team_score,
         )
       end
@@ -285,8 +302,8 @@ def find_and_create_unknown_players(driver, current_league_url, week)
   unknown_ids = []
 
   weeks_player_ids.each do |id|
-    player = Player.find(id)
-    if player != nil
+    player = Player.find_by(id: id)
+    if player == nil
       unknown_ids.push(id)
     end
   end
@@ -299,7 +316,7 @@ def find_and_create_unknown_players(driver, current_league_url, week)
 
   begin
     ActiveRecord::Base.transaction do
-      unknown_players.each do |player|
+      new_players.each do |player|
         puts "Saving new player: #{player}"
         player.save!
       end
@@ -317,7 +334,7 @@ def scrape_unknown_player(driver, id)
   new_player.name = doc.css(".player-name").text.strip
   birthdate_string = doc.css(".player-info").css("p")[3].text.split(" ")[1]
   new_player.birthdate = Date.strptime(birthdate_string, "%m/%d/%Y")
-  new_player.picture_id = doc.css(".player-photo").css("img")["src"].split("/").last.gsub(".png", "")
+  new_player.picture_id = doc.css(".player-photo").css("img")[0]["src"].split("/").last.gsub(".png", "")
 
   return new_player
 end
@@ -334,34 +351,37 @@ def get_fantasy_starts(driver, current_league_url, year, week)
     box = doc.css("#teamMatchupBoxScore")
     left_roster = box.css(".teamWrap-1")
 
-    team_name = left_roster.css("h4")
-    fantasy_team = FantasyTeam.find_by(:name, team_name, year: year)
+    team_name = left_roster.css("h4").text
+    fantasy_team = FantasyTeam.find_by(name: team_name, year: year)
     if fantasy_team == nil
       throw "Unknown fantasy team: #{team_name}"
     end
 
     starter_rows = left_roster.css("#tableWrap-1").css("tbody").css("tr")
     starter_rows.each do |row|
-      position = row.css(".teamPosition").text
-      player_id = row.css(".playerNameAndInfo").css("a")["href"].split("=").last.to_i
-      fantasy_points = row.css(".playerTotal").text.to_f
+      if row.css(".playerNameAndInfo").css("a").length > 0
+        player_id = row.css(".playerNameAndInfo").css("a")[0]["href"].split("=").last.to_i
 
-      player = Player.find(player_id)
+        position = row.css(".teamPosition").text
+        fantasy_points = row.css(".playerTotal").text.to_f
 
-      if player == nil
-        throw "Unknown player found: #{player_id}"
+        player = Player.find_by(id: player_id)
+
+        if player == nil
+          throw "Unknown player found: #{player_id}"
+        end
+
+        new_start = FantasyStart.new(
+          points: fantasy_points,
+          fantasy_team: fantasy_team,
+          player: player,
+          year: year,
+          week: week,
+          position: position,
+        )
+
+        new_fantasy_starts.push(new_start)
       end
-
-      new_start = FantasyStart.new(
-        points: fantasy_points,
-        fantasy_team: fantasy_team,
-        player: player,
-        year: year,
-        week: week,
-        position: position,
-      )
-
-      new_fantasy_starts.push(new_start)
     end
   end
 

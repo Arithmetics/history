@@ -79,11 +79,11 @@ class Player < ApplicationRecord
         owner_name = row["owner_name"]
         player_name = row["name"]
         player_id = row["profile_id"].to_i
-        birthdate = row["birthdate"]
+        birthdate = Date.strptime(row["birthdate"], "%m/%d/%Y")
         picture_id = row["picture_id"]
 
         player = Player.new(name: player_name, id: player_id, birthdate: birthdate, picture_id: picture_id)
-
+        puts "New player created: #{player.name}"
         player.save!
       end
     end

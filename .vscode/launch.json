@@ -21,6 +21,15 @@
       "program": "/usr/local/bin/rake",
       "useBundler": true,
       "args": ["data_additions:new_reg_week"]
+    },
+    {
+      "name": "Rake data_additions:season_start",
+      "type": "Ruby",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "program": "/usr/local/bin/rake",
+      "useBundler": true,
+      "args": ["data_additions:season_start"]
     }
   ]
 }
