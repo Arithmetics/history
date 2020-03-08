@@ -20,6 +20,10 @@ require "uri"
 
 # 1. run new_reg_week
 
+### NEW PLAYOFF WEEK ###
+
+# 1. run new_playoff_week
+
 namespace :data_additions do
   desc "start up season"
   task season_start: :environment do
@@ -48,19 +52,46 @@ namespace :data_additions do
   task new_reg_week: :environment do
     begin
       year = 2019
-      week = 1
+      week = 13
+      current_league_url = "https://fantasy.nfl.com/league/400302"
+      driver = driver_start(current_league_url)
+
+      verify_current_week(driver, current_league_url, week)
+      puts "verify_current_week passed"
+      check_owners(driver, current_league_url)
+      puts "check_owners passed"
+      update_teams(driver, current_league_url, year)
+      puts "update_teams passed"
+      get_fantasy_games(driver, current_league_url, year, week)
+      puts "get_fantasy_games passed"
+      find_and_create_unknown_players(driver, current_league_url, week)
+      puts "find_and_create_unknown_players passed"
+      get_fantasy_starts(driver, current_league_url, year, week)
+      puts "get_fantasy_starts passed"
+      # mega update of all season_stats for every player in the db
+
+    rescue
+      raise "error adding a new league week"
+    end
+  end
+
+  desc "add a new playoff week"
+  task new_playoff_week: :environment do
+    begin
+      year = 2019
+      week = 14
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
 
       # verify_current_week(driver, current_league_url, week)
-      puts "verify_current_week passed"
-      # check_owners(driver, current_league_url)
+      # puts "verify_current_week passed"
+      check_owners(driver, current_league_url)
       puts "check_owners passed"
-      # update_teams(driver, current_league_url, year)
+      update_teams(driver, current_league_url, year)
       puts "update_teams passed"
-      # get_fantasy_games(driver, current_league_url, year, week)
+      get_fantasy_games(driver, current_league_url, year, week)
       puts "get_fantasy_games passed"
-      # find_and_create_unknown_players(driver, current_league_url, week)
+      find_and_create_unknown_players(driver, current_league_url, week)
       puts "find_and_create_unknown_players passed"
       get_fantasy_starts(driver, current_league_url, year, week)
       puts "get_fantasy_starts passed"
@@ -317,7 +348,7 @@ def find_and_create_unknown_players(driver, current_league_url, week)
   begin
     ActiveRecord::Base.transaction do
       new_players.each do |player|
-        puts "Saving new player: #{player}"
+        puts "Saving new player: #{player.name}"
         player.save!
       end
     end
@@ -332,11 +363,19 @@ def scrape_unknown_player(driver, id)
   new_player = Player.new
   new_player.id = id
   new_player.name = doc.css(".player-name").text.strip
-  birthdate_string = doc.css(".player-info").css("p")[3].text.split(" ")[1]
+  birthdate_string = get_birthday_string(doc)
   new_player.birthdate = Date.strptime(birthdate_string, "%m/%d/%Y")
   new_player.picture_id = doc.css(".player-photo").css("img")[0]["src"].split("/").last.gsub(".png", "")
 
   return new_player
+end
+
+def get_birthday_string(doc)
+  all_p = doc.css(".player-info").css("p")
+  if all_p.length == 5
+    return doc.css(".player-info").css("p")[2].text.split(" ")[1]
+  end
+  return doc.css(".player-info").css("p")[3].text.split(" ")[1]
 end
 
 def get_fantasy_starts(driver, current_league_url, year, week)
@@ -359,27 +398,16 @@ def get_fantasy_starts(driver, current_league_url, year, week)
 
     starter_rows = left_roster.css("#tableWrap-1").css("tbody").css("tr")
     starter_rows.each do |row|
-      if row.css(".playerNameAndInfo").css("a").length > 0
-        player_id = row.css(".playerNameAndInfo").css("a")[0]["href"].split("=").last.to_i
+      new_start = get_start_from_row(row, fantasy_team, year, week)
+      if new_start != nil
+        new_fantasy_starts.push(new_start)
+      end
+    end
 
-        position = row.css(".teamPosition").text
-        fantasy_points = row.css(".playerTotal").text.to_f
-
-        player = Player.find_by(id: player_id)
-
-        if player == nil
-          throw "Unknown player found: #{player_id}"
-        end
-
-        new_start = FantasyStart.new(
-          points: fantasy_points,
-          fantasy_team: fantasy_team,
-          player: player,
-          year: year,
-          week: week,
-          position: position,
-        )
-
+    bench_rows = left_roster.css(".tableWrapBN").css("tbody").css("tr")
+    bench_rows.each do |row|
+      new_start = get_start_from_row(row, fantasy_team, year, week)
+      if new_start != nil
         new_fantasy_starts.push(new_start)
       end
     end
@@ -394,5 +422,31 @@ def get_fantasy_starts(driver, current_league_url, year, week)
     end
 
     puts "All new fantasy starts were inserted... proceeding..."
+  end
+end
+
+def get_start_from_row(row, fantasy_team, year, week)
+  if row.css(".playerNameAndInfo").css("a").length > 0
+    player_id = row.css(".playerNameAndInfo").css("a")[0]["href"].split("=").last.to_i
+
+    position = row.css(".teamPosition").text
+    fantasy_points = row.css(".playerTotal").text.to_f
+
+    player = Player.find_by(id: player_id)
+
+    if player == nil
+      throw "Unknown player found: #{player_id}"
+    end
+
+    new_start = FantasyStart.new(
+      points: fantasy_points,
+      fantasy_team: fantasy_team,
+      player: player,
+      year: year,
+      week: week,
+      position: position,
+    )
+
+    return new_start
   end
 end
