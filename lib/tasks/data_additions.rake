@@ -56,17 +56,17 @@ namespace :data_additions do
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
 
-      verify_current_week(driver, current_league_url, week)
-      puts "verify_current_week passed"
+      # verify_playoff_week() not written yet
+      puts "verify_playoff_week passed"
       check_owners(driver, current_league_url)
       puts "check_owners passed"
       update_teams(driver, current_league_url, year)
       puts "update_teams passed"
-      get_fantasy_games(driver, current_league_url, year, week)
-      puts "get_fantasy_games passed"
-      find_and_create_unknown_players(driver, current_league_url, week)
-      puts "find_and_create_unknown_players passed"
-      get_fantasy_starts(driver, current_league_url, year, week)
+      get_regular_season_fantasy_games(driver, current_league_url, year, week)
+      puts "get_regular_season_fantasy_games passed"
+      find_and_create_unknown_players_regular(driver, current_league_url, week)
+      puts "find_and_create_unknown_players_regular passed"
+      get_fantasy_starts_regular(driver, current_league_url, year, week)
       puts "get_fantasy_starts passed"
       # mega update of all season_stats for every player in the db
 
@@ -79,21 +79,19 @@ namespace :data_additions do
   task new_playoff_week: :environment do
     begin
       year = 2019
-      week = 14
+      week = 16
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
 
-      # verify_current_week(driver, current_league_url, week)
-      # puts "verify_current_week passed"
       check_owners(driver, current_league_url)
       puts "check_owners passed"
       update_teams(driver, current_league_url, year)
       puts "update_teams passed"
-      get_fantasy_games(driver, current_league_url, year, week)
-      puts "get_fantasy_games passed"
-      find_and_create_unknown_players(driver, current_league_url, week)
-      puts "find_and_create_unknown_players passed"
-      get_fantasy_starts(driver, current_league_url, year, week)
+      get_playoff_fantasy_games(driver, current_league_url, year, week)
+      puts "get_playoff_fantasy_games passed"
+      find_and_create_unknown_players_playoffs(driver, current_league_url, week)
+      puts "find_and_create_unknown_players_playoffs passed"
+      get_fantasy_starts_playoffs(driver, current_league_url, year, week)
       puts "get_fantasy_starts passed"
       # mega update of all season_stats for every player in the db
 
@@ -265,9 +263,17 @@ def verify_current_week(driver, current_league_url, week)
   return nil
 end
 
-def get_fantasy_games(driver, current_league_url, year, week)
-  team_numbers = *(1..12)
+def get_regular_season_fantasy_games(driver, current_league_url, year, week)
+  team_ids = *(1..12)
+  get_fantasy_games(driver, current_league_url, year, week, team_ids)
+end
 
+def get_playoff_fantasy_games(driver, current_league_url, year, week)
+  team_ids = determine_playoff_week_teams(driver, current_league_url, week)
+  get_fantasy_games(driver, current_league_url, year, week, team_ids)
+end
+
+def get_fantasy_games(driver, current_league_url, year, week, team_numbers)
   begin
     ActiveRecord::Base.transaction do
       team_numbers.each do |team_number|
@@ -310,8 +316,18 @@ def get_fantasy_games(driver, current_league_url, year, week)
   end
 end
 
-def find_and_create_unknown_players(driver, current_league_url, week)
-  team_numbers = *(1..12)
+def find_and_create_unknown_players_regular(driver, current_league_url, week)
+  team_ids = *(1..12)
+  find_and_create_unknown_players(driver, current_league_url, week, team_ids)
+end
+
+def find_and_create_unknown_players_playoffs(driver, current_league_url, week)
+  team_ids = determine_playoff_week_teams(driver, current_league_url, week)
+  find_and_create_unknown_players(driver, current_league_url, week, team_ids)
+end
+
+def find_and_create_unknown_players(driver, current_league_url, week, team_numbers)
+  playoff_week_teams = determine_playoff_week_teams(driver, current_league_url, week)
 
   weeks_player_ids = []
 
@@ -378,9 +394,17 @@ def get_birthday_string(doc)
   return doc.css(".player-info").css("p")[3].text.split(" ")[1]
 end
 
-def get_fantasy_starts(driver, current_league_url, year, week)
-  team_numbers = *(1..12)
+def get_fantasy_starts_regular(driver, current_league_url, year, week)
+  team_ids = *(1..12)
+  get_fantasy_starts(driver, current_league_url, year, week, team_ids)
+end
 
+def get_fantasy_starts_playoffs(driver, current_league_url, year, week)
+  team_ids = determine_playoff_week_teams(driver, current_league_url, week)
+  get_fantasy_starts(driver, current_league_url, year, week, team_ids)
+end
+
+def get_fantasy_starts(driver, current_league_url, year, week, team_numbers)
   new_fantasy_starts = []
 
   team_numbers.each do |team_number|
@@ -449,4 +473,33 @@ def get_start_from_row(row, fantasy_team, year, week)
 
     return new_start
   end
+end
+
+def determine_playoff_week_teams(driver, current_league_url, week)
+  playoff_week_team_ids = []
+  driver.navigate.to current_league_url
+  doc = Nokogiri::HTML(driver.page_source)
+  if week == 14
+    pw = ".pw-0"
+    pg = [".pg-1", ".pg-2"]
+  elsif week == 15
+    pw = ".pw-1"
+    pg = [".pg-0", ".pg-1"]
+  elsif week == 16
+    pw = ".pw-2"
+    pg = [".pg-0"]
+  end
+
+  games_blocks = doc.css(pw)
+
+  pg.each do |li|
+    game = games_blocks.css(li)
+    names = game.css(".nameWrap")
+    names.each do |name|
+      id = name.css("a")[0]["href"].split("/").last.to_i
+      playoff_week_team_ids.push(id)
+    end
+  end
+
+  return playoff_week_team_ids
 end
