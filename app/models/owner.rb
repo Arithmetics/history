@@ -78,7 +78,7 @@ class Owner < ApplicationRecord
       end
     end
 
-    points_per_game = (total_points / total_games).round(2)
+    points_per_game = total_games > 0 ? (total_points / total_games).round(2) : 0
 
     total_playoff_points = 0
     total_playoff_games = 0
