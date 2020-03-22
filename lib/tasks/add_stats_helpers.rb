@@ -8,7 +8,7 @@ def player_stat_update()
         all_games = get_all_player_games(player.id)
         all_games = all_games.sort().to_h
         all_games.each do |year, games|
-          if year > 2010
+          if year.to_i > 2010
             found_count = games.length
             db_count = 0
             db_season = player.season_stats.where(year: year).first
