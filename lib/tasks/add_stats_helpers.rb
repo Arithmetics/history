@@ -8,18 +8,20 @@ def player_stat_update()
         all_games = get_all_player_games(player.id)
         all_games = all_games.sort().to_h
         all_games.each do |year, games|
-          found_count = games.length
-          db_count = 0
-          db_season = player.season_stats.where(year: year).first
-          if db_season != nil
-            db_count = db_season.games_played
-          end
-          if db_count != found_count
+          if year > 2010
+            found_count = games.length
+            db_count = 0
+            db_season = player.season_stats.where(year: year).first
             if db_season != nil
-              puts "deleting season for #{db_season.player.name}, year: #{db_season.year}, games played: #{db_season.games_played}"
-              db_season.delete!
+              db_count = db_season.games_played
             end
-            update_season_stats(player, db_season, games)
+            if db_count != found_count
+              if db_season != nil
+                puts "deleting season for #{db_season.player.name}, year: #{db_season.year}, games played: #{db_season.games_played}"
+                db_season.delete!
+              end
+              update_season_stats(player, db_season, games)
+            end
           end
         end
       end
