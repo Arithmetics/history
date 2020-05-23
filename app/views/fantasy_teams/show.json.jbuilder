@@ -28,7 +28,7 @@ json.fantasy_team do
       json.away_team do
         json.extract! game.away_fantasy_team, :id, :name
         json.fantasy_starts do
-          game.home_fantasy_team.fantasy_starts.group_by(&:week).each do |week, starts|
+          game.away_fantasy_team.fantasy_starts.group_by(&:week).each do |week, starts|
             json.set! week do
               json.array! starts.sort_by { |start| order.index(start.position) } do |start|
                 json.extract! start, :id, :week, :position, :points
