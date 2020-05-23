@@ -14,9 +14,29 @@ json.fantasy_team do
       json.extract! game, :id, :away_score, :home_score, :week
       json.home_team do
         json.extract! game.home_fantasy_team, :id, :name
+        json.fantasy_starts do
+          game.home_fantasy_team.fantasy_starts.group_by(&:week).each do |week, starts|
+            json.set! week do
+              json.array! starts.sort_by { |start| order.index(start.position) } do |start|
+                json.extract! start, :id, :week, :position, :points
+                json.player start.player, partial: "players/player", as: :player
+              end
+            end
+          end
+        end
       end
       json.away_team do
         json.extract! game.away_fantasy_team, :id, :name
+        json.fantasy_starts do
+          game.home_fantasy_team.fantasy_starts.group_by(&:week).each do |week, starts|
+            json.set! week do
+              json.array! starts.sort_by { |start| order.index(start.position) } do |start|
+                json.extract! start, :id, :week, :position, :points
+                json.player start.player, partial: "players/player", as: :player
+              end
+            end
+          end
+        end
       end
     end
   end
@@ -29,17 +49,6 @@ json.fantasy_team do
 
       json.player do
         json.extract! purchase.player, :id, :name
-      end
-    end
-  end
-
-  json.fantasy_starts do
-    @fantasy_team.fantasy_starts.group_by(&:week).each do |week, starts|
-      json.set! week do
-        json.array! starts.sort_by { |start| order.index(start.position) } do |start|
-          json.extract! start, :id, :week, :position, :points
-          json.player start.player, partial: "players/player", as: :player
-        end
       end
     end
   end
