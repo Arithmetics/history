@@ -1,33 +1,38 @@
 
 
 def player_stat_update()
+  # begin
+  #   ActiveRecord::Base.transaction do
+  #     Player.all.each do |player|
+  #       puts "INVESTIGATION on #{player.name}"
+  #       all_games = get_all_player_games(player.id)
+  #       all_games = all_games.sort().to_h
+  #       all_games.each do |year, games|
+  #         if year.to_i > 2010
+  #           found_count = games.length
+  #           db_count = 0
+  #           db_season = player.season_stats.where(year: year).first
+  #           if db_season != nil
+  #             db_count = db_season.games_played
+  #           end
+  #           if db_count != found_count
+  #             if db_season != nil
+  #               puts "deleting season for #{db_season.player.name}, year: #{db_season.year}, games played: #{db_season.games_played}"
+  #               db_season.delete!
+  #             end
+  #             update_season_stats(player, db_season, games)
+  #           end
+  #         end
+  #       end
+  #     end
+  #   end
+  # end
   begin
     ActiveRecord::Base.transaction do
-      Player.all.each do |player|
-        puts "INVESTIGATION on #{player.name}"
-        all_games = get_all_player_games(player.id)
-        all_games = all_games.sort().to_h
-        all_games.each do |year, games|
-          if year.to_i > 2010
-            found_count = games.length
-            db_count = 0
-            db_season = player.season_stats.where(year: year).first
-            if db_season != nil
-              db_count = db_season.games_played
-            end
-            if db_count != found_count
-              if db_season != nil
-                puts "deleting season for #{db_season.player.name}, year: #{db_season.year}, games played: #{db_season.games_played}"
-                db_season.delete!
-              end
-              update_season_stats(player, db_season, games)
-            end
-          end
-        end
-      end
-      finish_season_stats()
+  finish_season_stats()
     end
   end
+
 end
 
 def update_season_stats(player, db_season, years_games)
@@ -272,8 +277,8 @@ def finish_season_stats()
     current += 1
     stat.fantasy_points_reg = stat.calculate_season_fantasy_points
     stat.fantasy_points_ppr = stat.calculate_season_fantasy_points_ppr
-    stat.rank_reg = SeasonStat.where("fantasy_points_reg >= ? AND year = ? AND position = ?", stat.fantasy_points_reg, stat.year, stat.position).count + 1
-    stat.rank_ppr = SeasonStat.where("fantasy_points_ppr >= ? AND year = ? AND position = ?", stat.fantasy_points_ppr, stat.year, stat.position).count + 1
+    stat.rank_reg = SeasonStat.where("fantasy_points_reg >= ? AND year = ? AND position = ?", stat.fantasy_points_reg, stat.year, stat.position).count
+    stat.rank_ppr = SeasonStat.where("fantasy_points_ppr >= ? AND year = ? AND position = ?", stat.fantasy_points_ppr, stat.year, stat.position).count
     stat.experience_at_season = SeasonStat.where("player_id = ? AND year <= ?", stat.player.id, stat.year).count
     puts "#{current}/#{total_count}"
     stat.save!
