@@ -99,4 +99,29 @@ class Player < ApplicationRecord
     end
     return id_matches
   end
+
+  def self.update_all_season_stats
+    Player.all.each do |player|
+      puts "INVESTIGATION on #{player.name}"
+
+      player_url = "https://www.nfl.com/players/#{player.nfl_URL_name}/stats/"
+      all_player_seasons = SeasonStat.get_season_stats_from_player_page(player_url)
+
+      all_player_seasons.each do |year, season|
+        found_count = season.games_played
+        db_count = 0
+        existing_db_season = player.season_stats.where(year: year).first
+        if db_season != nil
+          db_count = db_season.games_played
+        end
+        if db_count != found_count
+          if db_season != nil
+            puts "deleting season for #{db_season.player.name}, year: #{db_season.year}, games played: #{db_season.games_played}"
+            db_season.delete!
+          end
+          season.save!
+        end
+      end
+    end
+  end
 end

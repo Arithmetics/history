@@ -220,8 +220,6 @@ def find_and_create_unknown_players_playoffs(driver, current_league_url, week)
 end
 
 def find_and_create_unknown_players(driver, current_league_url, week, team_numbers)
-  playoff_week_teams = determine_playoff_week_teams(driver, current_league_url, week)
-
   weeks_player_ids = []
 
   team_numbers.each do |team_number|
