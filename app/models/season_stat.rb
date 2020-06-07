@@ -86,17 +86,37 @@ class SeasonStat < ApplicationRecord
     return season_stats
   end
 
-  def self.finish_all
+  def self.set_all_season_points
     total_count = SeasonStat.all.count()
-    current = 1
+    current = 0
     SeasonStat.all.each do |stat|
       current += 1
       stat.fantasy_points_reg = stat.calculate_season_fantasy_points
       stat.fantasy_points_ppr = stat.calculate_season_fantasy_points_ppr
+      puts "#{current}/#{total_count} setting season points"
+      stat.save!
+    end
+  end
+
+  def self.set_all_experience
+    total_count = SeasonStat.all.count()
+    current = 0
+    SeasonStat.all.each do |stat|
+      current += 1
+      stat.experience_at_season = SeasonStat.where("player_id = ? AND year <= ?", stat.player.id, stat.year).count
+      puts "#{current}/#{total_count} setting experience"
+      stat.save!
+    end
+  end
+
+  def self.set_all_ranks
+    total_count = SeasonStat.all.count()
+    current = 0
+    SeasonStat.all.each do |stat|
+      current += 1
       stat.rank_reg = SeasonStat.where("fantasy_points_reg >= ? AND year = ? AND position = ?", stat.fantasy_points_reg, stat.year, stat.position).count
       stat.rank_ppr = SeasonStat.where("fantasy_points_ppr >= ? AND year = ? AND position = ?", stat.fantasy_points_ppr, stat.year, stat.position).count
-      stat.experience_at_season = SeasonStat.where("player_id = ? AND year <= ?", stat.player.id, stat.year).count
-      puts "#{current}/#{total_count}"
+      puts "#{current}/#{total_count} settings ranks"
       stat.save!
     end
   end

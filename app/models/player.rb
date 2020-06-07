@@ -130,6 +130,9 @@ class Player < ApplicationRecord
               existing_db_season.delete
             end
             nfl_season.player = player
+            season_start = Date.parse("#{nfl_season.year}-09-01")
+            birthdate = player.birthdate
+            nfl_season.age_at_season = ((season_start - birthdate) / 365).to_f.round(2)
             puts "adding new season for #{nfl_season.player.name}, year: #{nfl_season.year}, games played: #{nfl_season.games_played}"
             nfl_season.save!
           end

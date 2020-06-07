@@ -23,6 +23,7 @@ class AddDefaultNflUrls < ActiveRecord::Migration[6.0]
                      { id: 2501016, url: "jason-hanson-2" },
                      { id: 2508112, url: "rob-housler" },
                      { id: 2562685, url: "d-k-metcalf" },
+                     { id: 2560955, url: "josh-allen-4" },
                      { id: 100001, url: "" }, #defense
                      { id: 100002, url: "" }, #defense
                      { id: 100003, url: "" }, #defense
