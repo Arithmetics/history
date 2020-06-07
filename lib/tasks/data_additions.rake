@@ -1,5 +1,4 @@
 require_relative "addition_helpers"
-require_relative "add_stats_helpers"
 
 ### NEW SEASON ###
 
@@ -53,8 +52,8 @@ namespace :data_additions do
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
 
-      # verify_playoff_week() not written yet
-      puts "verify_playoff_week passed"
+      verify_current_week(driver, current_league_url, week)
+      puts "verify_current_week passed"
       check_owners(driver, current_league_url)
       puts "check_owners passed"
       update_teams(driver, current_league_url, year)
@@ -110,7 +109,16 @@ namespace :data_additions do
   desc "mega stat update"
   task stat_update: :environment do
     begin
-      player_stat_update()
+      begin
+        ActiveRecord::Base.transaction do
+          Player.update_all_season_stats
+        end
+      end
+      begin
+        ActiveRecord::Base.transaction do
+          SeasonStat.finish_all
+        end
+      end
     rescue
       raise "error updating player stats"
     end

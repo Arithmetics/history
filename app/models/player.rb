@@ -101,25 +101,38 @@ class Player < ApplicationRecord
   end
 
   def self.update_all_season_stats
+    i = 0
     Player.all.each do |player|
-      puts "INVESTIGATION on #{player.name}"
+      i += 1
+      if player.nfl_URL_name != nil
+        puts "#{i} INVESTIGATION on #{player.name}"
 
-      player_url = "https://www.nfl.com/players/#{player.nfl_URL_name}/stats/"
-      all_player_seasons = SeasonStat.get_season_stats_from_player_page(player_url)
+        player_url = "https://www.nfl.com/players/#{player.nfl_URL_name.squish}/stats/"
+        all_player_seasons = SeasonStat.get_season_stats_from_player_page(player_url)
 
-      all_player_seasons.each do |year, season|
-        found_count = season.games_played
-        db_count = 0
-        existing_db_season = player.season_stats.where(year: year).first
-        if db_season != nil
-          db_count = db_season.games_played
-        end
-        if db_count != found_count
-          if db_season != nil
-            puts "deleting season for #{db_season.player.name}, year: #{db_season.year}, games played: #{db_season.games_played}"
-            db_season.delete!
+        all_player_seasons.each do |year, nfl_season|
+          found_count = nfl_season.games_played
+          db_count = 0
+          existing_db_season = player.season_stats.where(year: year).first
+          if existing_db_season != nil
+            db_count = existing_db_season.games_played
           end
-          season.save!
+          if db_count != found_count && nfl_season.position != "K" && nfl_season.games_played != nil
+            if existing_db_season != nil
+              puts "deleting season for #{existing_db_season.player.name}, year: #{existing_db_season.year}, games played: #{existing_db_season.games_played}"
+              puts "XXX"
+              puts "XXX"
+              puts "XXX"
+              puts "ALERT!!!"
+              puts "XXX"
+              puts "XXX"
+              puts "XXX"
+              existing_db_season.delete
+            end
+            nfl_season.player = player
+            puts "adding new season for #{nfl_season.player.name}, year: #{nfl_season.year}, games played: #{nfl_season.games_played}"
+            nfl_season.save!
+          end
         end
       end
     end

@@ -3,6 +3,23 @@ require "open-uri"
 
 class SeasonStat < ApplicationRecord
   belongs_to :player
+  before_save :set_default_values
+  validates :games_played, numericality: { greater_than: 0 }
+
+  def set_default_values
+    self.passing_completions = 0 if self.passing_completions.nil?
+    self.passing_attempts = 0 if self.passing_attempts.nil?
+    self.passing_yards = 0 if self.passing_yards.nil?
+    self.passing_touchdowns = 0 if self.passing_touchdowns.nil?
+    self.interceptions = 0 if self.interceptions.nil?
+    self.rushing_attempts = 0 if self.rushing_attempts.nil?
+    self.rushing_yards = 0 if self.rushing_yards.nil?
+    self.rushing_touchdowns = 0 if self.rushing_touchdowns.nil?
+    self.receiving_yards = 0 if self.receiving_yards.nil?
+    self.receptions = 0 if self.receptions.nil?
+    self.receiving_touchdowns = 0 if self.receiving_touchdowns.nil?
+    self.fumbles_lost = 0 if self.fumbles_lost.nil?
+  end
 
   def calculate_season_fantasy_points
     passing_points = (self.passing_yards / 25.0) + (self.passing_touchdowns * 4.0)
@@ -40,7 +57,9 @@ class SeasonStat < ApplicationRecord
         year = cells[0].text.squish.downcase
         if season_stats[year] == nil
           season_stats[year] = SeasonStat.new()
+          season_stats[year].year = year
         end
+        season_stats[year].position = position
         if stat_type == "passing"
           season_stats[year].games_played = cells[2].text
           season_stats[year].passing_completions = cells[3].text
