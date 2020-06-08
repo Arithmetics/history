@@ -79,7 +79,7 @@ class SeasonStat < ApplicationRecord
           season_stats[year].receiving_touchdowns = cells[7].text
         elsif stat_type == "fumbles"
           season_stats[year].games_played = cells[2].text
-          season_stats[year].fumbles_lost = cells[3].text
+          season_stats[year].fumbles_lost = cells[4].text
         end
       end
     end

@@ -104,7 +104,7 @@ class Player < ApplicationRecord
     i = 0
     Player.all.each do |player|
       i += 1
-      if player.nfl_URL_name != nil
+      if player.nfl_URL_name != nil && player.nfl_URL_name != ""
         puts "#{i} INVESTIGATION on #{player.name}"
 
         player_url = "https://www.nfl.com/players/#{player.nfl_URL_name.squish}/stats/"
