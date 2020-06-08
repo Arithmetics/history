@@ -20,27 +20,6 @@ def driver_start(current_league_url)
   return driver
 end
 
-def check_owners(driver, current_league_url)
-  driver.navigate.to "#{current_league_url}/owners"
-
-  doc = Nokogiri::HTML(driver.page_source)
-  page_owners = doc.css(".userName")
-  owner_count = 0
-  page_owners.each do |owner|
-    x = Owner.find_by_name(owner.text)
-    puts "Found #{x.name}"
-    if x != nil
-      owner_count += 1
-    end
-  end
-
-  if owner_count != 12
-    raise "Not enough matching owners!, stopping task"
-  end
-
-  puts "Owners look good.... proceeding..."
-end
-
 def insert_new_teams(driver, current_league_url, year)
   team_map = get_current_teams(driver, current_league_url)
   begin
@@ -112,28 +91,6 @@ def insert_auction(year)
   puts "Auction for #{year} inserted... proceeding..."
 end
 
-def get_potential_ids(year)
-  final_file = "#{Rails.root}/lib/assets/#{year}_final_auction.csv"
-  CSV.open(final_file, "w+") do |writer|
-    raw_file = "#{year}_raw_auction"
-    CSV.foreach("#{Rails.root}/lib/assets/#{raw_file}.csv", :headers => true) do |row|
-      owner_name = row["owner_name"]
-      price = row["price"]
-      player_name = row["player_name"]
-      position = row["position"]
-
-      potential_id_matches = Player.find_name_match((year - 1), player_name)
-      message = "TooMany:#{potential_id_matches.join(":")}"
-      if potential_id_matches.length == 0
-        message = "NotFound"
-      elsif potential_id_matches.length == 1
-        message = potential_id_matches[0]
-      end
-      writer << ["owner_name", "price", "position", "player_name", "player_id"]
-      writer << [owner_name, price, position, player_name, message]
-    end
-  end
-end
 
 def verify_current_week(driver, current_league_url, week)
   if week < 1 || week > 13

@@ -1,3 +1,6 @@
+require "nokogiri"
+require "open-uri"
+
 class Owner < ApplicationRecord
   validates_uniqueness_of :name
   validates :name, presence: true
@@ -8,8 +11,29 @@ class Owner < ApplicationRecord
 
   has_many :purchases, through: :fantasy_teams
 
+  def changed_on_web?(driver, current_league_url)
+    driver.navigate.to "#{current_league_url}/owners"
+
+    doc = Nokogiri::HTML(driver.page_source)
+    page_owners = doc.css(".userName")
+    owner_count = 0
+    page_owners.each do |owner|
+      x = Owner.find_by_name(owner.text)
+      puts "Found #{x.name}"
+      if x != nil
+        owner_count += 1
+      end
+    end
+
+    if owner_count != 12
+      return true
+    end
+
+    return false
+  end
+
   def versus_records
-    all_games_edit = []
+    all_games_edit = [].push()
     @away_fantasy_games = self.away_fantasy_games
     @home_fantasy_games = self.home_fantasy_games
     @away_fantasy_games.each do |game|

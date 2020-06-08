@@ -4,11 +4,11 @@ require_relative "addition_helpers"
 
 # 1. create /lib/assets/year_raw_auction.csv based on the auction
 
-# 2. run get_potential_ids to get final auction file
+# 2. run task get_auction_ids to create final auction file
 
 # 3. check file for any unmatched or double matches players, and fix all the error rows
 
-# 4. create /lib/assets/year_new_players.csv based on the auction rookies and new drafts that were unmatched
+# 4. create /lib/assets/year_new_players.csv based on the auction rookies and new draftees that were unmatched
 
 # 5. run season_start
 
@@ -21,6 +21,16 @@ require_relative "addition_helpers"
 # 1. run new_playoff_week
 
 namespace :data_additions do
+  desc "potential player id matches for auction"
+  task get_auction_ids: :environment do
+    begin
+      year = 2019
+      Purchase.convert_raw_to_final(year)
+    rescue
+      raise "error getting id matches"
+    end
+  end
+
   desc "start up season"
   task season_start: :environment do
     begin
@@ -28,8 +38,11 @@ namespace :data_additions do
       year = 2019
       driver = driver_start(current_league_url)
 
-      check_owners(driver, current_league_url)
+      if Owner.changed_on_web?(driver, current_league_url)
+        raise "Detected a new owner!"
+      end
       puts "check_owners passed"
+
       insert_new_teams(driver, current_league_url, year)
       "insert_new_teams passed"
       insert_new_players(year)
@@ -93,16 +106,6 @@ namespace :data_additions do
 
     rescue
       raise "error adding a new league week"
-    end
-  end
-
-  desc "potential player id matches for auction"
-  task get_auction_ids: :environment do
-    begin
-      year = 2019
-      get_potential_ids(year)
-    rescue
-      raise "error getting id matches"
     end
   end
 
