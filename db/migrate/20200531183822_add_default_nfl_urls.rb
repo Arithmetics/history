@@ -58,10 +58,10 @@ class AddDefaultNflUrls < ActiveRecord::Migration[6.0]
                      { id: 100032, url: "" } #defense
 ]
 
-    special_edits.each do |id, url|
-      x = Player.find(id)
-      x.nfl_URL_name = url
-      s.save!
+    special_edits.each do |edit|
+      x = Player.find(edit[:id])
+      x.nfl_URL_name = edit[:url]
+      x.save!
     end
   end
 
