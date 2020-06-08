@@ -109,11 +109,11 @@ namespace :data_additions do
   desc "mega stat update"
   task stat_update: :environment do
     begin
-      # begin
-      #   ActiveRecord::Base.transaction do
-      #     Player.update_all_season_stats
-      #   end
-      # end
+      begin
+        ActiveRecord::Base.transaction do
+          Player.update_all_season_stats
+        end
+      end
       begin
         ActiveRecord::Base.transaction do
           SeasonStat.set_all_season_points
