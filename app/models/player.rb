@@ -73,7 +73,7 @@ class Player < ApplicationRecord
     return career_stats
   end
 
-  def self.insert_new_players(filepath)
+  def self.insert_new_players_from_file(filepath)
     ActiveRecord::Base.transaction do
       CSV.foreach(filepath, :headers => true) do |row|
         owner_name = row["owner_name"]

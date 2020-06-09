@@ -120,5 +120,11 @@ class SeasonStat < ApplicationRecord
       stat.save!
     end
   end
+
+  def self.calculate_all_dependent_columns
+    self.set_all_season_points
+    self.set_all_experience
+    self.set_all_ranks
+  end
   ###
 end

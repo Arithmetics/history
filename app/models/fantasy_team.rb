@@ -1,3 +1,5 @@
+require "nokogiri"
+
 class FantasyTeam < ApplicationRecord
   belongs_to :owner
   has_many :fantasy_starts
@@ -8,7 +10,63 @@ class FantasyTeam < ApplicationRecord
   validates :name, presence: true
   validates :year, presence: true
   validates :owner, uniqueness: { scope: :year,
-    message: "only one team per owner per year" }
+                                  message: "only one team per owner per year" }
+
+  def self.get_current_website_team_owners_and_names(driver, current_league_url)
+    driver.navigate.to "#{current_league_url}/owners"
+
+    doc = Nokogiri::HTML(driver.page_source)
+    owner_table = doc.css("#leagueOwners")
+    rows = owner_table.css("tbody").css("tr")
+    team_map = {}
+    rows.each do |row|
+      owner = row.css(".userName").text
+      team = row.css(".teamName").text
+      team_map[owner] = team
+    end
+    return team_map
+  end
+
+  def self.create_all_teams_on_web(driver, current_league_url, year)
+    team_map = self.get_current_website_team_owners_and_names(driver, current_league_url)
+    begin
+      ActiveRecord::Base.transaction do
+        team_map.each do |k, v|
+          owner = Owner.find_by_name(k)
+          if owner == nil
+            raise "Missing owner: #{k}!"
+          end
+          puts "Creating new team: #{v} for owner #{owner.name}"
+          self.create!(owner: owner, year: year, name: v)
+        end
+      end
+      puts "New teams inserted"
+    end
+  end
+
+  def self.update_team_names_from_web(driver, current_league_url, year)
+    team_map = self.get_current_website_team_owners_and_names(driver, current_league_url)
+    begin
+      ActiveRecord::Base.transaction do
+        team_map.each do |k, v|
+          owner = Owner.find_by_name(k)
+          if owner == nil
+            raise "Missing owner: #{k}!"
+          end
+          fantasy_team = FantasyTeam.find_by(year: year, name: v)
+          if fantasy_team == nil
+            fantasy_team = FantasyTeam.find_by(year: year, owner: owner)
+            if fantasy_team == nil
+              raise "Missing fantasy team: year: #{year}, owner: #{owner.name}"
+            end
+            puts "Team: #{fantasy_team.name} is getting a new name: #{v}"
+            fantasy_team.update!(name: v)
+          end
+        end
+      end
+    end
+    puts "Team name updates complete..."
+  end
 
   def won_game?(week)
     away_fantasy_game = self.away_fantasy_games.where(week: week).first
