@@ -1,3 +1,5 @@
+require "nokogiri"
+
 class Player < ApplicationRecord
   has_many :fantasy_starts
   has_many :purchases
@@ -140,4 +142,82 @@ class Player < ApplicationRecord
       end
     end
   end
+
+  def self.find_and_create_unknown_players_regular(driver, current_league_url, week)
+    team_ids = *(1..12)
+    self.find_and_create_unknown_players(driver, current_league_url, week, team_ids)
+  end
+
+  def find_and_create_unknown_players_playoffs(driver, current_league_url, week)
+    team_ids = FantasyGame.determine_playoff_week_teams(driver, current_league_url, week)
+    self.find_and_create_unknown_players(driver, current_league_url, week, team_ids)
+  end
+
+  def self.find_and_create_unknown_players(driver, current_league_url, week, team_numbers)
+    weeks_player_ids = []
+
+    team_numbers.each do |team_number|
+      driver.navigate.to "#{current_league_url}/team/#{team_number}/gamecenter?gameCenterTab=track&trackType=sbs&week=#{week}"
+      sleep(2)
+      doc = Nokogiri::HTML(driver.page_source)
+      box = doc.css("#teamMatchupBoxScore")
+      left_roster = box.css(".teamWrap-1")
+      all_player_links = left_roster.css(".playerNameFirstInitialLastName").css("a")
+
+      all_player_links.each do |link|
+        href = link["href"]
+        id = href.split("=").last
+        weeks_player_ids.push(id)
+      end
+    end
+
+    unknown_ids = []
+
+    weeks_player_ids.each do |id|
+      player = Player.find_by(id: id)
+      if player == nil
+        unknown_ids.push(id)
+      end
+    end
+
+    new_players = []
+
+    unknown_ids.each do |id|
+      new_players.push(self.scrape_unknown_player(driver, id))
+    end
+
+    begin
+      ActiveRecord::Base.transaction do
+        new_players.each do |player|
+          puts "Saving new player: #{player.name}"
+          player.save!
+        end
+      end
+
+      puts "All new players were inserted... proceeding..."
+    end
+  end
+
+  ## needs to be updated, will need to see how this will be navigatable to
+  def self.scrape_unknown_player(driver, id)
+    driver.navigate.to "http://www.nfl.com/player/mattryan/#{id}/profile"
+    doc = Nokogiri::HTML(driver.page_source)
+    new_player = Player.new
+    new_player.id = id
+    new_player.name = doc.css(".player-name").text.strip
+    birthdate_string = self.get_birthday_string(doc)
+    new_player.birthdate = Date.strptime(birthdate_string, "%m/%d/%Y")
+    new_player.picture_id = doc.css(".player-photo").css("img")[0]["src"].split("/").last.gsub(".png", "")
+
+    return new_player
+  end
+
+  def self.get_birthday_string(doc)
+    all_p = doc.css(".player-info").css("p")
+    if all_p.length == 5
+      return doc.css(".player-info").css("p")[2].text.split(" ")[1]
+    end
+    return doc.css(".player-info").css("p")[3].text.split(" ")[1]
+  end
+  ##
 end

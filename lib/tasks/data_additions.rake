@@ -76,16 +76,23 @@ namespace :data_additions do
 
       verify_current_week(driver, current_league_url, week)
       puts "verify_current_week passed"
-      check_owners(driver, current_league_url)
+      if Owner.changed_on_web?(driver, current_league_url)
+        raise "Detected a new owner!"
+      end
       puts "check_owners passed"
+
       FantasyTeam.update_team_names_from_web(driver, current_league_url, year)
       puts "update_teams passed"
-      get_regular_season_fantasy_games(driver, current_league_url, year, week)
+
+      FantasyGame.get_regular_season_fantasy_games(driver, current_league_url, year, week)
       puts "get_regular_season_fantasy_games passed"
-      find_and_create_unknown_players_regular(driver, current_league_url, week)
+
+      Player.find_and_create_unknown_players_regular(driver, current_league_url, week)
       puts "find_and_create_unknown_players_regular passed"
+
       get_fantasy_starts_regular(driver, current_league_url, year, week)
       puts "get_fantasy_starts passed"
+
       begin
         ActiveRecord::Base.transaction do
           Player.update_all_season_stats
@@ -109,17 +116,23 @@ namespace :data_additions do
       week = 16
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
-
-      check_owners(driver, current_league_url)
+      if Owner.changed_on_web?(driver, current_league_url)
+        raise "Detected a new owner!"
+      end
       puts "check_owners passed"
-      update_teams(driver, current_league_url, year)
+
+      FantasyTeam.update_team_names_from_web(driver, current_league_url, year)
       puts "update_teams passed"
-      get_playoff_fantasy_games(driver, current_league_url, year, week)
+
+      FantasyGame.get_playoff_fantasy_games(driver, current_league_url, year, week)
       puts "get_playoff_fantasy_games passed"
+
       find_and_create_unknown_players_playoffs(driver, current_league_url, week)
       puts "find_and_create_unknown_players_playoffs passed"
+
       get_fantasy_starts_playoffs(driver, current_league_url, year, week)
       puts "get_fantasy_starts passed"
+
       begin
         ActiveRecord::Base.transaction do
           Player.update_all_season_stats

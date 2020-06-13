@@ -5,6 +5,7 @@ class SeasonStat < ApplicationRecord
   belongs_to :player
   before_save :set_default_values
   validates :games_played, numericality: { greater_than: 0 }
+  validates :position, presence: true, inclusion: { in: %w{QB RB WR TE} }
 
   def set_default_values
     self.passing_completions = 0 if self.passing_completions.nil?
@@ -23,13 +24,9 @@ class SeasonStat < ApplicationRecord
 
   def calculate_season_fantasy_points
     passing_points = (self.passing_yards / 25.0) + (self.passing_touchdowns * 4.0)
-    # puts passing_points
     rushing_points = (self.rushing_yards / 10.0) + (self.rushing_touchdowns * 6.0)
-    # puts rushing_points
     receiving_points = (self.receiving_yards / 10.0) + (self.receiving_touchdowns * 6.0)
-    # puts receiving_points
     negative_points = (self.fumbles_lost * 2.0 + self.interceptions * 2.0)
-    # puts negative_points
     total_points = passing_points + rushing_points + receiving_points - negative_points
 
     return total_points.round(2)
