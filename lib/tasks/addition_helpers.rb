@@ -38,5 +38,5 @@ def verify_current_week(driver, current_league_url, week)
   if weeks_played != (week - 1)
     throw("Something may be wrong with your set week, please check or override verify_current_week \n weeks played: #{weeks_played}, set week #{week}")
   end
-  return nil
+  puts "verify_current_week passed"
 end

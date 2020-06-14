@@ -9,6 +9,7 @@ class FantasyGame < ApplicationRecord
   def self.get_regular_season_fantasy_games(driver, current_league_url, year, week)
     team_ids = *(1..12)
     self.get_fantasy_games(driver, current_league_url, year, week, team_ids)
+    puts "get_regular_season_fantasy_games passed"
   end
 
   def self.get_playoff_fantasy_games(driver, current_league_url, year, week)

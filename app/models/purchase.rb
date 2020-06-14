@@ -26,6 +26,7 @@ class Purchase < ApplicationRecord
         purchase.save!
       end
     end
+    puts "insert_auction passed..."
   end
 
   def self.convert_raw_to_final(year)

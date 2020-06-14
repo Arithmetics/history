@@ -12,6 +12,7 @@ class FantasyStart < ApplicationRecord
   def self.get_starts_from_web_regular(driver, current_league_url, year, week)
     team_ids = *(1..12)
     self.get_fantasy_starts(driver, current_league_url, year, week, team_ids)
+    puts "get_starts_from_web_regular passed"
   end
 
   def self.get_starts_from_web_playoffs(driver, current_league_url, year, week)

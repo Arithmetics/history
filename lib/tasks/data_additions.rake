@@ -37,30 +37,13 @@ namespace :data_additions do
       current_league_url = "https://fantasy.nfl.com/league/400302"
       year = 2019
       driver = driver_start(current_league_url)
-
-      if Owner.changed_on_web?(driver, current_league_url)
-        raise "Detected a new owner!"
-      end
-      puts "check_owners passed"
+      Owner.check_if_changed_on_web(driver, current_league_url)
       FantasyTeam.create_all_teams_on_web(driver, current_league_url, year)
-      "insert_new_teams passed"
       Player.insert_new_players_from_file("#{Rails.root}/lib/assets/#{year}_new_players.csv")
-      puts "New players inserted for #{year}... proceeding..."
-
       Purchase.insert_auction("#{Rails.root}/lib/assets/#{year}_final_auction.csv", year)
-      puts "Auction for #{year} inserted... proceeding..."
-      begin
-        ActiveRecord::Base.transaction do
-          Player.update_all_season_stats
-        end
-      end
-      begin
-        ActiveRecord::Base.transaction do
-          SeasonStat.calculate_all_dependent_columns
-        end
-      end
-      puts "All Season Stats updated..."
-      "season has begun!"
+      Player.update_all_season_stats
+      SeasonStat.calculate_all_dependent_columns
+      puts "season has begun!"
     rescue
       raise "error executing data gathering tasks"
     end
@@ -73,37 +56,14 @@ namespace :data_additions do
       week = 13
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
-
       verify_current_week(driver, current_league_url, week)
-      puts "verify_current_week passed"
-      if Owner.changed_on_web?(driver, current_league_url)
-        raise "Detected a new owner!"
-      end
-      puts "check_owners passed"
-
+      Owner.check_if_changed_on_web(driver, current_league_url)
       FantasyTeam.update_team_names_from_web(driver, current_league_url, year)
-      puts "update_teams passed"
-
       FantasyGame.get_regular_season_fantasy_games(driver, current_league_url, year, week)
-      puts "get_regular_season_fantasy_games passed"
-
       Player.find_and_create_unknown_players_regular(driver, current_league_url, week)
-      puts "find_and_create_unknown_players_regular passed"
-
       FantasyStart.get_starts_from_web_regular(driver, current_league_url, year, week)
-      puts "get_fantasy_starts passed"
-
-      begin
-        ActiveRecord::Base.transaction do
-          Player.update_all_season_stats
-        end
-      end
-      begin
-        ActiveRecord::Base.transaction do
-          SeasonStat.calculate_all_dependent_columns
-        end
-      end
-      puts "All Season Stats updated..."
+      Player.update_all_season_stats
+      SeasonStat.calculate_all_dependent_columns
     rescue
       raise "error adding a new league week"
     end
@@ -116,34 +76,13 @@ namespace :data_additions do
       week = 16
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
-      if Owner.changed_on_web?(driver, current_league_url)
-        raise "Detected a new owner!"
-      end
-      puts "check_owners passed"
-
+      Owner.check_if_changed_on_web(driver, current_league_url)
       FantasyTeam.update_team_names_from_web(driver, current_league_url, year)
-      puts "update_teams passed"
-
       FantasyGame.get_playoff_fantasy_games(driver, current_league_url, year, week)
-      puts "get_playoff_fantasy_games passed"
-
       Player.find_and_create_unknown_players_playoffs(driver, current_league_url, week)
-      puts "find_and_create_unknown_players_playoffs passed"
-
       FantasyStart.get_starts_from_web_playoffs(driver, current_league_url, year, week)
-      puts "get_fantasy_starts passed"
-
-      begin
-        ActiveRecord::Base.transaction do
-          Player.update_all_season_stats
-        end
-      end
-      begin
-        ActiveRecord::Base.transaction do
-          SeasonStat.calculate_all_dependent_columns
-        end
-      end
-      puts "All Season Stats updated..."
+      Player.update_all_season_stats
+      SeasonStat.calculate_all_dependent_columns
     rescue
       raise "error adding a new league week"
     end
@@ -152,16 +91,8 @@ namespace :data_additions do
   desc "mega stat update"
   task stat_update: :environment do
     begin
-      begin
-        ActiveRecord::Base.transaction do
-          Player.update_all_season_stats
-        end
-      end
-      begin
-        ActiveRecord::Base.transaction do
-          SeasonStat.calculate_all_dependent_columns
-        end
-      end
+      Player.update_all_season_stats
+      SeasonStat.calculate_all_dependent_columns
     rescue
       raise "error updating player stats"
     end

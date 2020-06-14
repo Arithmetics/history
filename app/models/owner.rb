@@ -26,10 +26,10 @@ class Owner < ApplicationRecord
     end
 
     if owner_count != 12
-      return true
+      raise "Detected a new owner!"
     end
 
-    return false
+    puts "check_owners passed"
   end
 
   def versus_records

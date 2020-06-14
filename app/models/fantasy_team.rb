@@ -40,8 +40,8 @@ class FantasyTeam < ApplicationRecord
           self.create!(owner: owner, year: year, name: v)
         end
       end
-      puts "New teams inserted"
     end
+    puts "create_all_teams_on_web passed"
   end
 
   def self.update_team_names_from_web(driver, current_league_url, year)
@@ -65,7 +65,7 @@ class FantasyTeam < ApplicationRecord
         end
       end
     end
-    puts "Team name updates complete..."
+    puts "update_team_names_from_web passed"
   end
 
   def won_game?(week)

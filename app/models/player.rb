@@ -83,12 +83,14 @@ class Player < ApplicationRecord
         player_id = row["profile_id"].to_i
         birthdate = Date.strptime(row["birthdate"], "%m/%d/%Y")
         picture_id = row["picture_id"]
+        nfl_url_name = row["nfl_url_name"]
 
-        player = Player.new(name: player_name, id: player_id, birthdate: birthdate, picture_id: picture_id)
+        player = Player.new(name: player_name, id: player_id, birthdate: birthdate, picture_id: picture_id, nfl_url_name: nfl_url_name)
         puts "New player created: #{player.name}"
         player.save!
       end
     end
+    puts "insert_new_players_from_file passed"
   end
 
   def self.find_name_match(year, name)
@@ -103,49 +105,49 @@ class Player < ApplicationRecord
   end
 
   def self.update_all_season_stats
-    i = 0
-    Player.all.each do |player|
-      i += 1
-      if player.nfl_URL_name != nil && player.nfl_URL_name != ""
-        puts "#{i} INVESTIGATION on #{player.name}"
+    begin
+      ActiveRecord::Base.transaction do
+        i = 0
+        Player.all.each do |player|
+          i += 1
+          if player.nfl_URL_name != nil && player.nfl_URL_name != ""
+            puts "#{i} INVESTIGATION on #{player.name}"
 
-        player_url = "https://www.nfl.com/players/#{player.nfl_URL_name.squish}/stats/"
-        all_player_seasons = SeasonStat.get_season_stats_from_player_page(player_url)
+            player_url = "https://www.nfl.com/players/#{player.nfl_URL_name.squish}/stats/"
+            all_player_seasons = SeasonStat.get_season_stats_from_player_page(player_url)
 
-        all_player_seasons.each do |year, nfl_season|
-          found_count = nfl_season.games_played
-          db_count = 0
-          existing_db_season = player.season_stats.where(year: year).first
-          if existing_db_season != nil
-            db_count = existing_db_season.games_played
-          end
-          if db_count != found_count && nfl_season.position != "K" && nfl_season.games_played != nil
-            if existing_db_season != nil
-              puts "deleting season for #{existing_db_season.player.name}, year: #{existing_db_season.year}, games played: #{existing_db_season.games_played}"
-              puts "XXX"
-              puts "XXX"
-              puts "XXX"
-              puts "ALERT!!!"
-              puts "XXX"
-              puts "XXX"
-              puts "XXX"
-              existing_db_season.delete
+            all_player_seasons.each do |year, nfl_season|
+              found_count = nfl_season.games_played
+              db_count = 0
+              existing_db_season = player.season_stats.where(year: year).first
+              if existing_db_season != nil
+                db_count = existing_db_season.games_played
+              end
+              if db_count != found_count && nfl_season.position != "K" && nfl_season.games_played != nil
+                if existing_db_season != nil
+                  puts "deleting season for #{existing_db_season.player.name}, year: #{existing_db_season.year}, games played: #{existing_db_season.games_played}"
+                  puts "ALERT!!! Deleted a season"
+                  existing_db_season.delete
+                end
+                nfl_season.player = player
+                season_start = Date.parse("#{nfl_season.year}-09-01")
+                birthdate = player.birthdate
+                nfl_season.age_at_season = ((season_start - birthdate) / 365).to_f.round(2)
+                puts "adding new season for #{nfl_season.player.name}, year: #{nfl_season.year}, games played: #{nfl_season.games_played}"
+                nfl_season.save!
+              end
             end
-            nfl_season.player = player
-            season_start = Date.parse("#{nfl_season.year}-09-01")
-            birthdate = player.birthdate
-            nfl_season.age_at_season = ((season_start - birthdate) / 365).to_f.round(2)
-            puts "adding new season for #{nfl_season.player.name}, year: #{nfl_season.year}, games played: #{nfl_season.games_played}"
-            nfl_season.save!
           end
         end
       end
     end
+    puts "update_all_season_stats passed"
   end
 
   def self.find_and_create_unknown_players_regular(driver, current_league_url, week)
     team_ids = *(1..12)
     self.find_and_create_unknown_players(driver, current_league_url, week, team_ids)
+    puts "find_and_create_unknown_players_regular passed"
   end
 
   def find_and_create_unknown_players_playoffs(driver, current_league_url, week)
@@ -155,7 +157,6 @@ class Player < ApplicationRecord
 
   def self.find_and_create_unknown_players(driver, current_league_url, week, team_numbers)
     weeks_player_ids = []
-
     team_numbers.each do |team_number|
       driver.navigate.to "#{current_league_url}/team/#{team_number}/gamecenter?gameCenterTab=track&trackType=sbs&week=#{week}"
       sleep(2)
@@ -170,22 +171,17 @@ class Player < ApplicationRecord
         weeks_player_ids.push(id)
       end
     end
-
     unknown_ids = []
-
     weeks_player_ids.each do |id|
       player = Player.find_by(id: id)
       if player == nil
         unknown_ids.push(id)
       end
     end
-
     new_players = []
-
     unknown_ids.each do |id|
       new_players.push(self.scrape_unknown_player(driver, id))
     end
-
     begin
       ActiveRecord::Base.transaction do
         new_players.each do |player|
@@ -193,9 +189,8 @@ class Player < ApplicationRecord
           player.save!
         end
       end
-
-      puts "All new players were inserted... proceeding..."
     end
+    puts "find_and_create_unknown_players_playoffs passed"
   end
 
   ## needs to be updated, will need to see how this will be navigatable to (guess the naem? arg!!!!)

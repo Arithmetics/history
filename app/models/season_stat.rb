@@ -119,9 +119,14 @@ class SeasonStat < ApplicationRecord
   end
 
   def self.calculate_all_dependent_columns
-    self.set_all_season_points
-    self.set_all_experience
-    self.set_all_ranks
+    begin
+      ActiveRecord::Base.transaction do
+        self.set_all_season_points
+        self.set_all_experience
+        self.set_all_ranks
+      end
+    end
+    puts "calculate_all_dependent_columns passed"
   end
   ###
 end
