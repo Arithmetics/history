@@ -90,7 +90,7 @@ namespace :data_additions do
       Player.find_and_create_unknown_players_regular(driver, current_league_url, week)
       puts "find_and_create_unknown_players_regular passed"
 
-      get_fantasy_starts_regular(driver, current_league_url, year, week)
+      FantasyStart.get_starts_from_web_regular(driver, current_league_url, year, week)
       puts "get_fantasy_starts passed"
 
       begin
@@ -127,10 +127,10 @@ namespace :data_additions do
       FantasyGame.get_playoff_fantasy_games(driver, current_league_url, year, week)
       puts "get_playoff_fantasy_games passed"
 
-      find_and_create_unknown_players_playoffs(driver, current_league_url, week)
+      Player.find_and_create_unknown_players_playoffs(driver, current_league_url, week)
       puts "find_and_create_unknown_players_playoffs passed"
 
-      get_fantasy_starts_playoffs(driver, current_league_url, year, week)
+      FantasyStart.get_starts_from_web_playoffs(driver, current_league_url, year, week)
       puts "get_fantasy_starts passed"
 
       begin

@@ -198,26 +198,20 @@ class Player < ApplicationRecord
     end
   end
 
-  ## needs to be updated, will need to see how this will be navigatable to
+  ## needs to be updated, will need to see how this will be navigatable to (guess the naem? arg!!!!)
   def self.scrape_unknown_player(driver, id)
     driver.navigate.to "http://www.nfl.com/player/mattryan/#{id}/profile"
     doc = Nokogiri::HTML(driver.page_source)
     new_player = Player.new
+    # this will need to change
     new_player.id = id
-    new_player.name = doc.css(".player-name").text.strip
-    birthdate_string = self.get_birthday_string(doc)
+    new_player.name = doc.css(".nfl-c-player-header__title").text.squish
+    birthdate_string = doc.css(".nfl-c-player-info__detail").text.split(" ")[1]
     new_player.birthdate = Date.strptime(birthdate_string, "%m/%d/%Y")
-    new_player.picture_id = doc.css(".player-photo").css("img")[0]["src"].split("/").last.gsub(".png", "")
-
+    # new_player.picture_id = doc.css(".player-photo").css("img")[0]["src"].split("/").last.gsub(".png", "")
+    # this needs to be updated
     return new_player
   end
 
-  def self.get_birthday_string(doc)
-    all_p = doc.css(".player-info").css("p")
-    if all_p.length == 5
-      return doc.css(".player-info").css("p")[2].text.split(" ")[1]
-    end
-    return doc.css(".player-info").css("p")[3].text.split(" ")[1]
-  end
   ##
 end
