@@ -45,6 +45,9 @@ class SeasonStat < ApplicationRecord
       throw "could not open url: #{url}"
     end
     position = doc.css(".nfl-c-player-header__position").text.squish
+    if position == "FB"
+      position = "RB"
+    end
     stat_tables = doc.css(".nfl-o-roster")
     stat_tables.each do |stat_table|
       stat_type = stat_table.css(".nfl-t-stats__title")[0].text.squish.downcase
