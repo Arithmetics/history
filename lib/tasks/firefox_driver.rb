@@ -5,18 +5,20 @@ require "csv"
 require "uri"
 
 def driver_start(current_league_url)
+  puts "creating driver"
   driver = Selenium::WebDriver.for :firefox
-  driver.navigate.to "https://www.nfl.com/login?s=fantasy&returnTo=http%3A%2F%2Ffantasy.nfl.com%2Fleague%2F400302"
-  sleep(4)
-  username = driver.find_element(id: "gigya-loginID-60062076330815260")
-  password = driver.find_element(id: "gigya-password-85118380969228590")
+  driver.manage.timeouts.implicit_wait = 20
+  driver.navigate.to "https://www.nfl.com/account/sign-in"
+  username = driver.find_element(xpath: "/html/body/div[5]/main/div/div[2]/div[2]/div/form/div[1]/div[1]/input")
+  password = driver.find_element(xpath: "/html/body/div[5]/main/div/div[2]/div[2]/div/form/div[1]/div[2]/input")
   submit = driver.find_element(xpath: "/html/body/div[5]/main/div/div[2]/div[2]/div/form/div[1]/div[4]/input")
-  sleep(1)
+  sleep(3)
   username.send_keys("brock.m.tillotson@gmail.com")
   password.send_keys(ENV["NFL_PASSWORD"])
+  sleep(3)
   submit.click()
-  sleep(2)
-  driver.navigate.to current_league_url
+  # driver.find_element(xpath: "/html/body/div[4]/header/div/nav[2]/ul/li[4]/a/span/svg/use//svg/path")
+  sleep(10)
   puts "handing off driver"
   return driver
 end

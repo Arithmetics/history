@@ -48,6 +48,15 @@
       "program": "/usr/local/bin/rake",
       "useBundler": true,
       "args": ["data_additions:stat_update"]
+    },
+    {
+      "name": "Rake data_additions:get_sched",
+      "type": "Ruby",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "program": "/usr/local/bin/rake",
+      "useBundler": true,
+      "args": ["data_additions:get_sched"]
     }
   ]
 }

@@ -5,9 +5,13 @@ class ScheduledFantasyGame < ApplicationRecord
   belongs_to :home_fantasy_team, :class_name => "FantasyTeam", :foreign_key => "home_fantasy_team_id"
 
   def self.get_year_schedule_from_web(driver, current_league_url, year)
-    "got in here"
+    puts "started on schedule loading"
+    # sleep(5)
     scheduled_games = []
+    driver.navigate.to "#{current_league_url}"
+    sleep(10)
     driver.navigate.to "#{current_league_url}?standingsTab=schedule"
+    puts "tried to navigate to schedule"
     sleep(3)
     weeks = *(1..13)
     weeks.each do |week|
@@ -16,28 +20,35 @@ class ScheduledFantasyGame < ApplicationRecord
       doc = Nokogiri::HTML(driver.page_source)
       game_list = doc.css(".scheduleContent").css(".matchup")
       game_list.each do |game|
-        away_team_name = game.css(".teamWrap")[0].css("a").text
-        home_team_name = game.css(".teamWrap")[0].css("a").text
+        away_team_name = game.css(".teamWrap")[0].css("a")[0].text
+        home_team_name = game.css(".teamWrap")[1].css("a")[0].text
 
         away_team = FantasyTeam.find_by(year: year, name: away_team_name)
         if away_team == nil
           throw "Could find team with name: #{away_team_name}"
         end
         home_team = FantasyTeam.find_by(year: year, name: home_team_name)
-        if away_owner == nil
+        if home_team == nil
           throw "Could find team with name: #{home_team_name}"
         end
 
-        new_scheduled_game = ScheduledFantasyGame.new(
-          week: week,
-          away_fantasy_team: away_fantasy_team,
-          home_fantasy_team: home_fantasy_team,
-        )
+        new_scheduled_game = ScheduledFantasyGame.new()
+        new_scheduled_game.week = week
+        new_scheduled_game.away_fantasy_team = away_team
+        new_scheduled_game.home_fantasy_team = home_team
         scheduled_games.push(new_scheduled_game)
       end
       if week != 13
-        next_week = driver.find_element(xpath: "/html/body/div[1]/div[3]/div/div[2]/div/div[5]/div/div[2]/div/div/div[2]/div/ul[1]/li[2]/a")
-        next_week.click()
+        if week == 1
+          next_week = driver.find_element(xpath: "/html/
+            body/div[1]/div[3]/div/div[2]/div/div[5]/div/div[2]/div/div/div[2]/div/ul[1]/li[2]/a")
+          next_week.click()
+        else
+          next_week = driver.find_element(xpath: "/html/
+            body/div[1]/div[3]/div/div[2]/div/div[5]/div/div[2]/div/div/div[2]/div/ul[1]/li[3]/a")
+          next_week.click()
+        end
+
         sleep(2)
       end
     end
