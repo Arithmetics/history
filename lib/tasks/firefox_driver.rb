@@ -7,16 +7,17 @@ require "uri"
 def driver_start(current_league_url)
   driver = Selenium::WebDriver.for :firefox
   driver.navigate.to "https://www.nfl.com/login?s=fantasy&returnTo=http%3A%2F%2Ffantasy.nfl.com%2Fleague%2F400302"
-  sleep(1)
-  username = driver.find_element(id: "fanProfileEmailUsername")
-  password = driver.find_element(id: "fanProfilePassword")
-  submit = driver.find_element(xpath: "/html/body/div[1]/div/div/div[2]/div[1]/div/div/div[2]/main/div/div[2]/div[2]/form/div[3]/button")
+  sleep(4)
+  username = driver.find_element(id: "gigya-loginID-60062076330815260")
+  password = driver.find_element(id: "gigya-password-85118380969228590")
+  submit = driver.find_element(xpath: "/html/body/div[5]/main/div/div[2]/div[2]/div/form/div[1]/div[4]/input")
   sleep(1)
   username.send_keys("brock.m.tillotson@gmail.com")
   password.send_keys(ENV["NFL_PASSWORD"])
   submit.click()
   sleep(2)
   driver.navigate.to current_league_url
+  puts "handing off driver"
   return driver
 end
 

@@ -1,4 +1,4 @@
-require_relative "addition_helpers"
+require_relative "firefox_driver"
 
 ### NEW SEASON ###
 
@@ -39,6 +39,7 @@ namespace :data_additions do
       driver = driver_start(current_league_url)
       Owner.check_if_changed_on_web(driver, current_league_url)
       FantasyTeam.create_all_teams_on_web(driver, current_league_url, year)
+      ScheduledFantasyGame.get_year_schedule_from_web(driver, current_league_url, year)
       Player.insert_new_players_from_file("#{Rails.root}/lib/assets/#{year}_new_players.csv")
       Purchase.insert_auction("#{Rails.root}/lib/assets/#{year}_final_auction.csv", year)
       Player.update_all_season_stats
@@ -97,5 +98,13 @@ namespace :data_additions do
       raise "error updating player stats"
     end
     puts "DONE WITH MEGA STAT UPDATE"
+  end
+
+  desc "temp test"
+  task get_sched: :environment do
+    current_league_url = "https://fantasy.nfl.com/league/400302"
+    year = 2019
+    driver = driver_start(current_league_url)
+    ScheduledFantasyGame.get_year_schedule_from_web(driver, current_league_url, year)
   end
 end
