@@ -15,3 +15,11 @@ json.scheduled_games do
     end
   end
 end
+
+json.versus_records do
+  json.array! @owners do |owner|
+    json.extract! owner, :id, :name
+
+    json.set! "versus_records", owner.versus_records
+  end
+end
