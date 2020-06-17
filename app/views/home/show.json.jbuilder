@@ -23,3 +23,15 @@ json.versus_records do
     json.set! "versus_records", owner.versus_records
   end
 end
+
+json.first_starts do
+  json.array! @first_starts do |start|
+    json.extract! start, :id, :week, :position, :points
+    json.player do
+      json.extract! start.player, :id, :name
+    end
+    json.fantasy_team do
+      json.extract! start.fantasy_team, :id, :name
+    end
+  end
+end
