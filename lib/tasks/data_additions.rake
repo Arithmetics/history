@@ -101,10 +101,7 @@ namespace :data_additions do
   end
 
   desc "temp test"
-  task get_sched: :environment do
-    current_league_url = "https://fantasy.nfl.com/league/400302"
-    year = 2019
-    driver = driver_start(current_league_url)
-    ScheduledFantasyGame.get_year_schedule_from_web(driver, current_league_url, year)
+  task debug_run: :environment do
+    PlayoffOdd.save_current_playoff_odds(1)
   end
 end
