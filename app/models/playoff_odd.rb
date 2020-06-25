@@ -1,7 +1,8 @@
 class PlayoffOdd < ApplicationRecord
+  belongs_to :fantasy_team
   validates_inclusion_of :type, :in => ["make_playoffs", "get_bye", "win_champion"]
 
-  def self.save_current_playoff_odds(num_sims)
+  def self.save_current_playoff_odds(current_week, num_sims)
     live_fantasy_teams = FantasyTeam.includes(:away_fantasy_games, :home_fantasy_games).where(year: FantasyTeam.maximum(:year))
 
     team_id_to_wins_template = live_fantasy_teams.reduce({}) { |acc, x| acc.merge(x[:id] => x.season_wins) }
@@ -31,7 +32,22 @@ class PlayoffOdd < ApplicationRecord
       rankings.sort_by! { |id| [team_id_to_wins[id], team_id_to_score[id]] }.reverse
       rankings[6..11].each { |team_id| times_made_playoffs[team_id] += 1 }
     end
-    return num_sims
+    insert_db_odds(num_sims, times_made_playoffs, current_week)
+  end
+
+  def self.insert_db_odds(num_sims, times_made_playoffs, current_week)
+    begin
+      ActiveRecord::Base.transaction do
+        times_made_playoffs.each do |team_id, times|
+          new_odds = self.new()
+          new_odds.fantasy_team_id = team_id
+          new_odds.week = current_week
+          new_odds.type = "make_playoffs"
+          new_odds.odds = (times.to_f / num_sims.to_f).round(3)
+          new_odds.save!
+        end
+      end
+    end
   end
   ##
 end
