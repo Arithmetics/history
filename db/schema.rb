@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_18_024104) do
+ActiveRecord::Schema.define(version: 2020_06_29_030033) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,11 +68,12 @@ ActiveRecord::Schema.define(version: 2020_06_18_024104) do
 
   create_table "playoff_odds", force: :cascade do |t|
     t.integer "week"
-    t.string "type"
+    t.string "category"
     t.float "odds"
     t.bigint "fantasy_team_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "year"
     t.index ["fantasy_team_id"], name: "index_playoff_odds_on_fantasy_team_id"
   end
 

@@ -1,6 +1,6 @@
 class PlayoffOdd < ApplicationRecord
   belongs_to :fantasy_team
-  validates_inclusion_of :type, :in => ["make_playoffs", "get_bye", "win_championship"]
+  validates_inclusion_of :category, :in => ["make_playoffs", "get_bye", "win_championship"]
 
   def self.save_current_playoff_odds(current_week, num_sims)
     puts "Starting playoff odds sim for week #{current_week}"
@@ -94,12 +94,13 @@ class PlayoffOdd < ApplicationRecord
     return sc_winner_one_id
   end
 
-  def self.save_odds(type_of_odd, num_sims, times_made_playoffs, current_week)
+  def self.save_odds(category_of_odd, num_sims, times_made_playoffs, current_week)
     times_made_playoffs.each do |team_id, times|
       new_odds = self.new()
       new_odds.fantasy_team_id = team_id
+      new_odds.year = FantasyTeam.maximum(:year)
       new_odds.week = current_week
-      new_odds.type = type_of_odd
+      new_odds.category = category_of_odd
       new_odds.odds = (times.to_f / num_sims.to_f).round(3)
       new_odds.save!
     end

@@ -102,6 +102,6 @@ namespace :data_additions do
 
   desc "temp test"
   task debug_run: :environment do
-    PlayoffOdd.save_current_playoff_odds(12, 1000)
+    PlayoffOdd.save_current_playoff_odds(3, 10)
   end
 end
