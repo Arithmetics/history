@@ -4,6 +4,7 @@ class Player < ApplicationRecord
   has_many :fantasy_starts
   has_many :purchases
   has_many :season_stats
+  has_many :rankings
   validates :name, presence: true
 
   def career_stats

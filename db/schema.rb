@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_15_000400) do
+ActiveRecord::Schema.define(version: 2020_08_09_190348) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,17 @@ ActiveRecord::Schema.define(version: 2020_06_15_000400) do
     t.string "nfl_URL_name"
   end
 
+  create_table "playoff_odds", force: :cascade do |t|
+    t.integer "week"
+    t.string "category"
+    t.float "odds"
+    t.bigint "fantasy_team_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "year"
+    t.index ["fantasy_team_id"], name: "index_playoff_odds_on_fantasy_team_id"
+  end
+
   create_table "purchases", force: :cascade do |t|
     t.string "position"
     t.integer "year"
@@ -76,6 +87,16 @@ ActiveRecord::Schema.define(version: 2020_06_15_000400) do
     t.integer "price"
     t.index ["fantasy_team_id"], name: "index_purchases_on_fantasy_team_id"
     t.index ["player_id"], name: "index_purchases_on_player_id"
+  end
+
+  create_table "rankings", force: :cascade do |t|
+    t.bigint "player_id", null: false
+    t.integer "year"
+    t.string "position"
+    t.integer "ranking"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["player_id"], name: "index_rankings_on_player_id"
   end
 
   create_table "scheduled_fantasy_games", force: :cascade do |t|
@@ -121,8 +142,10 @@ ActiveRecord::Schema.define(version: 2020_06_15_000400) do
   add_foreign_key "fantasy_starts", "fantasy_teams"
   add_foreign_key "fantasy_starts", "players"
   add_foreign_key "fantasy_teams", "owners"
+  add_foreign_key "playoff_odds", "fantasy_teams"
   add_foreign_key "purchases", "fantasy_teams"
   add_foreign_key "purchases", "players"
+  add_foreign_key "rankings", "players"
   add_foreign_key "scheduled_fantasy_games", "fantasy_teams", column: "away_fantasy_team_id"
   add_foreign_key "scheduled_fantasy_games", "fantasy_teams", column: "home_fantasy_team_id"
   add_foreign_key "season_stats", "players"

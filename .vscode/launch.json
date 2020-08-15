@@ -57,6 +57,15 @@
       "program": "/usr/local/bin/rake",
       "useBundler": true,
       "args": ["data_additions:get_sched"]
+    },
+    {
+      "name": "Rake DB Seed",
+      "type": "Ruby",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "program": "/usr/local/bin/rake",
+      "useBundler": true,
+      "args": ["db:seed"]
     }
   ]
 }

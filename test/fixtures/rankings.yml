@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  player: one
+  year: 1
+  position: MyString
+  ranking: 1
+
+two:
+  player: two
+  year: 1
+  position: MyString
+  ranking: 1
