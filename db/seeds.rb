@@ -208,41 +208,36 @@ require "csv"
 
 # needed below for rankings migration
 
-# CSV.foreach("#{Rails.root}/db/seed_files/2011_2018_player_rankings.csv", :headers => true) do |row|
-#   ranking_num = row["ranking"].to_i
-#   year = row["year"].to_i
-#   position = row["position"]
-#   player_id = row["player_id"]
+CSV.foreach("#{Rails.root}/db/seed_files/2011_2018_player_rankings.csv", :headers => true) do |row|
+  ranking_num = row["ranking"].to_i
+  year = row["year"].to_i
+  position = row["position"]
+  player_id = row["player_id"]
 
-#   puts "#{ranking_num}, #{year}, #{position}, #{player_id}"
+  puts "#{ranking_num}, #{year}, #{position}, #{player_id}"
 
-#   player = Player.find(player_id)
+  player = Player.find(player_id)
 
-#   if player == nil
-#     throw "Unknown player found: #{player_id}"
-#   end
+  if player == nil
+    throw "Unknown player found: #{player_id}"
+  end
 
-#   ranking = Ranking.new(ranking: ranking_num, year: year, position: position, player: player)
+  ranking = Ranking.new(ranking: ranking_num, year: year, position: position, player: player)
 
-#   ranking.save!
-# end
+  ranking.save!
+end
 
-# Player.all.each do |player|
-#   new_name = player.name.gsub(/\A\p{Space}*|\p{Space}*\z/, "")
-#   player.update!(name: new_name)
-# end
 
-# CSV.foreach("#{Rails.root}/db/seed_files/2020_players_from_rankings.csv", :headers => true) do |row|
-#   id = row["id"]
-#   name = row["name"]
-#   birthdate = row["birthdate"]
-#   picture_id = row["picture_id"]
-#   nfl_URL_name = row["nfl_URL_name"]
+CSV.foreach("#{Rails.root}/db/seed_files/2020_players_from_rankings.csv", :headers => true) do |row|
+  name = row["name"]
+  birthdate = row["birthdate"]
+  picture_id = row["picture_id"]
+  nfl_URL_name = row["nfl_URL_name"]
 
-#   player = Player.new(id: id, name: name, birthdate: birthdate, picture_id: picture_id, nfl_URL_name: nfl_URL_name)
+  player = Player.new(name: name, birthdate: birthdate, picture_id: picture_id, nfl_URL_name: nfl_URL_name)
 
-#   player.save!
-# end
+  player.save!
+end
 
 CSV.foreach("#{Rails.root}/db/seed_files/2019_2020_rankings_stub.csv", :headers => true) do |row|
   puts row

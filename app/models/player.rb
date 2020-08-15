@@ -1,10 +1,10 @@
 require "nokogiri"
 
 class Player < ApplicationRecord
-  has_many :fantasy_starts
-  has_many :purchases
-  has_many :season_stats
-  has_many :rankings
+  has_many :fantasy_starts, :dependent => :destroy
+  has_many :purchases, :dependent => :destroy
+  has_many :season_stats, :dependent => :destroy
+  has_many :rankings, :dependent => :destroy
   validates :name, presence: true
 
   def career_stats
