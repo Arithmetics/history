@@ -17,14 +17,13 @@ json.player do
   end
 
   json.season_stats do
+    players_ranks = @player.rankings.all
     json.array! @player.season_stats.order(year: :desc).select { |s| s.year > 2010 } do |stat|
+      year_rank = players_ranks.select { |r| r.year == stat.year }
       json.extract! stat, :games_played, :year, :passing_completions, :passing_attempts, :passing_yards, :passing_touchdowns, :interceptions, :rushing_attempts, :rushing_yards, :rushing_touchdowns, :receiving_yards, :receptions, :receiving_touchdowns, :fumbles_lost, :age_at_season, :experience_at_season, :fantasy_points_reg, :fantasy_points_ppr, :rank_reg, :rank_ppr
-    end
-  end
-
-  json.rankings do
-    json.array! @player.rankings.order(year: :desc).select { |s| s.year > 2010 } do |stat|
-      json.extract! stat, :year, :position, :ranking
+      if year_rank.length() == 1
+        json.set! "preseasonRank", year_rank[0].ranking
+      end
     end
   end
 
