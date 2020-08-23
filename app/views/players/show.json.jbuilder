@@ -22,6 +22,12 @@ json.player do
     end
   end
 
+  json.rankings do
+    json.array! @player.rankings.order(year: :desc).select { |s| s.year > 2010 } do |stat|
+      json.extract! stat, :year, :position, :ranking
+    end
+  end
+
   json.fantasy_starts do
     json.array! @player.fantasy_starts do |start|
       json.extract! start, :id, :week, :position, :points, :year

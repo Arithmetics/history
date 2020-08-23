@@ -20,6 +20,7 @@ class Player < ApplicationRecord
     best_start = 0
     best_reg_rank = 999
     best_ppr_rank = 999
+    best_preseason_rank = 999
 
     self.fantasy_starts.each do |start|
       if ["QB", "RB", "WR", "TE", "Q/R/W/T", "K", "DEF"].include?(start.position)
@@ -48,6 +49,12 @@ class Player < ApplicationRecord
       end
     end
 
+    self.rankings.each do |ranking|
+      if best_preseason_rank > ranking.ranking
+        best_preseason_rank = ranking.ranking
+      end
+    end
+
     self.season_stats.select { |s| s.year > 2010 }.each do |stat|
       position = stat.position
       if best_reg_rank > stat.rank_reg
@@ -72,6 +79,8 @@ class Player < ApplicationRecord
     career_stats["best_start"] = best_start
     career_stats["best_reg_rank"] = best_reg_rank
     career_stats["best_ppr_rank"] = best_ppr_rank
+
+    career_stats["best_preseason_rank"] = best_preseason_rank
 
     return career_stats
   end
