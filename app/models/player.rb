@@ -118,6 +118,7 @@ class Player < ApplicationRecord
   def self.update_all_player_pics
     begin
       ActiveRecord::Base.transaction do
+        Player.update_all(picture_id: "qjmvqdjdtrycr4zixl2v")
         i = 0
         Player.all.each do |player|
           puts i
@@ -142,6 +143,7 @@ class Player < ApplicationRecord
           end
         end
       end
+      Player.where(picture_id: "").update_all(picture_id: "qjmvqdjdtrycr4zixl2v")
     end
   end
 

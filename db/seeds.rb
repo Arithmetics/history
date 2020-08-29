@@ -254,5 +254,3 @@ require "csv"
 #   puts player.name
 #   ranking.save!
 # end
-
-Player.update_all_player_pics
