@@ -208,50 +208,51 @@ require "csv"
 
 # needed below for rankings migration
 
-CSV.foreach("#{Rails.root}/db/seed_files/2011_2018_player_rankings.csv", :headers => true) do |row|
-  ranking_num = row["ranking"].to_i
-  year = row["year"].to_i
-  position = row["position"]
-  player_id = row["player_id"]
+# CSV.foreach("#{Rails.root}/db/seed_files/2011_2018_player_rankings.csv", :headers => true) do |row|
+#   ranking_num = row["ranking"].to_i
+#   year = row["year"].to_i
+#   position = row["position"]
+#   player_id = row["player_id"]
 
-  puts "#{ranking_num}, #{year}, #{position}, #{player_id}"
+#   puts "#{ranking_num}, #{year}, #{position}, #{player_id}"
 
-  player = Player.find(player_id)
+#   player = Player.find(player_id)
 
-  if player == nil
-    throw "Unknown player found: #{player_id}"
-  end
+#   if player == nil
+#     throw "Unknown player found: #{player_id}"
+#   end
 
-  ranking = Ranking.new(ranking: ranking_num, year: year, position: position, player: player)
+#   ranking = Ranking.new(ranking: ranking_num, year: year, position: position, player: player)
 
-  ranking.save!
-end
+#   ranking.save!
+# end
 
+# CSV.foreach("#{Rails.root}/db/seed_files/2020_players_from_rankings.csv", :headers => true) do |row|
+#   name = row["name"]
+#   birthdate = row["birthdate"]
+#   picture_id = row["picture_id"]
+#   nfl_URL_name = row["nfl_URL_name"]
 
-CSV.foreach("#{Rails.root}/db/seed_files/2020_players_from_rankings.csv", :headers => true) do |row|
-  name = row["name"]
-  birthdate = row["birthdate"]
-  picture_id = row["picture_id"]
-  nfl_URL_name = row["nfl_URL_name"]
+#   player = Player.new(name: name, birthdate: birthdate, picture_id: picture_id, nfl_URL_name: nfl_URL_name)
 
-  player = Player.new(name: name, birthdate: birthdate, picture_id: picture_id, nfl_URL_name: nfl_URL_name)
+#   player.save!
+# end
 
-  player.save!
-end
+# CSV.foreach("#{Rails.root}/db/seed_files/2019_2020_rankings_stub.csv", :headers => true) do |row|
+#   puts row
+#   player_name = row["player_name"]
+#   year = row[0].to_i
+#   ranking_num = row["rank"].to_i
+#   position = row["position"]
 
-CSV.foreach("#{Rails.root}/db/seed_files/2019_2020_rankings_stub.csv", :headers => true) do |row|
-  puts row
-  player_name = row["player_name"]
-  year = row[0].to_i
-  ranking_num = row["rank"].to_i
-  position = row["position"]
+#   player = Player.find_by(name: player_name)
+#   if player_name == "Mike Williams"
+#     player = Player.find(2558846)
+#   end
 
-  player = Player.find_by(name: player_name)
-  if player_name == "Mike Williams"
-    player = Player.find(2558846)
-  end
+#   ranking = Ranking.new(ranking: ranking_num, year: year, position: position, player: player)
+#   puts player.name
+#   ranking.save!
+# end
 
-  ranking = Ranking.new(ranking: ranking_num, year: year, position: position, player: player)
-  puts player.name
-  ranking.save!
-end
+Player.update_all_player_pics

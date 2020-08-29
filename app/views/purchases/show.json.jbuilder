@@ -2,7 +2,7 @@ json.purchases @purchases do |purchase|
   json.extract! purchase, :id, :price, :position, :year
 
   json.player do
-    json.extract! purchase.player, :id, :name
+    json.extract! purchase.player, :id, :name, :picture_id
   end
 
   json.fantasy_team do

@@ -1,4 +1,5 @@
 require "nokogiri"
+require "open-uri"
 
 class Player < ApplicationRecord
   has_many :fantasy_starts, :dependent => :destroy
@@ -112,6 +113,36 @@ class Player < ApplicationRecord
       end
     end
     return id_matches
+  end
+
+  def self.update_all_player_pics
+    begin
+      ActiveRecord::Base.transaction do
+        i = 0
+        Player.all.each do |player|
+          puts i
+          i = i + 1
+          if player.nfl_URL_name != ""
+            player_url = "https://www.nfl.com/players/#{player.nfl_URL_name.squish}/stats/"
+
+            begin
+              doc = Nokogiri::HTML(open(player_url))
+            rescue OpenURI::HTTPError => ex
+              throw "could not open url: #{player_url}"
+            end
+
+            begin
+              picture_el = doc.css(".nfl-c-player-header__headshot")[0].css(".img-responsive")[0]
+              url = picture_el["src"]
+              pic_id = url.split("/")[-1]
+              player.update_attribute(:picture_id, pic_id)
+            rescue
+              puts "no picture for #{player.name}"
+            end
+          end
+        end
+      end
+    end
   end
 
   def self.update_all_season_stats

@@ -48,7 +48,7 @@ json.fantasy_team do
       json.extract! purchase, :id, :price, :position, :year
 
       json.player do
-        json.extract! purchase.player, :id, :name
+        json.extract! purchase.player, :id, :name, :picture_id
       end
     end
   end
