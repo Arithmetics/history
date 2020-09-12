@@ -43,11 +43,11 @@ namespace :data_additions do
       ## move
       # Owner.changed_on_web?(driver, current_league_url)
       # FantasyTeam.create_all_teams_on_web(driver, current_league_url, year)
-      ScheduledFantasyGame.get_year_schedule_from_web(driver, current_league_url, year)
-      # Player.insert_new_players_from_file("#{Rails.root}/lib/assets/#{year}_new_players.csv")
-      # Purchase.insert_auction("#{Rails.root}/lib/assets/#{year}_final_auction.csv", year)
-      # Player.update_all_season_stats
-      # SeasonStat.calculate_all_dependent_columns
+      # ScheduledFantasyGame.get_year_schedule_from_web(driver, current_league_url, year)
+      Player.insert_new_players_from_file("#{Rails.root}/lib/assets/#{year}_new_players.csv")
+      Purchase.insert_auction("#{Rails.root}/lib/assets/#{year}_final_auction.csv", year)
+      Player.update_all_season_stats
+      SeasonStat.calculate_all_dependent_columns
       puts "season has begun!"
     rescue
       raise "error executing data gathering tasks"
