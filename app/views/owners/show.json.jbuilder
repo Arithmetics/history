@@ -6,6 +6,6 @@ json.owner do
   json.set! "versus_records", @owner.versus_records
 
   json.fantasy_teams @owner.fantasy_teams do |fantasy_team|
-    json.extract! fantasy_team, :id, :name, :year, :season_wins, :season_points, :made_playoffs?, :made_finals?, :won_championship?
+    json.extract! fantasy_team, :id, :name, :year, :season_wins, :season_losses, :season_points, :made_playoffs?, :made_finals?, :won_championship?
   end
 end

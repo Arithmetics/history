@@ -7,6 +7,7 @@ json.fantasy_team do
   json.cuumulative_stats do
     json.set! "season_points", @fantasy_team.season_points
     json.set! "season_wins", @fantasy_team.season_wins
+    json.set! "season_losses", @fantasy_team.season_losses
   end
 
   json.fantasy_games do

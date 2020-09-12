@@ -35,15 +35,19 @@ namespace :data_additions do
   task season_start: :environment do
     begin
       current_league_url = "https://fantasy.nfl.com/league/400302"
-      year = 2019
+      year = 2020
       driver = driver_start(current_league_url)
-      Owner.check_if_changed_on_web(driver, current_league_url)
-      FantasyTeam.create_all_teams_on_web(driver, current_league_url, year)
+      ## move
+      # Owner.find_by(name: "Jeremy").update_attributes(name: "Jerms")
+      # Owner.find_by(name: "jordan").update_attributes(name: "Jordan")
+      ## move
+      # Owner.changed_on_web?(driver, current_league_url)
+      # FantasyTeam.create_all_teams_on_web(driver, current_league_url, year)
       ScheduledFantasyGame.get_year_schedule_from_web(driver, current_league_url, year)
-      Player.insert_new_players_from_file("#{Rails.root}/lib/assets/#{year}_new_players.csv")
-      Purchase.insert_auction("#{Rails.root}/lib/assets/#{year}_final_auction.csv", year)
-      Player.update_all_season_stats
-      SeasonStat.calculate_all_dependent_columns
+      # Player.insert_new_players_from_file("#{Rails.root}/lib/assets/#{year}_new_players.csv")
+      # Purchase.insert_auction("#{Rails.root}/lib/assets/#{year}_final_auction.csv", year)
+      # Player.update_all_season_stats
+      # SeasonStat.calculate_all_dependent_columns
       puts "season has begun!"
     rescue
       raise "error executing data gathering tasks"

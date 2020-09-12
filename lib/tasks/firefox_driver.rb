@@ -9,9 +9,9 @@ def driver_start(current_league_url)
   driver = Selenium::WebDriver.for :firefox
   driver.manage.timeouts.implicit_wait = 20
   driver.navigate.to "https://www.nfl.com/account/sign-in"
-  username = driver.find_element(xpath: "/html/body/div[5]/main/div/div[2]/div[2]/div/form/div[1]/div[1]/input")
-  password = driver.find_element(xpath: "/html/body/div[5]/main/div/div[2]/div[2]/div/form/div[1]/div[2]/input")
-  submit = driver.find_element(xpath: "/html/body/div[5]/main/div/div[2]/div[2]/div/form/div[1]/div[4]/input")
+  username = driver.find_element(xpath: "/html/body/div[4]/main/div/div/div[2]/div/form/div[1]/div[1]/input")
+  password = driver.find_element(xpath: "/html/body/div[4]/main/div/div/div[2]/div/form/div[1]/div[2]/input")
+  submit = driver.find_element(xpath: "/html/body/div[4]/main/div/div/div[2]/div/form/div[1]/div[4]/input")
   sleep(3)
   username.send_keys("brock.m.tillotson@gmail.com")
   password.send_keys(ENV["NFL_PASSWORD"])
