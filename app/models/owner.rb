@@ -12,16 +12,20 @@ class Owner < ApplicationRecord
   has_many :purchases, through: :fantasy_teams
 
   def self.changed_on_web?(driver, current_league_url)
+    sleep(2)
     driver.navigate.to "#{current_league_url}/owners"
-
+    sleep(2)
+    driver.navigate.to "#{current_league_url}/owners"
     doc = Nokogiri::HTML(driver.page_source)
     page_owners = doc.css(".userName")
     owner_count = 0
     page_owners.each do |owner|
       x = Owner.find_by_name(owner.text)
-      puts "Found #{x.name}"
       if x != nil
+        puts "Found #{x.name}"
         owner_count += 1
+      else
+        puts "didnt find #{owner.text}"
       end
     end
 
