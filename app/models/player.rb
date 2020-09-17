@@ -2,10 +2,10 @@ require "nokogiri"
 require "open-uri"
 
 class Player < ApplicationRecord
-  has_many :fantasy_starts, :dependent => :destroy
-  has_many :purchases, :dependent => :destroy
-  has_many :season_stats, :dependent => :destroy
-  has_many :rankings, :dependent => :destroy
+  has_many :fantasy_starts, :dependent => :delete_all
+  has_many :purchases, :dependent => :delete_all
+  has_many :season_stats, :dependent => :delete_all
+  has_many :rankings, :dependent => :delete_all
   validates :name, presence: true
 
   def career_stats
@@ -89,14 +89,13 @@ class Player < ApplicationRecord
   def self.insert_new_players_from_file(filepath)
     ActiveRecord::Base.transaction do
       CSV.foreach(filepath, :headers => true) do |row|
-        owner_name = row["owner_name"]
         player_name = row["name"]
         player_id = row["profile_id"].to_i
         birthdate = Date.strptime(row["birthdate"], "%m/%d/%Y")
         picture_id = row["picture_id"]
         nfl_url_name = row["nfl_url_name"]
 
-        player = Player.new(name: player_name, id: player_id, birthdate: birthdate, picture_id: picture_id, nfl_url_name: nfl_url_name)
+        player = Player.new(name: player_name, id: player_id, birthdate: birthdate, picture_id: picture_id, nfl_URL_name: nfl_url_name)
         puts "New player created: #{player.name}"
         player.save!
       end
@@ -207,6 +206,7 @@ class Player < ApplicationRecord
       box = doc.css("#teamMatchupBoxScore")
       left_roster = box.css(".teamWrap-1")
       all_player_links = left_roster.css(".playerNameFirstInitialLastName").css("a")
+      puts all_player_links
 
       all_player_links.each do |link|
         href = link["href"]
@@ -217,10 +217,10 @@ class Player < ApplicationRecord
       end
     end
     unknown_players = []
-    weeks_players.each do |player|
-      player = Player.find(player.id)
+    weeks_players.each do |pot_player|
+      player = Player.find_by(id: pot_player.id)
       if player == nil
-        puts "couldnt find #{player.name}, #{player.id}"
+        puts "couldnt find #{pot_player.name}, #{pot_player.id}"
       end
     end
 

@@ -11,7 +11,7 @@ class Owner < ApplicationRecord
 
   has_many :purchases, through: :fantasy_teams
 
-  def changed_on_web?(driver, current_league_url)
+  def self.changed_on_web?(driver, current_league_url)
     driver.navigate.to "#{current_league_url}/owners"
 
     doc = Nokogiri::HTML(driver.page_source)
