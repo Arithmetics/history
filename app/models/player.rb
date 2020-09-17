@@ -199,7 +199,7 @@ class Player < ApplicationRecord
   end
 
   def self.find_and_create_unknown_players(driver, current_league_url, week, team_numbers)
-    weeks_player_ids = []
+    weeks_players = []
     team_numbers.each do |team_number|
       driver.navigate.to "#{current_league_url}/team/#{team_number}/gamecenter?gameCenterTab=track&trackType=sbs&week=#{week}"
       sleep(2)
@@ -211,28 +211,19 @@ class Player < ApplicationRecord
       all_player_links.each do |link|
         href = link["href"]
         id = href.split("=").last
-        weeks_player_ids.push(id)
+        name = link.text
+        player = Player.new(id: id, name: name)
+        weeks_players.push(player)
       end
     end
-    unknown_ids = []
-    weeks_player_ids.each do |id|
-      player = Player.find_by(id: id)
+    unknown_players = []
+    weeks_players.each do |player|
+      player = Player.find(player.id)
       if player == nil
-        unknown_ids.push(id)
+        puts "couldnt find #{player.name}, #{player.id}"
       end
     end
-    new_players = []
-    unknown_ids.each do |id|
-      new_players.push(self.scrape_unknown_player(driver, id))
-    end
-    begin
-      ActiveRecord::Base.transaction do
-        new_players.each do |player|
-          puts "Saving new player: #{player.name}"
-          player.save!
-        end
-      end
-    end
+
     puts "find_and_create_unknown_players_playoffs passed"
   end
 

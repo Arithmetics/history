@@ -36,15 +36,20 @@ namespace :data_additions do
     begin
       current_league_url = "https://fantasy.nfl.com/league/400302"
       year = 2020
-      driver = driver_start(current_league_url)
+      # driver = driver_start(current_league_url)
       ## move
       # Owner.find_by(name: "Jeremy").update_attributes(name: "Jerms")
       # Owner.find_by(name: "jordan").update_attributes(name: "Jordan")
       ## move
       # Owner.changed_on_web?(driver, current_league_url)
       # FantasyTeam.create_all_teams_on_web(driver, current_league_url, year)
-      ScheduledFantasyGame.get_year_schedule_from_web(driver, current_league_url, year)
+      # ScheduledFantasyGame.get_year_schedule_from_web(driver, current_league_url, year)
       # Player.insert_new_players_from_file("#{Rails.root}/lib/assets/#{year}_new_players.csv")
+      # new_player = Player.new(name: "James Robinson", birthdate: "1998-08-09", nfl_URL_name: "james-robinson-3", picture_id: "lxzbao36eeratekmnxeb")
+      # new_player.save!
+      fix_mike = Player.find(81308)
+      fix_mike.update_attribute(:nfl_URL_name, "mike-thomas-3")
+      fix_mike.season_stats.delete_all
       # Purchase.insert_auction("#{Rails.root}/lib/assets/#{year}_final_auction.csv", year)
       # Player.update_all_season_stats
       # SeasonStat.calculate_all_dependent_columns
@@ -57,18 +62,18 @@ namespace :data_additions do
   desc "add a new regular season week"
   task new_reg_week: :environment do
     begin
-      year = 2019
-      week = 13
+      year = 2020
+      week = 1
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
       verify_current_week(driver, current_league_url, week)
-      Owner.check_if_changed_on_web(driver, current_league_url)
+      Owner.changed_on_web?(driver, current_league_url)
       FantasyTeam.update_team_names_from_web(driver, current_league_url, year)
       FantasyGame.get_regular_season_fantasy_games(driver, current_league_url, year, week)
       Player.find_and_create_unknown_players_regular(driver, current_league_url, week)
-      FantasyStart.get_starts_from_web_regular(driver, current_league_url, year, week)
-      Player.update_all_season_stats
-      SeasonStat.calculate_all_dependent_columns
+      # FantasyStart.get_starts_from_web_regular(driver, current_league_url, year, week)
+      # Player.update_all_season_stats
+      # SeasonStat.calculate_all_dependent_columns
     rescue
       raise "error adding a new league week"
     end

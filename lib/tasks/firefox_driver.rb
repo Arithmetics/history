@@ -29,6 +29,8 @@ def verify_current_week(driver, current_league_url, week)
   end
   driver.navigate.to "#{current_league_url}?standingsTab=standings&standingsType=overall"
   sleep(2)
+  driver.navigate.to "#{current_league_url}?standingsTab=standings&standingsType=overall"
+  sleep(2)
   doc = Nokogiri::HTML(driver.page_source)
   ts = doc.css(".teamRecord")
   team_record = doc.css(".teamRecord")[6].text()
