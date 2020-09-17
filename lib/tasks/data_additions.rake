@@ -66,10 +66,10 @@ namespace :data_additions do
       week = 1
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
-      verify_current_week(driver, current_league_url, week)
-      Owner.changed_on_web?(driver, current_league_url)
-      FantasyTeam.update_team_names_from_web(driver, current_league_url, year)
-      FantasyGame.get_regular_season_fantasy_games(driver, current_league_url, year, week)
+      # verify_current_week(driver, current_league_url, week)
+      # Owner.changed_on_web?(driver, current_league_url)
+      # FantasyTeam.update_team_names_from_web(driver, current_league_url, year)
+      # FantasyGame.get_regular_season_fantasy_games(driver, current_league_url, year, week)
       Player.find_and_create_unknown_players_regular(driver, current_league_url, week)
       # FantasyStart.get_starts_from_web_regular(driver, current_league_url, year, week)
       # Player.update_all_season_stats
