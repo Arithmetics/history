@@ -72,17 +72,18 @@ namespace :data_additions do
       # fix_mike.update_attribute(:nfl_URL_name, "mike-thomas-3")
       # fix_mike.season_stats.delete_all
       #
-      driver = driver_start(current_league_url)
+      # driver = driver_start(current_league_url)
       # verify_current_week(driver, current_league_url, week)
-      Owner.changed_on_web?(driver, current_league_url)
+      # Owner.changed_on_web?(driver, current_league_url)
       # FantasyTeam.update_team_names_from_web(driver, current_league_url, year)
       # Ranking.where(year: 2020).delete_all
-      FantasyGame.get_regular_season_fantasy_games(driver, current_league_url, year, week)
+      # FantasyGame.get_regular_season_fantasy_games(driver, current_league_url, year, week)
       # Player.insert_new_players_from_file("#{Rails.root}/lib/assets/#{year}_week_#{week}_new_players.csv")
       # Player.find_and_create_unknown_players_regular(driver, current_league_url, week)
       # FantasyStart.get_starts_from_web_regular(driver, current_league_url, year, week)
       # Player.update_all_season_stats
       # SeasonStat.calculate_all_dependent_columns
+      ScheduledFantasyGame.order(week: :asc).limit(6).delete_all
     rescue
       raise "error adding a new league week"
     end
