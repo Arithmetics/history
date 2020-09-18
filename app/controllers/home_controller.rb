@@ -7,6 +7,6 @@ class HomeController < ApplicationController
     current_year = FantasyStart.maximum("year")
     current_week = FantasyStart.where(year: current_year).maximum("week")
 
-    @first_starts = FantasyStart.includes(:player).where(week: current_week, year: current_year).where.not(position: "BN").where(player_id: FantasyStart.where.not(position: "BN").group(:player_id).having("count(*) = 1").select(:player_id))
+    @first_starts = FantasyStart.includes(:player).where(week: current_week, year: current_year).where.not(position: "BN").where.not(position: "RES").where(player_id: FantasyStart.where.not(position: "BN").group(:player_id).having("count(*) = 1").select(:player_id))
   end
 end
