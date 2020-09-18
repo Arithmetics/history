@@ -1,4 +1,4 @@
-order = ["QB", "RB", "WR", "TE", "Q/R/W/T", "DEF", "K", "BN", "RES"]
+order = ["QB", "RB", "WR", "TE", "Q/R/W/T", "R/W/T", "DEF", "K", "BN", "RES"]
 all_fantasy_games = (@fantasy_team.away_fantasy_games) + (@fantasy_team.home_fantasy_games)
 
 json.fantasy_team do
