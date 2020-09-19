@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_29_030033) do
+ActiveRecord::Schema.define(version: 2020_08_29_220217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,6 +89,16 @@ ActiveRecord::Schema.define(version: 2020_06_29_030033) do
     t.index ["player_id"], name: "index_purchases_on_player_id"
   end
 
+  create_table "rankings", force: :cascade do |t|
+    t.bigint "player_id", null: false
+    t.integer "year"
+    t.string "position"
+    t.integer "ranking"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["player_id"], name: "index_rankings_on_player_id"
+  end
+
   create_table "scheduled_fantasy_games", force: :cascade do |t|
     t.integer "week"
     t.bigint "away_fantasy_team_id"
@@ -135,6 +145,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_030033) do
   add_foreign_key "playoff_odds", "fantasy_teams"
   add_foreign_key "purchases", "fantasy_teams"
   add_foreign_key "purchases", "players"
+  add_foreign_key "rankings", "players"
   add_foreign_key "scheduled_fantasy_games", "fantasy_teams", column: "away_fantasy_team_id"
   add_foreign_key "scheduled_fantasy_games", "fantasy_teams", column: "home_fantasy_team_id"
   add_foreign_key "season_stats", "players"

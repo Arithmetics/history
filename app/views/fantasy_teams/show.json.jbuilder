@@ -1,4 +1,4 @@
-order = ["QB", "RB", "WR", "TE", "Q/R/W/T", "DEF", "K", "BN", "RES"]
+order = ["QB", "RB", "WR", "TE", "Q/R/W/T", "R/W/T", "DEF", "K", "BN", "RES"]
 all_fantasy_games = (@fantasy_team.away_fantasy_games) + (@fantasy_team.home_fantasy_games)
 
 json.fantasy_team do
@@ -7,6 +7,7 @@ json.fantasy_team do
   json.cuumulative_stats do
     json.set! "season_points", @fantasy_team.season_points
     json.set! "season_wins", @fantasy_team.season_wins
+    json.set! "season_losses", @fantasy_team.season_losses
   end
 
   json.fantasy_games do
@@ -48,7 +49,7 @@ json.fantasy_team do
       json.extract! purchase, :id, :price, :position, :year
 
       json.player do
-        json.extract! purchase.player, :id, :name
+        json.extract! purchase.player, :id, :name, :picture_id
       end
     end
   end

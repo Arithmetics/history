@@ -28,7 +28,7 @@ json.first_starts do
   json.array! @first_starts do |start|
     json.extract! start, :id, :week, :position, :points
     json.player do
-      json.extract! start.player, :id, :name
+      json.extract! start.player, :id, :name, :picture_id
     end
     json.fantasy_team do
       json.extract! start.fantasy_team, :id, :name

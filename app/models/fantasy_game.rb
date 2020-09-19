@@ -36,8 +36,8 @@ class FantasyGame < ApplicationRecord
 
           team_numbers.delete(home_team_number)
 
-          away_team = self.find_by(name: away_team_name, year: year)
-          home_team = self.find_by(name: home_team_name, year: year)
+          away_team = FantasyTeam.find_by(name: away_team_name, year: year)
+          home_team = FantasyTeam.find_by(name: home_team_name, year: year)
 
           if away_team == nil
             raise "Cant find a match for team: #{away_team_name}"

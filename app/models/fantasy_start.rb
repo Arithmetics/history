@@ -7,17 +7,17 @@ class FantasyStart < ApplicationRecord
   validates :points, presence: true
   validates :year, presence: true
   validates_inclusion_of :week, :in => 1..16
-  validates :position, presence: true, inclusion: { in: %w{QB RB WR TE DEF K BN Q/R/W/T RES} }
+  validates :position, presence: true, inclusion: { in: %w{QB RB WR TE DEF K BN Q/R/W/T R/W/T RES} }
 
   def self.get_starts_from_web_regular(driver, current_league_url, year, week)
     team_ids = *(1..12)
-    self.get_fantasy_starts(driver, current_league_url, year, week, team_ids)
+    self.get_starts_from_web(driver, current_league_url, year, week, team_ids)
     puts "get_starts_from_web_regular passed"
   end
 
   def self.get_starts_from_web_playoffs(driver, current_league_url, year, week)
     team_ids = FantasyGame.determine_playoff_week_teams(driver, current_league_url, week)
-    self.get_fantasy_starts(driver, current_league_url, year, week, team_ids)
+    self.get_starts_from_web(driver, current_league_url, year, week, team_ids)
     puts "get_fantasy_starts passed"
   end
 
