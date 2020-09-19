@@ -83,7 +83,8 @@ namespace :data_additions do
       # FantasyStart.get_starts_from_web_regular(driver, current_league_url, year, week)
       # Player.update_all_season_stats
       # SeasonStat.calculate_all_dependent_columns
-      ScheduledFantasyGame.order(week: :asc).limit(6).delete_all
+      # PlayoffOdd.save_current_playoff_odds(week, 1000)
+      # ScheduledFantasyGame.order(week: :asc).limit(6).delete_all
     rescue
       raise "error adding a new league week"
     end
@@ -121,6 +122,6 @@ namespace :data_additions do
 
   desc "temp test"
   task debug_run: :environment do
-    PlayoffOdd.save_current_playoff_odds(3, 10)
+    PlayoffOdd.save_current_playoff_odds(1, 1000)
   end
 end
