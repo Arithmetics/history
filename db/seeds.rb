@@ -238,19 +238,3 @@ require "csv"
 #   player.save!
 # end
 
-# CSV.foreach("#{Rails.root}/db/seed_files/2019_2020_rankings_stub.csv", :headers => true) do |row|
-#   puts row
-#   player_name = row["player_name"]
-#   year = row[0].to_i
-#   ranking_num = row["rank"].to_i
-#   position = row["position"]
-
-#   player = Player.find_by(name: player_name)
-#   if player_name == "Mike Williams"
-#     player = Player.find(2558846)
-#   end
-
-#   ranking = Ranking.new(ranking: ranking_num, year: year, position: position, player: player)
-#   puts player.name
-#   ranking.save!
-# end

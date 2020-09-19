@@ -1,8 +1,7 @@
 ﻿pick,owner_name,price,player_name,player_id,position
 -,Daniel,3,San Franci,100029,DEF
 -,Dag,1,Los Ange,100028,DEF
--,Dag,1,"Seattle (SEA)
-",100030,DEF
+-,Dag,1,"Seattle (SEA)",100030,DEF
 -,Jerms,2,Baltimore (BAL),100002,DEF
 -,Brock,4,Pittsburgh (PIT),100027,DEF
 -,Daniel,3,Justin Tucke,2536340,K
@@ -95,7 +94,7 @@
 -,Daniel,7,Tyler Higbee,2555364,TE
 -,Kevin,1,T.J. Hockenson,2562378,TE
 -,Dag,17,Zach Ertz,2540158,TE
--,Dag,1,Hayden Hurst,9000053,TE
+-,Dag,1,Hayden Hurst,2560747,TE
 -,Woody,17,Mark Andrews,2560957,TE
 -,joe,8,Rob Gronkowski,497240,TE
 -,joe,30,George Kittle,2558266,TE
