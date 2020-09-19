@@ -66,6 +66,17 @@ ActiveRecord::Schema.define(version: 2020_08_29_220217) do
     t.string "nfl_URL_name"
   end
 
+  create_table "playoff_odds", force: :cascade do |t|
+    t.integer "week"
+    t.string "category"
+    t.float "odds"
+    t.bigint "fantasy_team_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "year"
+    t.index ["fantasy_team_id"], name: "index_playoff_odds_on_fantasy_team_id"
+  end
+
   create_table "purchases", force: :cascade do |t|
     t.string "position"
     t.integer "year"
@@ -131,6 +142,7 @@ ActiveRecord::Schema.define(version: 2020_08_29_220217) do
   add_foreign_key "fantasy_starts", "fantasy_teams"
   add_foreign_key "fantasy_starts", "players"
   add_foreign_key "fantasy_teams", "owners"
+  add_foreign_key "playoff_odds", "fantasy_teams"
   add_foreign_key "purchases", "fantasy_teams"
   add_foreign_key "purchases", "players"
   add_foreign_key "rankings", "players"

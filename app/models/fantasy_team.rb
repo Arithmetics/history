@@ -153,4 +153,17 @@ class FantasyTeam < ApplicationRecord
 
     return false
   end
+
+  def generate_random_score
+    scores = self.away_fantasy_games.select(:away_score).pluck(:away_score).concat(self.home_fantasy_games.select(:home_score).pluck(:home_score))
+    average = scores.inject(0) { |accum, i| accum + i } / scores.length.to_f
+    standard_deviation = Math.sqrt(scores.inject(0) { |accum, i| accum + (i - average) ** 2 } / (scores.length() - 1).to_f)
+    if standard_deviation.to_f.nan?
+      standard_deviation = 35 # week 1 std
+    end
+    generator = RandomGaussian.new(average, standard_deviation)
+    return generator.rand
+  end
+
+  ##
 end

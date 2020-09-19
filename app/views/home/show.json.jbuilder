@@ -35,3 +35,12 @@ json.first_starts do
     end
   end
 end
+
+json.playoff_odds do
+  json.array! @playoff_odds do |odd|
+    json.extract! odd, :id, :year, :week, :odds, :category
+    json.fantasy_team do
+      json.extract! odd.fantasy_team, :id, :name
+    end
+  end
+end
