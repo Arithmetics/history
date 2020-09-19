@@ -54,5 +54,9 @@ class ScheduledFantasyGame < ApplicationRecord
       scheduled_games.each { |game| game.save! }
     end
   end
+
+  def self.remove_last_played_week()
+    self.order(week: :asc).limit(6).delete_all
+  end
   ##
 end

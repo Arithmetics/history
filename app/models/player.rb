@@ -186,18 +186,18 @@ class Player < ApplicationRecord
     puts "update_all_season_stats passed"
   end
 
-  def self.find_and_create_unknown_players_regular(driver, current_league_url, week)
+  def self.find_and_print_unknown_players_regular(driver, current_league_url, week)
     team_ids = *(1..12)
-    self.find_and_create_unknown_players(driver, current_league_url, week, team_ids)
-    puts "find_and_create_unknown_players_regular passed"
+    self.find_and_print_unknown_players(driver, current_league_url, week, team_ids)
+    puts "find_and_print_unknown_players_regular passed"
   end
 
-  def find_and_create_unknown_players_playoffs(driver, current_league_url, week)
+  def find_and_print_unknown_players_playoffs(driver, current_league_url, week)
     team_ids = FantasyGame.determine_playoff_week_teams(driver, current_league_url, week)
-    self.find_and_create_unknown_players(driver, current_league_url, week, team_ids)
+    self.find_and_print_unknown_players(driver, current_league_url, week, team_ids)
   end
 
-  def self.find_and_create_unknown_players(driver, current_league_url, week, team_numbers)
+  def self.find_and_print_unknown_players(driver, current_league_url, week, team_numbers)
     weeks_players = []
     team_numbers.each do |team_number|
       driver.navigate.to "#{current_league_url}/team/#{team_number}/gamecenter?gameCenterTab=track&trackType=sbs&week=#{week}"
@@ -216,18 +216,22 @@ class Player < ApplicationRecord
         weeks_players.push(player)
       end
     end
-    unknown_players = []
+    throw_error = false
     weeks_players.each do |pot_player|
       player = Player.find_by(id: pot_player.id)
       if player == nil
         puts "couldnt find #{pot_player.name}, #{pot_player.id}"
+        throw_error = true
       end
     end
+    if throw_error
+      throw("Unknown players found, please fix before proceeding")
+    end
 
-    puts "find_and_create_unknown_players_playoffs passed"
+    puts "find_and_print_unknown_players_playoffs passed"
   end
 
-  ## needs to be updated, will need to see how this will be navigatable to (guess the naem? arg!!!!)
+  ## DEPRECATED: needs to be updated, will need to see how this will be navigatable to (guess the naem? arg!!!!)
   def self.scrape_unknown_player(driver, id)
     driver.navigate.to "http://www.nfl.com/player/mattryan/#{id}/profile"
     doc = Nokogiri::HTML(driver.page_source)
