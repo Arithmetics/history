@@ -62,23 +62,23 @@ namespace :data_additions do
   task new_reg_week: :environment do
     begin
       year = 2020
-      week = 1
+      week = 2
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
       verify_current_week(driver, current_league_url, week)
+      Player.insert_new_players_from_file("#{Rails.root}/lib/assets/#{year}_week_#{week}_new_players.csv")
+      # comment out if no new players
+      Player.find_and_print_unknown_players_regular(driver, current_league_url, week)
+      # will stop here if theres new players
       Owner.changed_on_web?(driver, current_league_url)
       FantasyTeam.update_team_names_from_web(driver, current_league_url, year)
       FantasyGame.get_regular_season_fantasy_games(driver, current_league_url, year, week)
-      # comment in for test run
-      # Player.find_and_print_unknown_players_regular(driver, current_league_url, week)
-      # will stop here if theres new players
-      Player.insert_new_players_from_file("#{Rails.root}/lib/assets/#{year}_week_#{week}_new_players.csv")
-      # comment out if no new players
+
       FantasyStart.get_starts_from_web_regular(driver, current_league_url, year, week)
       Player.update_all_season_stats
       SeasonStat.calculate_all_dependent_columns
-      PlayoffOdd.save_current_playoff_odds(week, 1000)
       ScheduledFantasyGame.remove_last_played_week
+      # PlayoffOdd.save_current_playoff_odds(week, 100)
     rescue
       raise "error adding a new league week"
     end
