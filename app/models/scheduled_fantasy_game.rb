@@ -57,6 +57,7 @@ class ScheduledFantasyGame < ApplicationRecord
 
   def self.remove_last_played_week()
     self.order(week: :asc).limit(6).delete_all
+    puts "Remove last week passed"
   end
   ##
 end
