@@ -78,7 +78,7 @@ namespace :data_additions do
       Player.update_all_season_stats
       SeasonStat.calculate_all_dependent_columns
       ScheduledFantasyGame.remove_last_played_week
-      # PlayoffOdd.save_current_playoff_odds(week, 100)
+      PlayoffOdd.save_current_playoff_odds(week, 1000)
     rescue
       raise "error adding a new league week"
     end
