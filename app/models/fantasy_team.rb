@@ -27,6 +27,21 @@ class FantasyTeam < ApplicationRecord
     return team_map
   end
 
+  def self.get_current_website_team_pictures(driver, current_league_url)
+    driver.navigate.to "#{current_league_url}/owners"
+
+    doc = Nokogiri::HTML(driver.page_source)
+    owner_table = doc.css("#leagueOwners")
+    rows = owner_table.css("tbody").css("tr")
+    team_map = {}
+    rows.each do |row|
+      team = row.css(".teamName").text
+      image_ref = row.css(".teamImg").css("img")[0]["src"]
+      team_map[team] = image_ref
+    end
+    return team_map
+  end
+
   def self.create_all_teams_on_web(driver, current_league_url, year)
     team_map = self.get_current_website_team_owners_and_names(driver, current_league_url)
     begin
@@ -44,8 +59,10 @@ class FantasyTeam < ApplicationRecord
     puts "create_all_teams_on_web passed"
   end
 
-  def self.update_team_names_from_web(driver, current_league_url, year)
+  def self.update_team_names_and_pictures_from_web(driver, current_league_url, year)
     team_map = self.get_current_website_team_owners_and_names(driver, current_league_url)
+    image_map = self.get_current_website_team_pictures(driver, current_league_url)
+    puts image_map
     begin
       ActiveRecord::Base.transaction do
         team_map.each do |k, v|
@@ -54,6 +71,7 @@ class FantasyTeam < ApplicationRecord
             raise "Missing owner: #{k}!"
           end
           fantasy_team = FantasyTeam.find_by(year: year, name: v)
+
           if fantasy_team == nil
             fantasy_team = FantasyTeam.find_by(year: year, owner: owner)
             if fantasy_team == nil
@@ -62,10 +80,12 @@ class FantasyTeam < ApplicationRecord
             puts "Team: #{fantasy_team.name} is getting a new name: #{v}"
             fantasy_team.update!(name: v)
           end
+          team_image = image_map[fantasy_team.name]
+          fantasy_team.update!(picture_url: team_image)
         end
       end
     end
-    puts "update_team_names_from_web passed"
+    puts "update_team_names_and_pictures_from_web passed"
   end
 
   def won_game?(week)

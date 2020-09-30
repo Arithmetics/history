@@ -7,7 +7,7 @@ json.player do
       json.extract! purchase, :id, :price, :position, :year
 
       json.fantasy_team do
-        json.extract! purchase.fantasy_team, :id, :name
+        json.extract! purchase.fantasy_team, :id, :name, :picture_url
       end
 
       json.owner do
@@ -32,7 +32,7 @@ json.player do
       json.extract! start, :id, :week, :position, :points, :year
 
       json.fantasy_team do
-        json.extract! start.fantasy_team, :name, :id
+        json.extract! start.fantasy_team, :name, :id, :picture_url
       end
 
       json.owner do

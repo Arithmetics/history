@@ -2,13 +2,13 @@ json.scheduled_games do
   json.array! @scheduled_games do |game|
     json.extract! game, :id, :week
     json.home_team do
-      json.extract! game.home_fantasy_team, :id, :name
+      json.extract! game.home_fantasy_team, :id, :name, :picture_url
       json.owner do
         json.extract! game.home_fantasy_team.owner, :id, :name
       end
     end
     json.away_team do
-      json.extract! game.away_fantasy_team, :id, :name
+      json.extract! game.away_fantasy_team, :id, :name, :picture_url
       json.owner do
         json.extract! game.away_fantasy_team.owner, :id, :name
       end
@@ -31,7 +31,7 @@ json.first_starts do
       json.extract! start.player, :id, :name, :picture_id
     end
     json.fantasy_team do
-      json.extract! start.fantasy_team, :id, :name
+      json.extract! start.fantasy_team, :id, :name, :picture_url
     end
   end
 end
@@ -40,14 +40,14 @@ json.playoff_odds do
   json.array! @playoff_odds do |odd|
     json.extract! odd, :id, :year, :week, :odds, :category
     json.fantasy_team do
-      json.extract! odd.fantasy_team, :id, :name
+      json.extract! odd.fantasy_team, :id, :name, :picture_url
     end
   end
 end
 
 json.standings do
   json.array! @standings do |fantasy_team|
-    json.extract! fantasy_team, :id, :name
+    json.extract! fantasy_team, :id, :name, :picture_url
     json.set! "wins", fantasy_team.season_wins
     json.set! "losses", fantasy_team.season_losses
     json.set! "points", fantasy_team.season_points
