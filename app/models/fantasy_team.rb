@@ -120,6 +120,22 @@ class FantasyTeam < ApplicationRecord
     return losses
   end
 
+  # weeks where finished in top 6
+  def top_six_wins
+    top_six_wins = 0
+    away_fantasy_games = self.away_fantasy_games.where(week: 1..13)
+    home_fantasy_games = self.home_fantasy_games.where(week: 1..13)
+
+    away_fantasy_games.each do |game|
+      (FantasyGame.where("home_score <= ?", game.away_score).where(year: self.year).count > 6) ? top_six_wins += 1 : nil
+    end
+
+    home_fantasy_games.each do |game|
+      (FantasyGame.where("away_score <= ?", game.home_score).where(year: self.year).count > 6) ? top_six_wins += 1 : nil
+    end
+    return top_six_wins
+  end
+
   def made_playoffs?
     if self.away_fantasy_games.where(week: 14..15).length > 0 || self.home_fantasy_games.where(week: 14..15).length > 0
       return true

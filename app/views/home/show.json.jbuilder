@@ -44,3 +44,16 @@ json.playoff_odds do
     end
   end
 end
+
+json.standings do
+  json.array! @standings do |fantasy_team|
+    json.extract! fantasy_team, :id, :name
+    json.set! "wins", fantasy_team.season_wins
+    json.set! "losses", fantasy_team.season_losses
+    json.set! "points", fantasy_team.season_points
+    json.set! "topSixFinshes", fantasy_team.top_six_wins
+    json.owner do
+      json.extract! fantasy_team.owner, :id, :name
+    end
+  end
+end
