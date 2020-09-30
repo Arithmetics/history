@@ -27,11 +27,11 @@ class PlayoffOdd < ApplicationRecord
         sim_home_score = game.home_fantasy_team.generate_random_score
         if sim_away_score > sim_home_score
           team_id_to_wins[game.away_fantasy_team.id] += 1
-          team_id_to_score[game.away_fantasy_team.id] += sim_away_score
         else
           team_id_to_wins[game.home_fantasy_team.id] += 1
-          team_id_to_score[game.home_fantasy_team.id] += sim_home_score
         end
+        team_id_to_score[game.away_fantasy_team.id] += sim_away_score
+        team_id_to_score[game.home_fantasy_team.id] += sim_home_score
       end
 
       rankings = team_id_to_wins.keys
