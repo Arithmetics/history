@@ -13,4 +13,8 @@ class HomeController < ApplicationController
 
     @standings = FantasyTeam.includes(owner: {}, away_fantasy_games: { away_fantasy_team: :owner, home_fantasy_team: :owner }, home_fantasy_games: { away_fantasy_team: :owner, home_fantasy_team: :owner }).where(year: current_year)
   end
+
+  def test
+    @user = current_user
+  end
 end

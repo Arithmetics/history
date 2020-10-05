@@ -62,16 +62,16 @@ namespace :data_additions do
   task new_reg_week: :environment do
     begin
       year = 2020
-      week = 3
+      week = 4
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
       # verify_current_week(driver, current_league_url, week)
       # Player.insert_new_players_from_file("#{Rails.root}/lib/assets/#{year}_week_#{week}_new_players.csv")
       # comment out if no new players
-      # Player.find_and_print_unknown_players_regular(driver, current_league_url, week)
+      Player.find_and_print_unknown_players_regular(driver, current_league_url, week)
       # will stop here if theres new players
-      Owner.changed_on_web?(driver, current_league_url)
-      FantasyTeam.update_team_names_and_pictures_from_web(driver, current_league_url, year)
+      # Owner.changed_on_web?(driver, current_league_url)
+      # FantasyTeam.update_team_names_and_pictures_from_web(driver, current_league_url, year)
       # FantasyGame.get_regular_season_fantasy_games(driver, current_league_url, year, week)
 
       # FantasyStart.get_starts_from_web_regular(driver, current_league_url, year, week)
