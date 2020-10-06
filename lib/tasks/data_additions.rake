@@ -48,8 +48,8 @@ namespace :data_additions do
       # new_player = Player.new(name: "James Robinson", birthdate: "1998-08-09", nfl_URL_name: "james-robinson-3", picture_id: "lxzbao36eeratekmnxeb")
       # new_player.save!
 
-      Purchase.insert_auction("#{Rails.root}/lib/assets/#{year}_final_auction.csv", year)
-      Ranking.insert_rankings_from_file("#{Rails.root}/lib/assets/#{year}_preseason_rankings.csv")
+      # Purchase.insert_auction("#{Rails.root}/lib/assets/#{year}_final_auction.csv", year)
+      # Ranking.insert_rankings_from_file("#{Rails.root}/lib/assets/#{year}_preseason_rankings.csv")
       # Player.update_all_season_stats
       # SeasonStat.calculate_all_dependent_columns
       puts "season has begun!"
