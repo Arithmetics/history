@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   resources :fantasy_teams
   resources :purchases
 
+  resources :users_management
+
   devise_for :users,
              path: "",
              path_names: {

@@ -25,6 +25,13 @@ class ApplicationController < ActionController::Base
     }, status: :bad_request
   end
 
+  protected
+
+  def authenticate_admin!
+    authenticate_user!
+    redirect_to "http://www.rubyonrails.org", status: :forbidden unless current_user.admin?
+  end
+
   private
 
   def json_request?

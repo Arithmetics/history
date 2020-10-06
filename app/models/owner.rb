@@ -5,6 +5,7 @@ class Owner < ApplicationRecord
   validates_uniqueness_of :name
   validates :name, presence: true
 
+  belongs_to :user
   has_many :fantasy_teams
   has_many :away_fantasy_games, through: :fantasy_teams
   has_many :home_fantasy_games, through: :fantasy_teams
