@@ -147,11 +147,19 @@ class FantasyTeam < ApplicationRecord
     home_fantasy_games = self.home_fantasy_games.where(week: 1..13)
 
     away_fantasy_games.each do |game|
-      (FantasyGame.where("home_score <= ?", game.away_score).where(year: self.year).count > 6) ? top_six_wins += 1 : nil
+      away_teams_beaten = FantasyGame.where("away_score < ?", game.away_score).where(year: self.year, week: game.week).count
+      home_teams_beaten = FantasyGame.where("home_score < ?", game.away_score).where(year: self.year, week: game.week).count
+      if (away_teams_beaten + home_teams_beaten) > 6
+        top_six_wins += 1
+      end
     end
 
     home_fantasy_games.each do |game|
-      (FantasyGame.where("away_score <= ?", game.home_score).where(year: self.year).count > 6) ? top_six_wins += 1 : nil
+      away_teams_beaten = FantasyGame.where("away_score < ?", game.home_score).where(year: self.year, week: game.week).count
+      home_teams_beaten = FantasyGame.where("home_score < ?", game.home_score).where(year: self.year, week: game.week).count
+      if (away_teams_beaten + home_teams_beaten) > 6
+        top_six_wins += 1
+      end
     end
     return top_six_wins
   end
