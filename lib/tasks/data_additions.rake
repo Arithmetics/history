@@ -116,9 +116,9 @@ namespace :data_additions do
 
   desc "temp test"
   task debug_run: :environment do
-    year = 2020
-    week = 4
-    Player.insert_new_players_from_file("#{Rails.root}/lib/assets/#{year}_week_#{week}_new_players.csv")
+    FantasyTeam.all.each do |team|
+      puts "#{team.owner.name} - #{team.name} - #{team.breakdown_wins_by_week(4)}"
+    end
   end
 
   desc "2020_week_4_fix"
