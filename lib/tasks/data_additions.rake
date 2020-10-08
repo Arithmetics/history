@@ -48,8 +48,8 @@ namespace :data_additions do
       # new_player = Player.new(name: "James Robinson", birthdate: "1998-08-09", nfl_URL_name: "james-robinson-3", picture_id: "lxzbao36eeratekmnxeb")
       # new_player.save!
 
-      Purchase.insert_auction("#{Rails.root}/lib/assets/#{year}_final_auction.csv", year)
-      Ranking.insert_rankings_from_file("#{Rails.root}/lib/assets/#{year}_preseason_rankings.csv")
+      # Purchase.insert_auction("#{Rails.root}/lib/assets/#{year}_final_auction.csv", year)
+      # Ranking.insert_rankings_from_file("#{Rails.root}/lib/assets/#{year}_preseason_rankings.csv")
       # Player.update_all_season_stats
       # SeasonStat.calculate_all_dependent_columns
       puts "season has begun!"
@@ -65,20 +65,20 @@ namespace :data_additions do
       week = 4
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
-      # verify_current_week(driver, current_league_url, week)
-      # Player.insert_new_players_from_file("#{Rails.root}/lib/assets/#{year}_week_#{week}_new_players.csv")
+      verify_current_week(driver, current_league_url, week)
       # comment out if no new players
+      Player.insert_new_players_from_file("#{Rails.root}/lib/assets/#{year}_week_#{week}_new_players.csv")
       Player.find_and_print_unknown_players_regular(driver, current_league_url, week)
       # will stop here if theres new players
-      # Owner.changed_on_web?(driver, current_league_url)
-      # FantasyTeam.update_team_names_and_pictures_from_web(driver, current_league_url, year)
-      # FantasyGame.get_regular_season_fantasy_games(driver, current_league_url, year, week)
+      Owner.changed_on_web?(driver, current_league_url)
+      FantasyTeam.update_team_names_and_pictures_from_web(driver, current_league_url, year)
+      FantasyGame.get_regular_season_fantasy_games(driver, current_league_url, year, week)
 
-      # FantasyStart.get_starts_from_web_regular(driver, current_league_url, year, week)
-      # Player.update_all_season_stats
-      # SeasonStat.calculate_all_dependent_columns
-      # ScheduledFantasyGame.remove_last_played_week
-      # PlayoffOdd.save_current_playoff_odds(week, 1000)
+      FantasyStart.get_starts_from_web_regular(driver, current_league_url, year, week)
+      Player.update_all_season_stats
+      SeasonStat.calculate_all_dependent_columns
+      ScheduledFantasyGame.remove_last_played_week
+      PlayoffOdd.save_current_playoff_odds(week, 1000)
     rescue
       raise "error adding a new league week"
     end
@@ -116,6 +116,29 @@ namespace :data_additions do
 
   desc "temp test"
   task debug_run: :environment do
-    PlayoffOdd.save_current_playoff_odds(3, 100)
+    FantasyTeam.all.each do |team|
+      puts "#{team.owner.name} - #{team.name} - #{team.breakdown_wins_by_week(4)}"
+    end
+  end
+
+  desc "2020_week_4_fix"
+  task fix_2020_4: :environment do
+    ActiveRecord::Base.transaction do
+      filepath = "#{Rails.root}/lib/assets/birthday_url_fix.csv"
+      CSV.foreach(filepath, :headers => true) do |row|
+        player_name = row["name"]
+        player_id = row["profile_id"].to_i
+        birthdate = Date.strptime(row["birthdate"], "%m/%d/%Y")
+        picture_id = row["picture_id"]
+        nfl_URL_name = row["nfl_URL_name"]
+
+        player = Player.find(player_id)
+        player.birthdate = birthdate
+        player.nfl_URL_name = nfl_URL_name
+        puts "Player updated: #{player.name}"
+        player.save!
+      end
+    end
+    puts "2020_week_4_fix passed"
   end
 end

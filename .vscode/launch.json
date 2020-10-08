@@ -66,6 +66,15 @@
       "program": "/usr/local/bin/rake",
       "useBundler": true,
       "args": ["data_additions:debug_run"]
+    },
+    {
+      "name": "Rake data_additions:2020_4_fix",
+      "type": "Ruby",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "program": "/usr/local/bin/rake",
+      "useBundler": true,
+      "args": ["data_additions:fix_2020_4"]
     }
   ]
 }

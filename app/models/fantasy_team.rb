@@ -147,13 +147,38 @@ class FantasyTeam < ApplicationRecord
     home_fantasy_games = self.home_fantasy_games.where(week: 1..13)
 
     away_fantasy_games.each do |game|
-      (FantasyGame.where("home_score <= ?", game.away_score).where(year: self.year).count > 6) ? top_six_wins += 1 : nil
+      away_teams_beaten = FantasyGame.where("away_score < ?", game.away_score).where(year: self.year, week: game.week).count
+      home_teams_beaten = FantasyGame.where("home_score < ?", game.away_score).where(year: self.year, week: game.week).count
+      if (away_teams_beaten + home_teams_beaten) > 6
+        top_six_wins += 1
+      end
     end
 
     home_fantasy_games.each do |game|
-      (FantasyGame.where("away_score <= ?", game.home_score).where(year: self.year).count > 6) ? top_six_wins += 1 : nil
+      away_teams_beaten = FantasyGame.where("away_score < ?", game.home_score).where(year: self.year, week: game.week).count
+      home_teams_beaten = FantasyGame.where("home_score < ?", game.home_score).where(year: self.year, week: game.week).count
+      if (away_teams_beaten + home_teams_beaten) > 6
+        top_six_wins += 1
+      end
     end
     return top_six_wins
+  end
+
+  def breakdown_wins_by_week(week)
+    breakdown_wins = 0
+    away_fantasy_games = self.away_fantasy_games.where(week: 1..week)
+    home_fantasy_games = self.home_fantasy_games.where(week: 1..week)
+
+    away_fantasy_games.each do |game|
+      breakdown_wins += FantasyGame.where("away_score < ?", game.away_score).where(year: self.year, week: game.week).count
+      breakdown_wins += FantasyGame.where("home_score < ?", game.away_score).where(year: self.year, week: game.week).count
+    end
+
+    home_fantasy_games.each do |game|
+      breakdown_wins += FantasyGame.where("away_score < ?", game.home_score).where(year: self.year, week: game.week).count
+      breakdown_wins += FantasyGame.where("home_score < ?", game.home_score).where(year: self.year, week: game.week).count
+    end
+    return breakdown_wins
   end
 
   def made_playoffs?
