@@ -62,7 +62,6 @@ class FantasyTeam < ApplicationRecord
   def self.update_team_names_and_pictures_from_web(driver, current_league_url, year)
     team_map = self.get_current_website_team_owners_and_names(driver, current_league_url)
     image_map = self.get_current_website_team_pictures(driver, current_league_url)
-    puts image_map
     begin
       ActiveRecord::Base.transaction do
         team_map.each do |k, v|

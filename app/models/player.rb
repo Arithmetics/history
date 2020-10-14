@@ -175,8 +175,10 @@ class Player < ApplicationRecord
                 season_start = Date.parse("#{nfl_season.year}-09-01")
                 birthdate = player.birthdate
                 nfl_season.age_at_season = ((season_start - birthdate) / 365).to_f.round(2)
-                puts "adding new season for #{nfl_season.player.name}, year: #{nfl_season.year}, games played: #{nfl_season.games_played}"
-                nfl_season.save!
+                if nfl_season.games_played != 0
+                  puts "adding new season for #{nfl_season.player.name}, year: #{nfl_season.year}, games played: #{nfl_season.games_played}"
+                  nfl_season.save!
+                end
               end
             end
           end
@@ -206,7 +208,6 @@ class Player < ApplicationRecord
       box = doc.css("#teamMatchupBoxScore")
       left_roster = box.css(".teamWrap-1")
       all_player_links = left_roster.css(".playerNameFirstInitialLastName").css("a")
-      puts all_player_links
 
       all_player_links.each do |link|
         href = link["href"]
