@@ -197,6 +197,7 @@ class Player < ApplicationRecord
   def find_and_print_unknown_players_playoffs(driver, current_league_url, week)
     team_ids = FantasyGame.determine_playoff_week_teams(driver, current_league_url, week)
     self.find_and_print_unknown_players(driver, current_league_url, week, team_ids)
+    puts "find_and_print_unknown_players playoffs passed"
   end
 
   def self.find_and_print_unknown_players(driver, current_league_url, week, team_numbers)
@@ -228,8 +229,6 @@ class Player < ApplicationRecord
     if throw_error
       throw("Unknown players found, please fix before proceeding")
     end
-
-    puts "find_and_print_unknown_players_playoffs passed"
   end
 
   ## DEPRECATED: needs to be updated, will need to see how this will be navigatable to (guess the naem? arg!!!!)
