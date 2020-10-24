@@ -5,6 +5,16 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Rails server",
+      "type": "Ruby",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "program": "${workspaceRoot}/bin/rails",
+      "useBundler": true,
+      "args": ["server", "-p", "8080"],
+      "env": { "DEVISE_SECRET_KEY": "SUPERSECRET" }
+    },
+    {
       "name": "Rake data_additions:get_auction_ids",
       "type": "Ruby",
       "request": "launch",
