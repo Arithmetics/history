@@ -62,7 +62,7 @@ namespace :data_additions do
   task new_reg_week: :environment do
     begin
       year = 2020
-      week = 6
+      week = 7
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
       # verify_current_week(driver, current_league_url, week)
