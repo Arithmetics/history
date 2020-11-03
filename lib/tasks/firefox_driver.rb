@@ -9,16 +9,17 @@ def driver_start(current_league_url)
   driver = Selenium::WebDriver.for :firefox
   driver.manage.timeouts.implicit_wait = 20
   driver.navigate.to "https://www.nfl.com/account/sign-in"
-  username = driver.find_element(xpath: "/html/body/div[4]/main/div/div/div[2]/div/form/div[1]/div[1]/input")
-  password = driver.find_element(xpath: "/html/body/div[4]/main/div/div/div[2]/div/form/div[1]/div[2]/input")
-  submit = driver.find_element(xpath: "/html/body/div[4]/main/div/div/div[2]/div/form/div[1]/div[4]/input")
-  sleep(3)
-  username.send_keys("brock.m.tillotson@gmail.com")
-  password.send_keys(ENV["NFL_PASSWORD"])
-  sleep(3)
-  submit.click()
+  # # username = driver.find_element(xpath: "/html/body/div[4]/main/div/div/div[2]/div/form/div[1]/div[1]/input")
+  # username = driver.find_element(xpath: "/html/body/div[3]/div[3]/div/div[1]/div/div/div[2]/div/form/div[1]/div[1]/input")
+  # password = driver.find_element(xpath: "/html/body/div[3]/div[3]/div/div[1]/div/div/div[2]/div/form/div[1]/div[2]/input")
+  # submit = driver.find_element(xpath: "/html/body/div[3]/div[3]/div/div[1]/div/div/div[2]/div/form/div[1]/div[4]/input")
+  # sleep(3)
+  # username.send_keys("brock.m.tillotson@gmail.com")
+  # password.send_keys(ENV["NFL_PASSWORD"])
+  # sleep(3)
+  # submit.click()
   # driver.find_element(xpath: "/html/body/div[4]/header/div/nav[2]/ul/li[4]/a/span/svg/use//svg/path")
-  sleep(10)
+  sleep(20)
   puts "handing off driver"
   return driver
 end
