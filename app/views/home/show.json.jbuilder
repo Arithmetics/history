@@ -38,7 +38,7 @@ end
 
 json.playoff_odds do
   json.array! @playoff_odds do |odd|
-    json.extract! odd, :id, :year, :week, :odds, :category
+    json.extract! odd, :id, :year, :week, :odds, :category, :odds_with_win, :odds_with_loss
     json.fantasy_team do
       json.extract! odd.fantasy_team, :id, :name, :picture_url
     end

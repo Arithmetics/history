@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_05_235816) do
+ActiveRecord::Schema.define(version: 2020_11_14_063242) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -83,6 +83,8 @@ ActiveRecord::Schema.define(version: 2020_10_05_235816) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "year"
+    t.float "odds_with_win", default: 0.0
+    t.float "odds_with_loss", default: 0.0
     t.index ["fantasy_team_id"], name: "index_playoff_odds_on_fantasy_team_id"
   end
 

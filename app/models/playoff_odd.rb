@@ -22,6 +22,8 @@ class PlayoffOdd < ApplicationRecord
     times_get_bye_as_loser = times_made_playoffs_as_loser.clone
     times_win_championship_as_loser = times_made_playoffs_as_loser.clone
 
+    team_id_to_times_win_first_week = team_id_to_wins_template.clone.map { |k, v| [k, 0] }.to_h
+
     num_sims.times do
       run_num += 1
       puts "Running odds sim #{run_num}/#{num_sims}"
@@ -29,18 +31,24 @@ class PlayoffOdd < ApplicationRecord
       team_id_to_score = team_id_to_score_template.clone
       team_id_to_did_win_first_week = team_id_to_wins_template.clone.map { |k, v| [k, false] }.to_h
 
+      first_week_num = 0
       remaining_regular_season_games.each_with_index do |game, index|
+        if index === 0
+          first_week_num = game.week
+        end
         sim_away_score = game.away_fantasy_team.generate_random_score
         sim_home_score = game.home_fantasy_team.generate_random_score
         if sim_away_score > sim_home_score
           team_id_to_wins[game.away_fantasy_team.id] += 1
-          if index === 0 #first simed game
+          if first_week_num === game.week #first simed game
             team_id_to_did_win_first_week[game.away_fantasy_team.id] = true
+            team_id_to_times_win_first_week[game.away_fantasy_team.id] += 1
           end
         else
           team_id_to_wins[game.home_fantasy_team.id] += 1
-          if index === 0 #first simed game
+          if first_week_num === game.week #first simed game
             team_id_to_did_win_first_week[game.home_fantasy_team.id] = true
+            team_id_to_times_win_first_week[game.home_fantasy_team.id] += 1
           end
         end
         team_id_to_score[game.away_fantasy_team.id] += sim_away_score
@@ -96,9 +104,9 @@ class PlayoffOdd < ApplicationRecord
 
     begin
       ActiveRecord::Base.transaction do
-        save_odds("make_playoffs", num_sims, total_times_made_playoffs, current_week)
-        save_odds("get_bye", num_sims, total_times_get_bye, current_week)
-        save_odds("win_championship", num_sims, total_times_win_championship, current_week)
+        save_odds("make_playoffs", num_sims, total_times_made_playoffs, times_made_playoffs_as_winner, times_made_playoffs_as_loser, team_id_to_times_win_first_week, current_week)
+        save_odds("get_bye", num_sims, total_times_get_bye, times_get_bye_as_winner, times_get_bye_as_loser, team_id_to_times_win_first_week, current_week)
+        save_odds("win_championship", num_sims, total_times_win_championship, times_win_championship_as_winner, times_win_championship_as_loser, team_id_to_times_win_first_week, current_week)
       end
     end
   end
@@ -147,14 +155,16 @@ class PlayoffOdd < ApplicationRecord
     return sc_winner_one_id
   end
 
-  def self.save_odds(category_of_odd, num_sims, times_made_playoffs, current_week)
-    times_made_playoffs.each do |team_id, times|
+  def self.save_odds(category_of_odd, num_sims, total_times, total_times_as_winner, total_times_as_loser, team_id_to_times_win_first_week, current_week)
+    total_times.each do |team_id, times|
       new_odds = self.new()
       new_odds.fantasy_team_id = team_id
       new_odds.year = FantasyTeam.maximum(:year)
       new_odds.week = current_week
       new_odds.category = category_of_odd
       new_odds.odds = (times.to_f / num_sims.to_f).round(3)
+      new_odds.odds_with_win = ((total_times_as_winner[team_id]).to_f / team_id_to_times_win_first_week[team_id]).round(3)
+      new_odds.odds_with_loss = ((total_times_as_loser[team_id]).to_f / (num_sims.to_f - team_id_to_times_win_first_week[team_id])).round(3)
       new_odds.save!
     end
   end
