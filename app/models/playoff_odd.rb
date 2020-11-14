@@ -12,23 +12,36 @@ class PlayoffOdd < ApplicationRecord
 
     remaining_regular_season_games = ScheduledFantasyGame.includes(:home_fantasy_team, :away_fantasy_team).all
 
-    times_made_playoffs = team_id_to_wins_template.clone.map { |k, v| [k, 0] }.to_h
-    times_get_bye = times_made_playoffs.clone
-    times_win_championship = times_made_playoffs.clone
+    # times made playoffs when winning in the current week
+    times_made_playoffs_as_winner = team_id_to_wins_template.clone.map { |k, v| [k, 0] }.to_h
+    times_get_bye_as_winner = times_made_playoffs_as_winner.clone
+    times_win_championship_as_winner = times_made_playoffs_as_winner.clone
+
+    # times made playoffs when losing in the current week
+    times_made_playoffs_as_loser = team_id_to_wins_template.clone.map { |k, v| [k, 0] }.to_h
+    times_get_bye_as_loser = times_made_playoffs_as_loser.clone
+    times_win_championship_as_loser = times_made_playoffs_as_loser.clone
 
     num_sims.times do
       run_num += 1
       puts "Running odds sim #{run_num}/#{num_sims}"
       team_id_to_wins = team_id_to_wins_template.clone
       team_id_to_score = team_id_to_score_template.clone
+      team_id_to_did_win_first_week = team_id_to_wins_template.clone.map { |k, v| [k, false] }.to_h
 
-      remaining_regular_season_games.each do |game|
+      remaining_regular_season_games.each_with_index do |game, index|
         sim_away_score = game.away_fantasy_team.generate_random_score
         sim_home_score = game.home_fantasy_team.generate_random_score
         if sim_away_score > sim_home_score
           team_id_to_wins[game.away_fantasy_team.id] += 1
+          if index === 0 #first simed game
+            team_id_to_did_win_first_week[game.away_fantasy_team.id] = true
+          end
         else
           team_id_to_wins[game.home_fantasy_team.id] += 1
+          if index === 0 #first simed game
+            team_id_to_did_win_first_week[game.home_fantasy_team.id] = true
+          end
         end
         team_id_to_score[game.away_fantasy_team.id] += sim_away_score
         team_id_to_score[game.home_fantasy_team.id] += sim_home_score
@@ -36,16 +49,56 @@ class PlayoffOdd < ApplicationRecord
 
       rankings = team_id_to_wins.keys
       rankings.sort_by! { |id| [team_id_to_wins[id], team_id_to_score[id]] }.reverse
-      rankings[6..11].each { |team_id| times_made_playoffs[team_id] += 1 }
-      rankings[10..11].each { |team_id| times_get_bye[team_id] += 1 }
+
+      rankings[6..11].each do |team_id|
+        did_win_first_week = team_id_to_did_win_first_week[team_id]
+        if did_win_first_week
+          times_made_playoffs_as_winner[team_id] += 1
+        else
+          times_made_playoffs_as_loser[team_id] += 1
+        end
+      end
+
+      rankings[10..11].each do |team_id|
+        did_win_first_week = team_id_to_did_win_first_week[team_id]
+
+        if did_win_first_week
+          times_get_bye_as_winner[team_id] += 1
+        else
+          times_get_bye_as_loser[team_id] += 1
+        end
+      end
+
       championship_team_id = self.get_champion_from_sim(rankings[6..11])
-      times_win_championship[championship_team_id] += 1
+
+      did_champ_win_first_week = team_id_to_did_win_first_week[championship_team_id]
+      if did_champ_win_first_week
+        times_win_championship_as_winner[championship_team_id] += 1
+      else
+        times_win_championship_as_loser[championship_team_id] += 1
+      end
     end
+
+    total_times_made_playoffs = {}
+    times_made_playoffs_as_winner.each do |k, v|
+      total_times_made_playoffs[k] = times_made_playoffs_as_winner[k] + times_made_playoffs_as_loser[k]
+    end
+
+    total_times_get_bye = {}
+    times_get_bye_as_winner.each do |k, v|
+      total_times_get_bye[k] = times_get_bye_as_winner[k] + times_get_bye_as_loser[k]
+    end
+
+    total_times_win_championship = {}
+    times_win_championship_as_winner.each do |k, v|
+      total_times_win_championship[k] = times_win_championship_as_winner[k] + times_win_championship_as_loser[k]
+    end
+
     begin
       ActiveRecord::Base.transaction do
-        save_odds("make_playoffs", num_sims, times_made_playoffs, current_week)
-        save_odds("get_bye", num_sims, times_get_bye, current_week)
-        save_odds("win_championship", num_sims, times_win_championship, current_week)
+        save_odds("make_playoffs", num_sims, total_times_made_playoffs, current_week)
+        save_odds("get_bye", num_sims, total_times_get_bye, current_week)
+        save_odds("win_championship", num_sims, total_times_win_championship, current_week)
       end
     end
   end

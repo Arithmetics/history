@@ -114,31 +114,8 @@ namespace :data_additions do
     puts "DONE WITH MEGA STAT UPDATE"
   end
 
-  desc "temp test"
+  desc "debub run"
   task debug_run: :environment do
-    FantasyTeam.all.each do |team|
-      puts "#{team.owner.name} - #{team.name} - #{team.breakdown_wins_by_week(4)}"
-    end
-  end
-
-  desc "2020_week_4_fix"
-  task fix_2020_4: :environment do
-    ActiveRecord::Base.transaction do
-      filepath = "#{Rails.root}/lib/assets/birthday_url_fix.csv"
-      CSV.foreach(filepath, :headers => true) do |row|
-        player_name = row["name"]
-        player_id = row["profile_id"].to_i
-        birthdate = Date.strptime(row["birthdate"], "%m/%d/%Y")
-        picture_id = row["picture_id"]
-        nfl_URL_name = row["nfl_URL_name"]
-
-        player = Player.find(player_id)
-        player.birthdate = birthdate
-        player.nfl_URL_name = nfl_URL_name
-        puts "Player updated: #{player.name}"
-        player.save!
-      end
-    end
-    puts "2020_week_4_fix passed"
+    PlayoffOdd.save_current_playoff_odds(9, 1000)
   end
 end
