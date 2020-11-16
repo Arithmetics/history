@@ -1,5 +1,5 @@
 class PlayersController < ApplicationController
-  before_action :authenticate_admin!, only: [:create, :update, :delete]
+  before_action :authenticate_admin!, only: [:create, :update, :destroy]
 
   def index
     @players = Player.includes(fantasy_starts: { fantasy_team: :owner }, purchases: { fantasy_team: :owner }, season_stats: {}, rankings: {}).all
