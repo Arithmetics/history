@@ -67,7 +67,7 @@ namespace :data_additions do
       driver = driver_start(current_league_url)
       # verify_current_week(driver, current_league_url, week)
       # comment out if no new players
-      # Player.insert_new_players_from_file("#{Rails.root}/lib/assets/#{year}_week_#{week}_new_players.csv")
+      Player.insert_new_players_from_file("#{Rails.root}/lib/assets/#{year}_week_#{week}_new_players.csv")
       Player.find_and_print_unknown_players_regular(driver, current_league_url, week)
       # will stop here if theres new players
       Owner.changed_on_web?(driver, current_league_url)
