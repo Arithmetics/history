@@ -28,6 +28,8 @@ class ApplicationController < ActionController::Base
   protected
 
   def authenticate_admin!
+    puts current_user
+    puts current_user.admin?
     authenticate_user!
     redirect_to "http://www.rubyonrails.org", status: :forbidden unless current_user.admin?
   end
