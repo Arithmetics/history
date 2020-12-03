@@ -62,23 +62,23 @@ namespace :data_additions do
   task new_reg_week: :environment do
     begin
       year = 2020
-      week = 11
-      # current_league_url = "https://fantasy.nfl.com/league/400302"
-      # driver = driver_start(current_league_url)
-      # # verify_current_week(driver, current_league_url, week)
-      # # comment out if no new players
+      week = 12 # the week that just completed
+      current_league_url = "https://fantasy.nfl.com/league/400302"
+      driver = driver_start(current_league_url)
+      # verify_current_week(driver, current_league_url, week)
+      # comment out if no new players
       # Player.insert_new_players_from_file("#{Rails.root}/lib/assets/#{year}_week_#{week}_new_players.csv")
-      # Player.find_and_print_unknown_players_regular(driver, current_league_url, week)
-      # # will stop here if theres new players
-      # Owner.changed_on_web?(driver, current_league_url)
-      # FantasyTeam.update_team_names_and_pictures_from_web(driver, current_league_url, year)
-      # FantasyGame.get_regular_season_fantasy_games(driver, current_league_url, year, week)
+      Player.find_and_print_unknown_players_regular(driver, current_league_url, week)
+      # will stop here if theres new players
+      Owner.changed_on_web?(driver, current_league_url)
+      FantasyTeam.update_team_names_and_pictures_from_web(driver, current_league_url, year)
+      FantasyGame.get_regular_season_fantasy_games(driver, current_league_url, year, week)
 
-      # FantasyStart.get_starts_from_web_regular(driver, current_league_url, year, week)
-      # Player.update_all_season_stats
-      # SeasonStat.calculate_all_dependent_columns
-      # ScheduledFantasyGame.remove_last_played_week
-      PlayoffOdd.save_current_playoff_odds(week, 1000)
+      FantasyStart.get_starts_from_web_regular(driver, current_league_url, year, week)
+      Player.update_all_season_stats
+      SeasonStat.calculate_all_dependent_columns
+      ScheduledFantasyGame.remove_last_played_week
+      PlayoffOdd.save_current_playoff_odds(week, 10000)
     rescue
       raise "error adding a new league week"
     end
@@ -114,8 +114,8 @@ namespace :data_additions do
     puts "DONE WITH MEGA STAT UPDATE"
   end
 
-  desc "debub run"
+  desc "debug run"
   task debug_run: :environment do
-    PlayoffOdd.save_current_playoff_odds(9, 1000)
+    PlayoffOdd.save_current_playoff_odds(12, 1000)
   end
 end
