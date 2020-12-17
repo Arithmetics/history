@@ -15,10 +15,11 @@ class Owner < ApplicationRecord
   def self.changed_on_web?(driver, current_league_url)
     sleep(2)
     driver.navigate.to "#{current_league_url}/owners"
-    sleep(2)
+    sleep(4)
     driver.navigate.to "#{current_league_url}/owners"
     doc = Nokogiri::HTML(driver.page_source)
     page_owners = doc.css(".userName")
+    puts page_owners
     owner_count = 0
     page_owners.each do |owner|
       x = Owner.find_by_name(owner.text)

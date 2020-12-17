@@ -87,14 +87,18 @@ namespace :data_additions do
   desc "add a new playoff week"
   task new_playoff_week: :environment do
     begin
-      year = 2019
-      week = 16
+      year = 2020
+      week = 14
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
-      Owner.check_if_changed_on_web(driver, current_league_url)
+      #
+      Owner.changed_on_web?(driver, current_league_url)
+      #
       FantasyTeam.update_team_names_and_pictures_from_web(driver, current_league_url, year)
-      FantasyGame.get_playoff_fantasy_games(driver, current_league_url, year, week)
+      #
       Player.find_and_print_unknown_players_playoffs(driver, current_league_url, week)
+      #
+      FantasyGame.get_playoff_fantasy_games(driver, current_league_url, year, week)
       FantasyStart.get_starts_from_web_playoffs(driver, current_league_url, year, week)
       Player.update_all_season_stats
       SeasonStat.calculate_all_dependent_columns

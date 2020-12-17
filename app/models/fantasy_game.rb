@@ -61,6 +61,12 @@ class FantasyGame < ApplicationRecord
   def self.determine_playoff_week_team_ids(driver, current_league_url, week)
     playoff_week_team_ids = []
     driver.navigate.to current_league_url
+    sleep(2)
+    driver.navigate.to current_league_url
+    sleep(5)
+    playoff_bracket_button = driver.find_element(:id, "playoffsItem")
+    playoff_bracket_button.click()
+    sleep(2)
     doc = Nokogiri::HTML(driver.page_source)
     if week == 14
       pw = ".pw-0"

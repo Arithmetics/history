@@ -194,8 +194,8 @@ class Player < ApplicationRecord
     puts "find_and_print_unknown_players_regular passed"
   end
 
-  def find_and_print_unknown_players_playoffs(driver, current_league_url, week)
-    team_ids = FantasyGame.determine_playoff_week_teams(driver, current_league_url, week)
+  def self.find_and_print_unknown_players_playoffs(driver, current_league_url, week)
+    team_ids = FantasyGame.determine_playoff_week_team_ids(driver, current_league_url, week)
     self.find_and_print_unknown_players(driver, current_league_url, week, team_ids)
     puts "find_and_print_unknown_players playoffs passed"
   end
