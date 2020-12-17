@@ -93,6 +93,63 @@ class FantasyGame < ApplicationRecord
 
     return playoff_week_team_ids
   end
+
+  def self.grade_season_games(year)
+    puts "grading season #{year}"
+    scores = []
+    FantasyGame.where(year: year).all.select(:home_score).each { |h| scores.push(h.home_score) }
+    FantasyGame.where(year: year).all.select(:away_score).each { |h| scores.push(h.away_score) }
+
+    average = scores.inject(0) { |accum, i| accum + i } / scores.length.to_f
+
+    std_dev = Math.sqrt(scores.inject(0) { |accum, i| accum + (i - average) ** 2 } / (scores.length() - 1).to_f)
+
+    self.where(year: year).find_each do |game|
+      diff_from_avg_home = game.home_score - average
+      number_of_std_devs_home = diff_from_avg_home / std_dev
+
+      diff_from_avg_away = game.away_score - average
+      number_of_std_devs_away = diff_from_avg_away / std_dev
+
+      home_grade = self.convert_to_letter_grade(number_of_std_devs_home)
+      away_grade = self.convert_to_letter_grade(number_of_std_devs_away)
+
+      game.update_attributes(home_grade: home_grade, away_grade: away_grade)
+    end
+    puts "done grading"
+  end
+
+  def self.convert_to_letter_grade(number_of_std_devs)
+    if number_of_std_devs < -2.0
+      return "F"
+    elsif number_of_std_devs < -1.7
+      return "D-"
+    elsif number_of_std_devs < -1.3
+      return "D"
+    elsif number_of_std_devs < -1.0
+      return "D+"
+    elsif number_of_std_devs < -0.7
+      return "C-"
+    elsif number_of_std_devs < -0.3
+      return "C"
+    elsif number_of_std_devs < 0.0
+      return "C+"
+    elsif number_of_std_devs < 0.3
+      return "B-"
+    elsif number_of_std_devs < 0.7
+      return "B"
+    elsif number_of_std_devs < 1.0
+      return "B+"
+    elsif number_of_std_devs < 1.3
+      return "A-"
+    elsif number_of_std_devs < 1.7
+      return "A"
+    elsif number_of_std_devs < 2
+      return "A+"
+    else
+      return "S"
+    end
+  end
   ####
 
 end
