@@ -57,3 +57,21 @@ json.standings do
     end
   end
 end
+
+json.last_weeks_games do
+  json.array! @last_weeks_games do |game|
+    json.extract! game, :id, :week, :home_score, :away_score, :home_grade, :away_grade
+    json.home_team do
+      json.extract! game.home_fantasy_team, :id, :name, :picture_url
+      json.owner do
+        json.extract! game.home_fantasy_team.owner, :id, :name
+      end
+    end
+    json.away_team do
+      json.extract! game.away_fantasy_team, :id, :name, :picture_url
+      json.owner do
+        json.extract! game.away_fantasy_team.owner, :id, :name
+      end
+    end
+  end
+end

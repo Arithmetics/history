@@ -120,6 +120,15 @@ namespace :data_additions do
 
   desc "debug run"
   task debug_run: :environment do
-    PlayoffOdd.save_current_playoff_odds(12, 1000)
+    FantasyGame.grade_season_games(2020)
+    FantasyGame.grade_season_games(2019)
+    FantasyGame.grade_season_games(2018)
+    FantasyGame.grade_season_games(2017)
+    FantasyGame.grade_season_games(2016)
+    FantasyGame.grade_season_games(2015)
+    FantasyGame.grade_season_games(2014)
+    FantasyGame.grade_season_games(2013)
+    FantasyGame.grade_season_games(2012)
+    FantasyGame.grade_season_games(2011)
   end
 end

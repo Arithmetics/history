@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_14_063242) do
+ActiveRecord::Schema.define(version: 2020_12_17_054808) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,8 @@ ActiveRecord::Schema.define(version: 2020_11_14_063242) do
     t.float "home_score"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "home_grade"
+    t.string "away_grade"
     t.index ["away_fantasy_team_id"], name: "index_fantasy_games_on_away_fantasy_team_id"
     t.index ["home_fantasy_team_id"], name: "index_fantasy_games_on_home_fantasy_team_id"
   end

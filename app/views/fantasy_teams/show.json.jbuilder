@@ -12,9 +12,9 @@ json.fantasy_team do
 
   json.fantasy_games do
     json.array! all_fantasy_games.sort { |a, b| a.week <=> b.week } do |game|
-      json.extract! game, :id, :away_score, :home_score, :week
+      json.extract! game, :id, :away_score, :home_score, :week, :away_grade, :home_grade
       json.home_team do
-        json.extract! game.home_fantasy_team, :id, :name
+        json.extract! game.home_fantasy_team, :id, :name, :picture_url
         json.fantasy_starts do
           game.home_fantasy_team.fantasy_starts.group_by(&:week).each do |week, starts|
             json.set! week do
@@ -27,7 +27,7 @@ json.fantasy_team do
         end
       end
       json.away_team do
-        json.extract! game.away_fantasy_team, :id, :name
+        json.extract! game.away_fantasy_team, :id, :name, :picture_url
         json.fantasy_starts do
           game.away_fantasy_team.fantasy_starts.group_by(&:week).each do |week, starts|
             json.set! week do
