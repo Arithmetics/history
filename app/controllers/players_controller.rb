@@ -2,7 +2,7 @@ class PlayersController < ApplicationController
   before_action :authenticate_admin!, only: [:create, :update, :destroy]
 
   def index
-    @players = Player.includes(fantasy_starts: { fantasy_team: :owner }, purchases: { fantasy_team: :owner }, season_stats: {}, rankings: {}).all
+    @players = Player.includes(fantasy_starts: { fantasy_team: { owner: {}, home_championship_games: {}, away_championship_games: {}  } }, purchases: { fantasy_team: :owner }, season_stats: {}, rankings: {}).all
   end
 
   def show

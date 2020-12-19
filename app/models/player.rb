@@ -36,7 +36,7 @@ class Player < ApplicationRecord
         if start.week == 16
           finals_points += start.points
 
-          if start.fantasy_team.won_game?(start.week)
+          if start.fantasy_team.won_championship?
             championships += 1
           end
         end

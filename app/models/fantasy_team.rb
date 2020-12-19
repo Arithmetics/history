@@ -4,8 +4,11 @@ class FantasyTeam < ApplicationRecord
   belongs_to :owner
   has_many :fantasy_starts
   has_many :purchases
+
   has_many :away_fantasy_games, :class_name => "FantasyGame", :foreign_key => "away_fantasy_team_id"
   has_many :home_fantasy_games, :class_name => "FantasyGame", :foreign_key => "home_fantasy_team_id"
+  has_many :home_championship_games, -> { where(week: 16) }, :class_name => "FantasyGame", :foreign_key => "home_fantasy_team_id"
+  has_many :away_championship_games, -> { where(week: 16) }, :class_name => "FantasyGame", :foreign_key => "away_fantasy_team_id"
 
   validates :name, presence: true
   validates :year, presence: true
@@ -195,9 +198,9 @@ class FantasyTeam < ApplicationRecord
   end
 
   def won_championship?
-    away_finals = self.away_fantasy_games.where(week: 16)
+    away_finals = self.away_championship_games
 
-    home_finals = home_fantasy_games.where(week: 16)
+    home_finals = self.home_championship_games
 
     away_finals.each do |final|
       if final.away_score > final.home_score
