@@ -55,6 +55,8 @@ class FantasyGame < ApplicationRecord
             away_score: away_team_score,
             home_fantasy_team: home_team,
             home_score: home_team_score,
+            home_grade: 'C+',
+            away_grade: 'C+',
           )
         end
       end

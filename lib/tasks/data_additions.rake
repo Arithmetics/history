@@ -86,8 +86,9 @@ namespace :data_additions do
   desc "add a new playoff week"
   task new_playoff_week: :environment do
     begin
+      Owner.find(15).update_attribute(:name, "Jeremy")
       year = 2020
-      week = 14 # the week that just completed
+      week = 15 # the week that just completed
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
       # verify_current_week(driver, current_league_url, week)
