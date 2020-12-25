@@ -228,5 +228,73 @@ class FantasyTeam < ApplicationRecord
     return generator.rand
   end
 
+  def position_category_stats
+    pts_by_position_regular = {
+      'QB' => 0,
+      'RB' => 0,
+      'WR' => 0,
+      'TE' => 0,
+      'K' => 0,
+      'DEF' => 0,
+    }
+
+    pts_by_position_playoffs = {
+      'QB' => 0,
+      'RB' => 0,
+      'WR' => 0,
+      'TE' => 0,
+      'K' => 0,
+      'DEF' => 0,
+    }
+
+    starts_by_position_regular = {
+      'QB' => 0,
+      'RB' => 0,
+      'WR' => 0,
+      'TE' => 0,
+      'K' => 0,
+      'DEF' => 0,
+    }
+
+    starts_by_position_playoffs = {
+      'QB' => 0,
+      'RB' => 0,
+      'WR' => 0,
+      'TE' => 0,
+      'K' => 0,
+      'DEF' => 0,
+    }
+
+    starts = self.fantasy_starts.where.not(position: ['BN', 'RES'])
+    starts.each do |start|
+      if pts_by_position_regular[start.position]
+        if [14,15,16].include?(start.week) === nil
+          pts_by_position_playoffs[start.position] += start.points
+          starts_by_position_playoffs[start.position] += 1
+        else
+          pts_by_position_regular[start.position] += start.points
+          starts_by_position_regular[start.position] += 1
+        end
+
+      else
+        position = start.player.season_stats.order("year DESC").first.position
+        if [14,15,16].include?(start.week)
+          pts_by_position_playoffs[position] += start.points
+          starts_by_position_playoffs[position] += 1
+        else
+          x = pts_by_position_regular[position]
+          pts_by_position_regular[position] += start.points
+          starts_by_position_regular[position] += 1
+        end
+      end
+    end
+    return {
+              "ptsByPositionRegular" => pts_by_position_regular,
+              "ptsByPositionPlayoffs" => pts_by_position_playoffs,
+              "startsByPositionRegular" => starts_by_position_regular,
+              "startsByPositionPlayoffs" => starts_by_position_playoffs
+            }
+  end
+
   ##
 end
