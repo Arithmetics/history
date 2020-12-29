@@ -53,4 +53,8 @@ json.fantasy_team do
       end
     end
   end
+
+
+  json.set! "positional_scoring", @fantasy_team.position_category_stats
+
 end

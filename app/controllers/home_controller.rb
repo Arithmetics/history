@@ -11,7 +11,7 @@ class HomeController < ApplicationController
 
     @playoff_odds = PlayoffOdd.includes(:fantasy_team).where(year: current_year, week: current_week)
 
-    @standings = FantasyTeam.includes(owner: {}, away_fantasy_games: { away_fantasy_team: :owner, home_fantasy_team: :owner }, home_fantasy_games: { away_fantasy_team: :owner, home_fantasy_team: :owner }).where(year: current_year)
+    @standings = FantasyTeam.includes(owner: {}, fantasy_starts: :player, away_fantasy_games: { away_fantasy_team: :owner, home_fantasy_team: :owner }, home_fantasy_games: { away_fantasy_team: :owner, home_fantasy_team: :owner }).where(year: current_year)
 
     @last_weeks_games = FantasyGame.includes(away_fantasy_team: :owner, home_fantasy_team: :owner).where(week: current_week, year: current_year)
   end

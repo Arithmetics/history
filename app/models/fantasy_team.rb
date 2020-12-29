@@ -10,6 +10,8 @@ class FantasyTeam < ApplicationRecord
   has_many :home_championship_games, -> { where(week: 16) }, :class_name => "FantasyGame", :foreign_key => "home_fantasy_team_id"
   has_many :away_championship_games, -> { where(week: 16) }, :class_name => "FantasyGame", :foreign_key => "away_fantasy_team_id"
 
+  scope :included_weeks_starts, -> (week) { includes(fantasy_starts: :player).where(fantasy_starts: { week: week})} 
+
   validates :name, presence: true
   validates :year, presence: true
   validates :owner, uniqueness: { scope: :year,
@@ -226,6 +228,80 @@ class FantasyTeam < ApplicationRecord
     end
     generator = RandomGaussian.new(average, standard_deviation)
     return generator.rand
+  end
+
+  def position_category_stats
+    pts_by_position_regular = {
+      'QB' => 0,
+      'RB' => 0,
+      'WR' => 0,
+      'TE' => 0,
+      'K' => 0,
+      'DEF' => 0,
+    }
+
+    pts_by_position_playoffs = {
+      'QB' => 0,
+      'RB' => 0,
+      'WR' => 0,
+      'TE' => 0,
+      'K' => 0,
+      'DEF' => 0,
+    }
+
+    starts_by_position_regular = {
+      'QB' => 0,
+      'RB' => 0,
+      'WR' => 0,
+      'TE' => 0,
+      'K' => 0,
+      'DEF' => 0,
+    }
+
+    starts_by_position_playoffs = {
+      'QB' => 0,
+      'RB' => 0,
+      'WR' => 0,
+      'TE' => 0,
+      'K' => 0,
+      'DEF' => 0,
+    }
+
+    starts = self.fantasy_starts.where.not(position: ['BN', 'RES'])
+    starts.each do |start|
+
+      if pts_by_position_regular[start.position]
+        if [14,15,16].include?(start.week)
+          pts_by_position_playoffs[start.position] += start.points.round(0)
+          starts_by_position_playoffs[start.position] += 1
+        else
+          pts_by_position_regular[start.position] += start.points.round(0)
+          starts_by_position_regular[start.position] += 1
+
+          if start.position === 'K'
+            puts start.player.name
+            puts start.week
+          end
+        end
+
+      else
+        position = start.player.season_stats.order("year DESC").first.position
+        if [14,15,16].include?(start.week)
+          pts_by_position_playoffs[position] += start.points.round(0)
+          starts_by_position_playoffs[position] += 1
+        else
+          x = pts_by_position_regular[position]
+          pts_by_position_regular[position] += start.points.round(0)
+          starts_by_position_regular[position] += 1
+        end
+      end
+    end
+    return {
+              "ptsByPositionRegular" => pts_by_position_regular,
+              "ptsByPositionPlayoffs" => pts_by_position_playoffs,
+              "startsByPositionRegular" => starts_by_position_regular,
+              "startsByPositionPlayoffs" => starts_by_position_playoffs
+            }
   end
 
   ##
