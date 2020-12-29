@@ -75,3 +75,10 @@ json.last_weeks_games do
     end
   end
 end
+
+json.positional_scoring do
+  json.array! @standings do |fantasy_team|
+    json.extract! fantasy_team, :id, :name, :picture_url
+    json.set! "positionCategoryStats", fantasy_team.position_category_stats
+  end
+end

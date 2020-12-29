@@ -4,6 +4,8 @@ class FantasyGame < ApplicationRecord
   belongs_to :away_fantasy_team, :class_name => "FantasyTeam", :foreign_key => "away_fantasy_team_id"
   belongs_to :home_fantasy_team, :class_name => "FantasyTeam", :foreign_key => "home_fantasy_team_id"
 
+  scope :included_weeks_starts, -> (week) { includes(fantasy_starts: :player).where(fantasy_starts: { week: week})} 
+
   validates :away_grade, presence: true, inclusion: { in: %w{F D- D D+ C- C C+ B- B B+ A- A A+ S} }
 
   # need to validate only one game per owner per week

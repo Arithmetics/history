@@ -121,7 +121,7 @@ namespace :data_additions do
 
   desc "debug run"
   task debug_run: :environment do
-    x = FantasyTeam.last.position_category_stats
+    x = FantasyTeam.find(112).position_category_stats
     puts x
   end
 end
