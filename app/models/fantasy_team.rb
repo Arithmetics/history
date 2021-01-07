@@ -2,6 +2,7 @@ require "nokogiri"
 
 class FantasyTeam < ApplicationRecord
   belongs_to :owner
+  belongs_to :waiver_bid
   has_many :fantasy_starts
   has_many :purchases
 
