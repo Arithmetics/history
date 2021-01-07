@@ -86,9 +86,8 @@ namespace :data_additions do
   desc "add a new playoff week"
   task new_playoff_week: :environment do
     begin
-      Owner.find(15).update_attribute(:name, "Jeremy")
       year = 2020
-      week = 15 # the week that just completed
+      week = 16 # the week that just completed
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
       # verify_current_week(driver, current_league_url, week)
@@ -104,6 +103,7 @@ namespace :data_additions do
       FantasyGame.grade_season_games(year)
       ScheduledFantasyGame.remove_last_played_week
       PlayoffOdd.save_current_playoff_odds(week, 1000)
+      puts "DONE NICE"
     rescue
       raise "error adding a new league week"
     end
