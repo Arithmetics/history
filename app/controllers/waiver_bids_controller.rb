@@ -12,10 +12,7 @@ class WaiverBidsController < ApplicationController
   def create
     year = params[:waiver_bid]["year"]
     week = params[:waiver_bid]["week"]
-    # amount = params[:waiver_bid]["amount"]
-    # winning = params[:waiver_bid]["winning"]
     player_id = params[:waiver_bid]["player_id"]
-    # fantasy_team_id = params[:waiver_bid]["fantasy_team_id"]
     team_bids = params[:waiver_bid]["team_bids"]
 
     @bids = []
@@ -28,7 +25,6 @@ class WaiverBidsController < ApplicationController
       end
     end
 
-    # @bid = WaiverBid.create!(id: id, year: year, week: week, amount: amount, winning: winning, player_id: player_id, fantasy_team_id: fantasy_team_id)
   end
 
   def update
