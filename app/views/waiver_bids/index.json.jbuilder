@@ -1,5 +1,5 @@
 json.waiver_bids @bids do |bid|
-  json.extract! bid, :id, :amount, :year, :week, :winning
+  json.extract! bid, :id, :amount, :year, :week, :winning, :created_at
   json.player do
     json.extract! bid.player, :id, :name, :picture_id
   end
