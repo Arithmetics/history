@@ -12,4 +12,5 @@ json.purchases @purchases do |purchase|
   json.owner do
     json.extract! purchase.fantasy_team.owner, :id, :name
   end
+
 end

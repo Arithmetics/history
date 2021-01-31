@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_17_054808) do
+ActiveRecord::Schema.define(version: 2020_12_31_032105) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -170,6 +170,19 @@ ActiveRecord::Schema.define(version: 2020_12_17_054808) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "waiver_bids", force: :cascade do |t|
+    t.integer "amount"
+    t.integer "year"
+    t.integer "week"
+    t.boolean "winning"
+    t.bigint "fantasy_team_id", null: false
+    t.bigint "player_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["fantasy_team_id"], name: "index_waiver_bids_on_fantasy_team_id"
+    t.index ["player_id"], name: "index_waiver_bids_on_player_id"
+  end
+
   add_foreign_key "fantasy_games", "fantasy_teams", column: "away_fantasy_team_id"
   add_foreign_key "fantasy_games", "fantasy_teams", column: "home_fantasy_team_id"
   add_foreign_key "fantasy_starts", "fantasy_teams"
@@ -183,4 +196,6 @@ ActiveRecord::Schema.define(version: 2020_12_17_054808) do
   add_foreign_key "scheduled_fantasy_games", "fantasy_teams", column: "home_fantasy_team_id"
   add_foreign_key "season_stats", "players"
   add_foreign_key "users", "owners"
+  add_foreign_key "waiver_bids", "fantasy_teams"
+  add_foreign_key "waiver_bids", "players"
 end

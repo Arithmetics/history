@@ -1,1 +1,1 @@
-json.(owner, :name)
+json.(owner, :id, :name)

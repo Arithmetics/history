@@ -6,8 +6,10 @@ class Player < ApplicationRecord
   has_many :purchases, :dependent => :delete_all
   has_many :season_stats, :dependent => :delete_all
   has_many :rankings, :dependent => :delete_all
+  has_many :waiver_bids, :dependent => :delete_all
+  
   validates :name, presence: true
-
+  
   def career_stats
     position = ""
     total_starts = 0
