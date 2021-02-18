@@ -29,13 +29,13 @@ class Ranking < ApplicationRecord
 
   def was_projected_top_performer
     if (self.position === 'QB') 
-      return self.ranking < 12
+      return self.ranking < 13
     end
     if (self.position === 'RB' || self.position === 'WR') 
-      return self.ranking < 22
+      return self.ranking < 23
     end
     if (self.position === 'TE') 
-      return self.ranking < 8
+      return self.ranking < 9
     end
     return false
   end
