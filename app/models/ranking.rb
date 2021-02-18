@@ -26,4 +26,17 @@ class Ranking < ApplicationRecord
       end
     end
   end
+
+  def was_projected_top_performer
+    if (self.position === 'QB') 
+      return self.ranking < 12
+    end
+    if (self.position === 'RB' || self.position === 'WR') 
+      return self.ranking < 22
+    end
+    if (self.position === 'TE') 
+      return self.ranking < 8
+    end
+    return false
+  end
 end

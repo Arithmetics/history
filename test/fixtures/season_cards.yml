@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  season_stat: one
+  card_type: MyString
+  owner: one
+  breakout: false
+  repeat: false
+  champion: false
+  auction_price: 1
+
+two:
+  season_stat: two
+  card_type: MyString
+  owner: two
+  breakout: false
+  repeat: false
+  champion: false
+  auction_price: 1

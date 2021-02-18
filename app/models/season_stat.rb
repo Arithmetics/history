@@ -37,6 +37,19 @@ class SeasonStat < ApplicationRecord
     return ppr_points.round(2)
   end
 
+  def is_top_performer
+    if (self.position === 'QB') 
+      return self.rank_reg < 6 || self.rank_ppr < 6
+    end
+    if (self.position === 'RB' || self.position === 'WR') 
+      return self.rank_reg < 11 || self.rank_ppr < 11
+    end
+    if (self.position === 'TE') 
+      return self.rank_reg < 4 || self.rank_ppr < 4
+    end
+    return false
+  end
+
   def self.get_season_stats_from_player_page(url)
     season_stats = {}
     begin

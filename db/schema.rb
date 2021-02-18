@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_31_032105) do
+ActiveRecord::Schema.define(version: 2021_02_12_035410) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -122,6 +122,19 @@ ActiveRecord::Schema.define(version: 2020_12_31_032105) do
     t.index ["home_fantasy_team_id"], name: "index_scheduled_fantasy_games_on_home_fantasy_team_id"
   end
 
+  create_table "season_cards", force: :cascade do |t|
+    t.bigint "season_stat_id", null: false
+    t.bigint "owner_id", null: false
+    t.integer "auction_price"
+    t.boolean "breakout"
+    t.boolean "repeat"
+    t.boolean "champion"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["owner_id"], name: "index_season_cards_on_owner_id"
+    t.index ["season_stat_id"], name: "index_season_cards_on_season_stat_id"
+  end
+
   create_table "season_stats", force: :cascade do |t|
     t.integer "year"
     t.integer "games_played"
@@ -194,6 +207,8 @@ ActiveRecord::Schema.define(version: 2020_12_31_032105) do
   add_foreign_key "rankings", "players"
   add_foreign_key "scheduled_fantasy_games", "fantasy_teams", column: "away_fantasy_team_id"
   add_foreign_key "scheduled_fantasy_games", "fantasy_teams", column: "home_fantasy_team_id"
+  add_foreign_key "season_cards", "owners"
+  add_foreign_key "season_cards", "season_stats"
   add_foreign_key "season_stats", "players"
   add_foreign_key "users", "owners"
   add_foreign_key "waiver_bids", "fantasy_teams"

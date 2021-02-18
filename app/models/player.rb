@@ -9,6 +9,43 @@ class Player < ApplicationRecord
   has_many :waiver_bids, :dependent => :delete_all
   
   validates :name, presence: true
+
+  def won_championship(year)
+    won = false
+    self.fantasy_starts.where(year: year, week: 16).all.each do |start|
+      if start.fantasy_team.won_championship?
+        won = true
+      end
+    end
+    return won
+  end
+
+  def main_owner_in_year(year)
+    owner_pts = {}
+    starts = self.fantasy_starts.where(year: year).all
+    starts.each do |start|
+      points = start.points
+      owner = start.fantasy_team.owner
+      if owner_pts[owner.id] === nil
+        owner_pts[owner.id] = points
+      else
+        owner_pts[owner.id] += points
+      end
+    end
+    puts owner_pts
+    top_owner_id = nil
+    top_points = 0
+    owner_pts.each do |owner_id, points|
+      if points > top_points
+        top_points = points
+        top_owner_id = owner_id
+      end
+    end
+    if top_owner_id != nil
+      return Owner.find(top_owner_id)
+    end
+    return nil
+  end
   
   def career_stats
     position = ""
