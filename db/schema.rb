@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_12_035410) do
+ActiveRecord::Schema.define(version: 2021_02_18_035937) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -120,6 +120,16 @@ ActiveRecord::Schema.define(version: 2021_02_12_035410) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["away_fantasy_team_id"], name: "index_scheduled_fantasy_games_on_away_fantasy_team_id"
     t.index ["home_fantasy_team_id"], name: "index_scheduled_fantasy_games_on_home_fantasy_team_id"
+  end
+
+  create_table "season_card_ownership", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "season_card_id"
+    t.integer "serial_number"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["season_card_id"], name: "index_season_card_ownership_on_season_card_id"
+    t.index ["user_id"], name: "index_season_card_ownership_on_user_id"
   end
 
   create_table "season_cards", force: :cascade do |t|

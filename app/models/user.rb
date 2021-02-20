@@ -4,5 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :trackable,
          :recoverable, :rememberable, :validatable, :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
 
-  has_one :owner
+  belongs_to :owner
+  has_many :season_card_ownerships
+  has_many :season_cards, :through => :season_card_ownerships
 end

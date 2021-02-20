@@ -2,6 +2,9 @@ class SeasonCard < ApplicationRecord
   belongs_to :season_stat
   belongs_to :owner
 
+  has_many :season_card_ownerships
+  has_many :users, :through => :season_card_ownerships
+
   def self.create_seasons_cards(year)
     season_stats = SeasonStat.where(year: year).all
     season_stats.each do |stat|

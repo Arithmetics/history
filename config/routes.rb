@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :waiver_bids
   resources :fantasy_teams
   resources :purchases
+  resources :season_cards
 
   resources :users_management
 
