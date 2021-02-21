@@ -5,7 +5,16 @@ class SeasonCardsController < ApplicationController
   end
 
   def show
-    # cards for one owner
+    # a users cards params is the owner_id
+    @season_cards = []
+    owner = Owner.find(params[:id])
+    if owner == nil
+      @season_cards = []
+    end
+    user = owner.user
+
+    @season_card_ownerships = owner.user.season_card_ownerships.includes(season_card: {season_stat: {player: {}}})
+
   end
 
   ########## private #########
