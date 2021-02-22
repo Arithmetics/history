@@ -13,7 +13,7 @@ class SeasonCardsController < ApplicationController
     end
     user = owner.user
 
-    @season_card_ownerships = owner.user.season_card_ownerships.includes(season_card: {season_stat: {player: {}}})
+    @season_card_ownerships = owner.user.season_card_ownerships.includes(season_card_effect: {}, season_card: { season_stat: {player: {}}})
 
   end
 

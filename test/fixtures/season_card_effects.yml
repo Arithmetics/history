@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  colorOne: MyString
+  colorTwo: MyString
+  effectImageUrl: MyString
+
+two:
+  colorOne: MyString
+  colorTwo: MyString
+  effectImageUrl: MyString

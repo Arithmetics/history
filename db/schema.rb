@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_18_035937) do
+ActiveRecord::Schema.define(version: 2021_02_22_031111) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -122,12 +122,23 @@ ActiveRecord::Schema.define(version: 2021_02_18_035937) do
     t.index ["home_fantasy_team_id"], name: "index_scheduled_fantasy_games_on_home_fantasy_team_id"
   end
 
-  create_table "season_card_ownership", force: :cascade do |t|
+  create_table "season_card_effects", id: :serial, force: :cascade do |t|
+    t.string "color_one"
+    t.string "color_two"
+    t.string "effect_image_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "name"
+  end
+
+  create_table "season_card_ownerships", id: :bigint, default: -> { "nextval('season_card_ownership_id_seq'::regclass)" }, force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "season_card_id"
     t.integer "serial_number"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "season_card_effect_id"
+    t.index ["season_card_effect_id"], name: "index_season_card_ownerships_on_season_card_effect_id"
     t.index ["season_card_id"], name: "index_season_card_ownership_on_season_card_id"
     t.index ["user_id"], name: "index_season_card_ownership_on_user_id"
   end
@@ -204,6 +215,14 @@ ActiveRecord::Schema.define(version: 2021_02_18_035937) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["fantasy_team_id"], name: "index_waiver_bids_on_fantasy_team_id"
     t.index ["player_id"], name: "index_waiver_bids_on_player_id"
+  end
+
+  create_table "xx", id: :bigint, default: -> { "nextval('season_card_effects_id_seq'::regclass)" }, force: :cascade do |t|
+    t.string "colorOne"
+    t.string "colorTwo"
+    t.string "effectImageUrl"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   add_foreign_key "fantasy_games", "fantasy_teams", column: "away_fantasy_team_id"
