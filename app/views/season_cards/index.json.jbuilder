@@ -5,6 +5,10 @@ json.season_cards @season_cards do |season_card|
     json.extract! season_card.season_stat.player, :id, :name, :nfl_URL_name, :picture_id
   end
 
+  json.owner do
+    json.extract! season_card.owner, :id, :name
+  end
+
   json.users do 
     json.array! season_card.users do |user|
       json.extract! user.owner, :id, :name
