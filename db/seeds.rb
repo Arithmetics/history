@@ -239,3 +239,27 @@ require "csv"
 # end
 
 # users
+
+# SeasonCard.create_seasons_cards(2011)
+# SeasonCard.create_seasons_cards(2012)
+# SeasonCard.create_seasons_cards(2013)
+# SeasonCard.create_seasons_cards(2014)
+# SeasonCard.create_seasons_cards(2015)
+# SeasonCard.create_seasons_cards(2016)
+# SeasonCard.create_seasons_cards(2017)
+# SeasonCard.create_seasons_cards(2018)
+# SeasonCard.create_seasons_cards(2019)
+# SeasonCard.create_seasons_cards(2020)
+
+me = Owner.find(3)
+
+SeasonCard.all.each do |season_card|
+  if season_card.season_stat.position === 'TE' && (season_card.season_stat.rank_ppr < 4 || season_card.season_stat.rank_reg < 4) 
+    new_ownership = SeasonCardOwnership.new
+    new_ownership.user = me.user
+    new_ownership.serial_number = 1
+    new_ownership.season_card = season_card
+    new_ownership.season_card_effect = SeasonCardEffect.get_random_effect
+    new_ownership.save!
+  end
+end
