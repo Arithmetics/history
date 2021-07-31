@@ -5,7 +5,10 @@ class PlayoffOdd < ApplicationRecord
   def self.save_current_playoff_odds(current_week, num_sims)
     puts "Starting playoff odds sim for week #{current_week}"
     run_num = 0
-    live_fantasy_teams = FantasyTeam.includes(:away_fantasy_games, :home_fantasy_games).where(year: FantasyTeam.maximum(:year))
+    current_year = FantasyTeam.maximum(:year)
+    live_fantasy_teams = FantasyTeam.includes(:away_fantasy_games, :home_fantasy_games).where(year: current_year)
+
+    score_possibility_lookup_table = self.get_score_possibility_lookup_table(current_year, current_week)
 
     team_id_to_wins_template = live_fantasy_teams.reduce({}) { |acc, x| acc.merge(x[:id] => x.season_wins) }
     team_id_to_score_template = live_fantasy_teams.reduce({}) { |acc, x| acc.merge(x[:id] => x.season_points) }
@@ -23,6 +26,8 @@ class PlayoffOdd < ApplicationRecord
     times_win_championship_as_loser = times_made_playoffs_as_loser.clone
 
     team_id_to_times_win_first_week = team_id_to_wins_template.clone.map { |k, v| [k, 0] }.to_h
+
+
 
     num_sims.times do
       run_num += 1
@@ -167,6 +172,38 @@ class PlayoffOdd < ApplicationRecord
       new_odds.odds_with_loss = ((total_times_as_loser[team_id]).to_f / (num_sims.to_f - team_id_to_times_win_first_week[team_id])).round(3)
       new_odds.save!
     end
+  end
+
+  def self.get_score_possibility_lookup_table(current_year, completed_week)
+    lookup = {}
+    previous_fantasy_teams = FantasyTeam.where("year < ?", current_year)
+    previous_fantasy_teams.each do |team|
+
+      starting_away_games = team.away_fantasy_games.filter {|game| game.week <= completed_week}
+      remaining_away_games = team.away_fantasy_games.filter {|game| game.week > completed_week}
+
+      starting_home_games = team.home_fantasy_games.filter {|game| game.week <= completed_week}
+      remaining_home_games = team.home_fantasy_games.filter {|game| game.week > completed_week}
+
+      starting_grades = starting_away_games.map {|g| g.away_grade}.concat(starting_home_games.map {|g| g.home_grade})
+
+      remaining_week_grades = remaining_away_games.map {|g| g.away_grade}.concat(remaining_home_games.map {|g| g.home_grade})
+      
+
+      starting_grades_as_numbers = starting_grades.map {|grade| FantasyGame.convert_letter_to_number(grade)}
+      remaining_week_grades_as_numbers = remaining_week_grades.map {|grade| FantasyGame.convert_letter_to_number(grade)}
+
+      average_starting_grade_as_number = starting_grades_as_numbers.sum(0.0) / starting_grades_as_numbers.size
+      
+      average_starting_grade = FantasyGame.convert_to_letter_grade(average_starting_grade_as_number)
+
+      if (lookup[average_starting_grade] == nil) 
+        lookup[average_starting_grade] = []
+      end
+
+      lookup[average_starting_grade].concat(remaining_week_grades_as_numbers)
+    end
+    return lookup
   end
   ##
 end
