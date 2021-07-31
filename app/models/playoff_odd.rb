@@ -2,13 +2,13 @@ class PlayoffOdd < ApplicationRecord
   belongs_to :fantasy_team
   validates_inclusion_of :category, :in => ["make_playoffs", "get_bye", "win_championship"]
 
-  def self.save_current_playoff_odds(current_week, num_sims)
-    puts "Starting playoff odds sim for week #{current_week}"
+  def self.save_current_playoff_odds(completed_week, num_sims)
+    puts "Starting playoff odds sim for week #{completed_week}"
     run_num = 0
     current_year = FantasyTeam.maximum(:year)
     live_fantasy_teams = FantasyTeam.includes(:away_fantasy_games, :home_fantasy_games).where(year: current_year)
 
-    score_possibility_lookup_table = self.get_score_possibility_lookup_table(current_year, current_week)
+    score_possibility_lookup_table = self.get_score_possibility_lookup_table(current_year, completed_week)
 
     team_id_to_wins_template = live_fantasy_teams.reduce({}) { |acc, x| acc.merge(x[:id] => x.season_wins) }
     team_id_to_score_template = live_fantasy_teams.reduce({}) { |acc, x| acc.merge(x[:id] => x.season_points) }
@@ -41,8 +41,8 @@ class PlayoffOdd < ApplicationRecord
         if index === 0
           first_week_num = game.week
         end
-        sim_away_score = game.away_fantasy_team.generate_random_score
-        sim_home_score = game.home_fantasy_team.generate_random_score
+        sim_away_score = game.away_fantasy_team.generate_random_score(score_possibility_lookup_table)
+        sim_home_score = game.home_fantasy_team.generate_random_score(score_possibility_lookup_table)
         if sim_away_score > sim_home_score
           team_id_to_wins[game.away_fantasy_team.id] += 1
           if first_week_num === game.week #first simed game
@@ -82,7 +82,7 @@ class PlayoffOdd < ApplicationRecord
         end
       end
 
-      championship_team_id = self.get_champion_from_sim(rankings[6..11])
+      championship_team_id = self.get_champion_from_sim(rankings[6..11], score_possibility_lookup_table)
 
       did_champ_win_first_week = team_id_to_did_win_first_week[championship_team_id]
       if did_champ_win_first_week
@@ -109,14 +109,14 @@ class PlayoffOdd < ApplicationRecord
 
     begin
       ActiveRecord::Base.transaction do
-        save_odds("make_playoffs", num_sims, total_times_made_playoffs, times_made_playoffs_as_winner, times_made_playoffs_as_loser, team_id_to_times_win_first_week, current_week)
-        save_odds("get_bye", num_sims, total_times_get_bye, times_get_bye_as_winner, times_get_bye_as_loser, team_id_to_times_win_first_week, current_week)
-        save_odds("win_championship", num_sims, total_times_win_championship, times_win_championship_as_winner, times_win_championship_as_loser, team_id_to_times_win_first_week, current_week)
+        save_odds("make_playoffs", num_sims, total_times_made_playoffs, times_made_playoffs_as_winner, times_made_playoffs_as_loser, team_id_to_times_win_first_week, completed_week)
+        save_odds("get_bye", num_sims, total_times_get_bye, times_get_bye_as_winner, times_get_bye_as_loser, team_id_to_times_win_first_week, completed_week)
+        save_odds("win_championship", num_sims, total_times_win_championship, times_win_championship_as_winner, times_win_championship_as_loser, team_id_to_times_win_first_week, completed_week)
       end
     end
   end
 
-  def self.get_champion_from_sim(ranked_team_ids)
+  def self.get_champion_from_sim(ranked_team_ids, score_possibility_lookup_table)
     # index 5 = one seed
     # index 4 = two seed
     # index 3 = three seed
@@ -130,31 +130,31 @@ class PlayoffOdd < ApplicationRecord
     sf_winner_two_id = 0
     test = FantasyTeam.find(ranked_team_ids[0])
 
-    if FantasyTeam.find(ranked_team_ids[0]).generate_random_score() > FantasyTeam.find(ranked_team_ids[3]).generate_random_score()
+    if FantasyTeam.find(ranked_team_ids[0]).generate_random_score(score_possibility_lookup_table) > FantasyTeam.find(ranked_team_ids[3]).generate_random_score(score_possibility_lookup_table)
       wc_winner_one_id = ranked_team_ids[0]
     else
       wc_winner_one_id = ranked_team_ids[3]
     end
 
-    if FantasyTeam.find(ranked_team_ids[1]).generate_random_score() > FantasyTeam.find(ranked_team_ids[2]).generate_random_score()
+    if FantasyTeam.find(ranked_team_ids[1]).generate_random_score(score_possibility_lookup_table) > FantasyTeam.find(ranked_team_ids[2]).generate_random_score(score_possibility_lookup_table)
       wc_winner_two_id = ranked_team_ids[1]
     else
       wc_winner_two_id = ranked_team_ids[2]
     end
 
-    if FantasyTeam.find(wc_winner_one_id).generate_random_score() > FantasyTeam.find(ranked_team_ids[4]).generate_random_score()
+    if FantasyTeam.find(wc_winner_one_id).generate_random_score(score_possibility_lookup_table) > FantasyTeam.find(ranked_team_ids[4]).generate_random_score(score_possibility_lookup_table)
       sc_winner_one_id = wc_winner_one_id
     else
       sc_winner_one_id = ranked_team_ids[4]
     end
 
-    if FantasyTeam.find(wc_winner_two_id).generate_random_score() > FantasyTeam.find(ranked_team_ids[5]).generate_random_score()
+    if FantasyTeam.find(wc_winner_two_id).generate_random_score(score_possibility_lookup_table) > FantasyTeam.find(ranked_team_ids[5]).generate_random_score(score_possibility_lookup_table)
       sc_winner_two_id = wc_winner_two_id
     else
       sc_winner_two_id = ranked_team_ids[5]
     end
 
-    if FantasyTeam.find(sc_winner_two_id).generate_random_score() > FantasyTeam.find(sc_winner_one_id).generate_random_score()
+    if FantasyTeam.find(sc_winner_two_id).generate_random_score(score_possibility_lookup_table) > FantasyTeam.find(sc_winner_one_id).generate_random_score(score_possibility_lookup_table)
       return sc_winner_two_id
     end
     return sc_winner_one_id
