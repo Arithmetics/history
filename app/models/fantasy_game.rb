@@ -156,6 +156,52 @@ class FantasyGame < ApplicationRecord
       return "S"
     end
   end
+
+  def self.convert_letter_to_number(letter)
+    if letter == "F"
+      return -2.001
+    end
+    if letter == "D-"
+      return -1.701
+    end
+    if letter == "D"
+      return -1.301
+    end
+    if letter == "D+"
+      return -1.001
+    end
+    if letter == "C-"
+      return -0.701
+    end
+    if letter == "C"
+      return -0.301
+    end
+    if letter == "C+"
+      return -0.001
+    end
+    if letter == "B-"
+      return 0.299
+    end
+    if letter == "B"
+      return 0.699
+    end
+    if letter == "B+"
+      return 0.999
+    end
+    if letter == "A-"
+      return 1.299
+    end
+    if letter == "A"
+      return 1.699
+    end
+    if letter == "A+"
+      return 1.999
+    end
+    if letter == "S"
+      return 2.499
+    end
+    return 0
+  end
   ####
 
 end
