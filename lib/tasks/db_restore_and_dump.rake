@@ -1,4 +1,5 @@
 # EXAMPLES:
+# with quotes!
 # rake 'restore_and_dump:db_dump[test_xx]'
 # rake 'restore_and_dump:db_restore[test_xx]'
 
