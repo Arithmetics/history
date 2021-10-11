@@ -2,13 +2,14 @@ require_relative "firefox_driver"
 
 ### NEW SEASON ###
 
-# 1. create /lib/assets/year_raw_auction.csv based on the auction
+# 1. add new players drafted in ui
 
-# 2. run task get_auction_ids to create final auction file
+# 2. create /lib/assets/year_raw_auction.csv based on the auction
+
+# 3. run task get_auction_ids to create final auction file
 
 # 3. check file for any unmatched or double matches players, and fix all the error rows
 
-# 4. create /lib/assets/year_new_players.csv based on the auction rookies and new draftees that were unmatched
 
 # 5. run season_start
 
@@ -34,24 +35,18 @@ namespace :data_additions do
   desc "start up season"
   task season_start: :environment do
     begin
-      # current_league_url = "https://fantasy.nfl.com/league/400302"
-      year = 2020
-      # driver = driver_start(current_league_url)
-      # # move
-      # Owner.find_by(name: "Jeremy").update_attributes(name: "Jerms")
-      # Owner.find_by(name: "jordan").update_attributes(name: "Jordan")
-      # # move
-      # Owner.changed_on_web?(driver, current_league_url)
-      # FantasyTeam.create_all_teams_on_web(driver, current_league_url, year)
-      # ScheduledFantasyGame.get_year_schedule_from_web(driver, current_league_url, year)
-      # Player.insert_new_players_from_file("#{Rails.root}/lib/assets/#{year}_new_players.csv")
-      # new_player = Player.new(name: "James Robinson", birthdate: "1998-08-09", nfl_URL_name: "james-robinson-3", picture_id: "lxzbao36eeratekmnxeb")
-      # new_player.save!
+      current_league_url = "https://fantasy.nfl.com/league/400302"
+      year = 2021
+      driver = driver_start(current_league_url)
 
-      # Purchase.insert_auction("#{Rails.root}/lib/assets/#{year}_final_auction.csv", year)
-      # Ranking.insert_rankings_from_file("#{Rails.root}/lib/assets/#{year}_preseason_rankings.csv")
-      # Player.update_all_season_stats
-      # SeasonStat.calculate_all_dependent_columns
+      Owner.changed_on_web?(driver, current_league_url)
+      FantasyTeam.create_all_teams_on_web(driver, current_league_url, year)
+      ScheduledFantasyGame.get_year_schedule_from_web(driver, current_league_url, year)
+
+      Purchase.insert_auction("#{Rails.root}/lib/assets/#{year}_final_auction.csv", year)
+      Ranking.insert_rankings_from_file("#{Rails.root}/lib/assets/#{year}_preseason_rankings.csv")
+      Player.update_all_season_stats
+      SeasonStat.calculate_all_dependent_columns
       puts "season has begun!"
     rescue
       raise "error executing data gathering tasks"
@@ -61,11 +56,11 @@ namespace :data_additions do
   desc "add a new regular season week"
   task new_reg_week: :environment do
     begin
-      year = 2020
-      week = 13 # the week that just completed
+      year = 2021
+      week = 1 # the week that just completed
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
-      # verify_current_week(driver, current_league_url, week)
+      verify_current_week(driver, current_league_url, week)
       Owner.changed_on_web?(driver, current_league_url)
       Player.find_and_print_unknown_players_regular(driver, current_league_url, week)
       # will stop here if theres new players
@@ -86,7 +81,7 @@ namespace :data_additions do
   desc "add a new playoff week"
   task new_playoff_week: :environment do
     begin
-      year = 2020
+      year = 2021
       week = 16 # the week that just completed
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)

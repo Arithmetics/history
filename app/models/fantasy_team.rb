@@ -220,15 +220,21 @@ class FantasyTeam < ApplicationRecord
     return false
   end
 
-  def generate_random_score
-    scores = self.away_fantasy_games.select(:away_score).pluck(:away_score).concat(self.home_fantasy_games.select(:home_score).pluck(:home_score))
-    average = scores.inject(0) { |accum, i| accum + i } / scores.length.to_f
-    standard_deviation = Math.sqrt(scores.inject(0) { |accum, i| accum + (i - average) ** 2 } / (scores.length() - 1).to_f)
-    if standard_deviation.to_f.nan?
-      standard_deviation = 35 # week 1 std
-    end
-    generator = RandomGaussian.new(average, standard_deviation)
-    return generator.rand
+  def generate_random_score(score_possibility_lookup_table)
+    grades = self.away_fantasy_games.select(:away_grade).pluck(:away_grade).concat(self.home_fantasy_games.select(:home_grade).pluck(:home_grade))
+    
+    grades_as_numbers = grades.map {|grade| FantasyGame.convert_letter_to_number(grade)}
+
+    average_grade_as_number = grades_as_numbers.sum(0.0) / grades_as_numbers.size
+    average_grade = FantasyGame.convert_to_letter_grade(average_grade_as_number)
+      
+    possible_scores = score_possibility_lookup_table[average_grade];
+    possible_scores = possible_scores ? possible_scores : [0];
+
+    random_picked_score = possible_scores.sample
+
+    # 100 base + the std dev * 15 + a decimal to avoid ties... adjust this formula later somehow
+    return 100 + (15 * random_picked_score) + rand(1.1..5.5);
   end
 
   def position_category_stats
