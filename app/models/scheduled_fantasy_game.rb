@@ -13,7 +13,7 @@ class ScheduledFantasyGame < ApplicationRecord
     driver.navigate.to "#{current_league_url}?standingsTab=schedule"
     puts "tried to navigate to schedule"
     sleep(3)
-    weeks = *(1..13)
+    weeks = *(2..13)
     weeks.each do |week|
       puts "getting week #{week}"
       sleep(2)

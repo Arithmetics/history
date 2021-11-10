@@ -19,7 +19,7 @@ def driver_start(current_league_url)
   # sleep(3)
   # submit.click()
   # driver.find_element(xpath: "/html/body/div[4]/header/div/nav[2]/ul/li[4]/a/span/svg/use//svg/path")
-  sleep(30)
+  sleep(20)
   puts "handing off driver"
   return driver
 end

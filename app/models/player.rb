@@ -157,7 +157,7 @@ class Player < ApplicationRecord
           if player.nfl_URL_name != nil && player.nfl_URL_name != ""
             puts "#{i} INVESTIGATION on #{player.name}"
 
-            player_url = "https://www.nfl.com/players/#{player.nfl_URL_name.squish}/stats/"
+            player_url = "https://www.nfl.com/players/#{player.nfl_URL_name.squish}/stats/career"
             all_player_seasons = SeasonStat.get_season_stats_from_player_page(player_url)
 
             all_player_seasons.each do |year, nfl_season|

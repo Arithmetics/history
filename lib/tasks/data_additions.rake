@@ -45,8 +45,8 @@ namespace :data_additions do
 
       Purchase.insert_auction("#{Rails.root}/lib/assets/#{year}_final_auction.csv", year)
       Ranking.insert_rankings_from_file("#{Rails.root}/lib/assets/#{year}_preseason_rankings.csv")
-      Player.update_all_season_stats
-      SeasonStat.calculate_all_dependent_columns
+      # Player.update_all_season_stats
+      # SeasonStat.calculate_all_dependent_columns
       puts "season has begun!"
     rescue
       raise "error executing data gathering tasks"
@@ -57,10 +57,10 @@ namespace :data_additions do
   task new_reg_week: :environment do
     begin
       year = 2021
-      week = 1 # the week that just completed
+      week = 9 # the week that just completed
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
-      verify_current_week(driver, current_league_url, week)
+      # # verify_current_week(driver, current_league_url, week)
       Owner.changed_on_web?(driver, current_league_url)
       Player.find_and_print_unknown_players_regular(driver, current_league_url, week)
       # will stop here if theres new players
@@ -117,7 +117,63 @@ namespace :data_additions do
 
   desc "debug run"
   task debug_run: :environment do
-    x = FantasyTeam.find(112).position_category_stats
-    puts x
+    most_turn_over = 0;
+    turn_over_leader = 0;
+    turn_over_week = 0;
+    fantasy_teams = FantasyTeam.all
+    fantasy_teams.each do |fantasy_team|
+      starts = fantasy_team.fantasy_starts
+      week_starts = {
+        1 => {},
+        2 => {},
+        3 => {},
+        4 => {},
+        5 => {},
+        6 => {},
+        7 => {},
+        8 => {},
+        9 => {},
+        10 => {},
+        11 => {},
+        12 => {},
+        13 => {},
+        14 => {},
+        15 => {},
+        16 => {},
+      }
+      starts.each do |start|
+        week_starts[start.week][start.player_id] = true
+      end
+
+      week_starts.each do |week, player_map|
+        turnover = 0
+        if (week != 1 && week != 14 && week != 15 && week != 16 && fantasy_team.id != 111)
+          last_week_player_map = week_starts[week-1]
+          player_map.each do |id, has|
+            if (!last_week_player_map[id])
+              turnover +=1
+            end
+          end
+        end
+        puts week
+        puts fantasy_team.name
+        puts turnover
+        if turnover > most_turn_over 
+          most_turn_over = turnover
+          turn_over_leader = fantasy_team.id
+          turn_over_week = week
+        end
+      end
+    end
+    puts 'LEADER'
+    puts "turnover:"
+    puts most_turn_over
+    puts "id:"
+    puts turn_over_leader
+    puts "week:"
+    puts turn_over_week
   end
 end
+
+
+# MariotaBust420!
