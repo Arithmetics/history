@@ -57,7 +57,7 @@ namespace :data_additions do
   task new_reg_week: :environment do
     begin
       year = 2021
-      week = 9 # the week that just completed
+      week = 10 # the week that just completed
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
       # # verify_current_week(driver, current_league_url, week)
@@ -67,7 +67,7 @@ namespace :data_additions do
       FantasyTeam.update_team_names_and_pictures_from_web(driver, current_league_url, year)
       FantasyGame.get_regular_season_fantasy_games(driver, current_league_url, year, week)
       FantasyStart.get_starts_from_web_regular(driver, current_league_url, year, week)
-      # imports done
+      # # imports done
       Player.update_all_season_stats
       SeasonStat.calculate_all_dependent_columns
       FantasyGame.grade_season_games(year)
