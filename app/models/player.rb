@@ -167,7 +167,7 @@ class Player < ApplicationRecord
               if existing_db_season != nil
                 db_count = existing_db_season.games_played
               end
-              if db_count != found_count && nfl_season.position != "K" && nfl_season.games_played != nil && nfl_season.position != ""
+              if db_count != found_count && nfl_season.position != "K" && nfl_season.games_played != nil && nfl_season != nil && nfl_season.position != ""
                 if existing_db_season != nil
                   puts "deleting season for #{existing_db_season.player.name}, year: #{existing_db_season.year}, games played: #{existing_db_season.games_played}"
                   puts "ALERT!!! Deleted a season"
