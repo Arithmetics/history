@@ -2,7 +2,7 @@ require "nokogiri"
 
 class FantasyTeam < ApplicationRecord
   belongs_to :owner
-  belongs_to :waiver_bid
+  has_many :waiver_bids
   has_many :fantasy_starts
   has_many :purchases
 
@@ -276,7 +276,7 @@ class FantasyTeam < ApplicationRecord
 
     starts = self.fantasy_starts.where.not(position: ['BN', 'RES'])
     starts.each do |start|
-
+      puts start.player.name
       if pts_by_position_regular[start.position]
         if [14,15,16].include?(start.week)
           pts_by_position_playoffs[start.position] += start.points.round(0)

@@ -157,7 +157,7 @@ class Player < ApplicationRecord
           if player.nfl_URL_name != nil && player.nfl_URL_name != ""
             puts "#{i} INVESTIGATION on #{player.name}"
 
-            player_url = "https://www.nfl.com/players/#{player.nfl_URL_name.squish}/stats/"
+            player_url = "https://www.nfl.com/players/#{player.nfl_URL_name.squish}/stats/career"
             all_player_seasons = SeasonStat.get_season_stats_from_player_page(player_url)
 
             all_player_seasons.each do |year, nfl_season|
@@ -167,7 +167,7 @@ class Player < ApplicationRecord
               if existing_db_season != nil
                 db_count = existing_db_season.games_played
               end
-              if db_count != found_count && nfl_season.position != "K" && nfl_season.games_played != nil
+              if db_count != found_count && nfl_season.position != "K" && nfl_season.games_played != nil && nfl_season != nil && nfl_season.position != ""
                 if existing_db_season != nil
                   puts "deleting season for #{existing_db_season.player.name}, year: #{existing_db_season.year}, games played: #{existing_db_season.games_played}"
                   puts "ALERT!!! Deleted a season"

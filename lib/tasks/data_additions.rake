@@ -57,7 +57,7 @@ namespace :data_additions do
   task new_reg_week: :environment do
     begin
       year = 2021
-      week = 1 # the week that just completed
+      week = 11 # the week that just completed
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
       verify_current_week(driver, current_league_url, week)
@@ -68,11 +68,11 @@ namespace :data_additions do
       FantasyGame.get_regular_season_fantasy_games(driver, current_league_url, year, week)
       FantasyStart.get_starts_from_web_regular(driver, current_league_url, year, week)
       # imports done
-      Player.update_all_season_stats
-      SeasonStat.calculate_all_dependent_columns
-      FantasyGame.grade_season_games(year)
-      ScheduledFantasyGame.remove_last_played_week
-      PlayoffOdd.save_current_playoff_odds(week, 1000)
+      # Player.update_all_season_stats
+      # SeasonStat.calculate_all_dependent_columns
+      # FantasyGame.grade_season_games(year)
+      # ScheduledFantasyGame.remove_last_played_week
+      # PlayoffOdd.save_current_playoff_odds(week, 1000)
     rescue
       raise "error adding a new league week"
     end
