@@ -13,7 +13,7 @@ class ScheduledFantasyGame < ApplicationRecord
     driver.navigate.to "#{current_league_url}?standingsTab=schedule"
     puts "tried to navigate to schedule"
     sleep(3)
-    weeks = *(2..13)
+    weeks = *(2..14)
     weeks.each do |week|
       puts "getting week #{week}"
       sleep(2)
@@ -38,7 +38,7 @@ class ScheduledFantasyGame < ApplicationRecord
         new_scheduled_game.home_fantasy_team = home_team
         scheduled_games.push(new_scheduled_game)
       end
-      if week != 13
+      if week != 14
         if week == 1
           next_week = driver.find_element(xpath: "/html/body/div[2]/div[3]/div/div[2]/div/div[4]/div/div[2]/div/div/div[2]/div/ul[1]/li[2]/a")
           puts 'x'

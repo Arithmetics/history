@@ -19,13 +19,16 @@ def driver_start(current_league_url)
   # sleep(3)
   # submit.click()
   # driver.find_element(xpath: "/html/body/div[4]/header/div/nav[2]/ul/li[4]/a/span/svg/use//svg/path")
+
+  sleep(40)
+  driver.navigate.to(current_league_url)
   sleep(20)
   puts "handing off driver"
   return driver
 end
 
 def verify_current_week(driver, current_league_url, week)
-  if week < 1 || week > 13
+  if week < 1 || week > 14
     throw("supplied week, #{week}, is not a regular season week")
   end
   driver.navigate.to "#{current_league_url}?standingsTab=standings&standingsType=overall"

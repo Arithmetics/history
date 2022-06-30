@@ -6,7 +6,7 @@ class FantasyStart < ApplicationRecord
 
   validates :points, presence: true
   validates :year, presence: true
-  validates_inclusion_of :week, :in => 1..16
+  validates_inclusion_of :week, :in => 1..17
   validates :position, presence: true, inclusion: { in: %w{QB RB WR TE DEF K BN Q/R/W/T R/W/T RES} }
 
   def self.get_starts_from_web_regular(driver, current_league_url, year, week)
@@ -26,7 +26,10 @@ class FantasyStart < ApplicationRecord
 
     team_numbers.each do |team_number|
       driver.navigate.to "#{current_league_url}/team/#{team_number}/gamecenter?gameCenterTab=track&trackType=sbs&week=#{week}"
+      # driver.navigate.to "#{current_league_url}/history/2021/teamgamecenter?teamId=#{team_number}&week=#{week}"
       sleep(2)
+      
+
       doc = Nokogiri::HTML(driver.page_source)
       box = doc.css("#teamMatchupBoxScore")
       left_roster = box.css(".teamWrap-1")

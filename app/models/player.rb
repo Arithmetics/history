@@ -32,10 +32,10 @@ class Player < ApplicationRecord
         if best_start < start.points
           best_start = start.points
         end
-        if [14, 15, 16].include?(start.week)
+        if ([14, 15, 16].include?(start.week) && start.year < 2021) || ([15,16,17].include?(start.week) && start.year > 2020)
           playoff_points += start.points
         end
-        if start.week == 16
+        if (start.week == 16 && year < 2021) || (start.week == 17 && year > 2020)
           finals_points += start.points
 
           if start.fantasy_team.won_championship?
@@ -206,6 +206,7 @@ class Player < ApplicationRecord
     weeks_players = []
     team_numbers.each do |team_number|
       driver.navigate.to "#{current_league_url}/team/#{team_number}/gamecenter?gameCenterTab=track&trackType=sbs&week=#{week}"
+      # driver.navigate.to "#{current_league_url}/history/2021/teamgamecenter?teamId=#{team_number}&week=#{week}"
       sleep(2)
       doc = Nokogiri::HTML(driver.page_source)
       box = doc.css("#teamMatchupBoxScore")

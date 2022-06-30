@@ -89,8 +89,8 @@ class Owner < ApplicationRecord
     total_points = 0
     total_games = 0
     total_wins = 0
-    @away_fantasy_games = self.away_fantasy_games.where(week: 1..13)
-    @home_fantasy_games = self.home_fantasy_games.where(week: 1..13)
+    @away_fantasy_games = self.away_fantasy_games.where(week: 1..13, year: 0...2020).or(where(week: 1..14, year: 2021...9999))
+    @home_fantasy_games = self.home_fantasy_games.where(week: 1..13, year: 0...2020).or(where(week: 1..14, year: 2021...9999))
 
     @away_fantasy_games.each do |game|
       total_games += 1
@@ -113,8 +113,11 @@ class Owner < ApplicationRecord
     total_playoff_points = 0
     total_playoff_games = 0
     total_playoff_wins = 0
-    @away_playoff_games = self.away_fantasy_games.where(week: 14..16)
-    @home_fantasy_games = self.home_fantasy_games.where(week: 14..16)
+    @away_playoff_games = self.away_fantasy_games.where(week: 14..16, year: 0...2020).or(where(week: 15..17, year: 2021...9999))
+
+   
+
+    @home_fantasy_games = self.home_fantasy_games.where(week: 14..16, year: 0...2020).or(where(week: 15..17, year: 2021...9999))
 
     @away_playoff_games.each do |game|
       total_playoff_games += 1
