@@ -122,8 +122,8 @@ class FantasyTeam < ApplicationRecord
 
   def season_points
     points = 0
-    away_fantasy_games = self.away_fantasy_games.where(week: 1..13, year: 0...2020).or(where(week: 1..14, year: 2021...9999))
-    home_fantasy_games = self.home_fantasy_games.where(week: 1..13, year: 0...2020).or(where(week: 1..14, year: 2021...9999))
+    away_fantasy_games = self.away_fantasy_games.where(week: 1..13, year: 0...2020).or(self.away_fantasy_games.where(week: 1..14, year: 2021...9999))
+    home_fantasy_games = self.home_fantasy_games.where(week: 1..13, year: 0...2020).or(self.home_fantasy_games.where(week: 1..14, year: 2021...9999))
     away_fantasy_games.each { |game| points += game.away_score }
     home_fantasy_games.each { |game| points += game.home_score }
     return points
@@ -131,8 +131,8 @@ class FantasyTeam < ApplicationRecord
 
   def season_wins
     wins = 0
-    away_fantasy_games = self.away_fantasy_games.where(week: 1..13, year: 0...2020).or(where(week: 1..14, year: 2021...9999))
-    home_fantasy_games = self.home_fantasy_games.where(week: 1..13, year: 0...2020).or(where(week: 1..14, year: 2021...9999))
+    away_fantasy_games = self.away_fantasy_games.where(week: 1..13, year: 0...2020).or(self.away_fantasy_games.where(week: 1..14, year: 2021...9999))
+    home_fantasy_games = self.home_fantasy_games.where(week: 1..13, year: 0...2020).or(self.home_fantasy_games.where(week: 1..14, year: 2021...9999))
     away_fantasy_games.each { |game| (game.away_score > game.home_score) ? wins += 1 : nil }
     home_fantasy_games.each { |game| (game.home_score > game.away_score) ? wins += 1 : nil }
     return wins
@@ -140,8 +140,8 @@ class FantasyTeam < ApplicationRecord
 
   def season_losses
     losses = 0
-    away_fantasy_games = self.away_fantasy_games.where(week: 1..13, year: 0...2020).or(where(week: 1..14, year: 2021...9999))
-    home_fantasy_games = self.home_fantasy_games.where(week: 1..13, year: 0...2020).or(where(week: 1..14, year: 2021...9999))
+    away_fantasy_games = self.away_fantasy_games.where(week: 1..13, year: 0...2020).or(self.away_fantasy_games.where(week: 1..14, year: 2021...9999))
+    home_fantasy_games = self.home_fantasy_games.where(week: 1..13, year: 0...2020).or(self.home_fantasy_games.where(week: 1..14, year: 2021...9999))
     away_fantasy_games.each { |game| (game.away_score < game.home_score) ? losses += 1 : nil }
     home_fantasy_games.each { |game| (game.home_score < game.away_score) ? losses += 1 : nil }
     return losses
@@ -150,8 +150,8 @@ class FantasyTeam < ApplicationRecord
   # weeks where finished in top 6
   def top_six_wins
     top_six_wins = 0
-    away_fantasy_games = self.away_fantasy_games.where(week: 1..13, year: 0...2020).or(where(week: 1..14, year: 2021...9999))
-    home_fantasy_games = self.home_fantasy_games.where(week: 1..13, year: 0...2020).or(where(week: 1..14, year: 2021...9999))
+    away_fantasy_games = self.away_fantasy_games.where(week: 1..13, year: 0...2020).or(self.away_fantasy_games.where(week: 1..14, year: 2021...9999))
+    home_fantasy_games = self.home_fantasy_games.where(week: 1..13, year: 0...2020).or(self.home_fantasy_games.where(week: 1..14, year: 2021...9999))
 
     away_fantasy_games.each do |game|
       away_teams_beaten = FantasyGame.where("away_score < ?", game.away_score).where(year: self.year, week: game.week).count
@@ -190,7 +190,7 @@ class FantasyTeam < ApplicationRecord
 
   def made_playoffs?
     
-    if self.away_fantasy_games.where(week: 14..15, year: 0...2020).or(where(week: 15..16, year: 2021...9999)).length > 0 || self.home_fantasy_games.where(week: 14..15, year: 0...2020).or(where(week: 15..16, year: 2021...9999)).length > 0
+    if self.away_fantasy_games.where(week: 14..15, year: 0...2020).or(self.away_fantasy_games.where(week: 15..16, year: 2021...9999)).length > 0 || self.home_fantasy_games.where(week: 14..15, year: 0...2020).or(self.home_fantasy_games.where(week: 15..16, year: 2021...9999)).length > 0
       return true
     end
     return false
