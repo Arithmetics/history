@@ -1,0 +1,1 @@
+select rankings.ranking, rankings.year, rankings.position, season_stats.age_at_season, season_stats.experience_at_season, season_stats.rank_ppr from rankings left join season_stats on season_stats.player_id = rankings.player_id and season_stats.year = rankings.year where season_stats.games_played > 8 and rankings.position = 'QB' and rankings.ranking > 24;

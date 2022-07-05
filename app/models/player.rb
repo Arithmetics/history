@@ -35,7 +35,7 @@ class Player < ApplicationRecord
         if ([14, 15, 16].include?(start.week) && start.year < 2021) || ([15,16,17].include?(start.week) && start.year > 2020)
           playoff_points += start.points
         end
-        if (start.week == 16 && year < 2021) || (start.week == 17 && year > 2020)
+        if (start.week == 16 && start.year < 2021) || (start.week == 17 && start.year > 2020)
           finals_points += start.points
 
           if start.fantasy_team.won_championship?
