@@ -1,6 +1,21 @@
 require_relative "firefox_driver"
 
-### NEW SEASON ###
+### SUMMER ###
+
+# 1. confirm last season entry complete
+
+# 2. enter all rookies drafted that seem playable into postgres table
+
+# 3. download fantasy pros ranking csvs and place them in lib/assets/fantasyPros...
+
+# 4. run match_rankings which will create the matching files. look though files and create missing players and enter the missing ids
+
+# 5. copy all the matching files into one file: lib/assets/fantasyProsRankings/2022/2022_preseason_rankings.csv
+
+# 6. run 
+
+
+### AUCTION ###
 
 # 1. add new players drafted in ui
 
@@ -10,8 +25,8 @@ require_relative "firefox_driver"
 
 # 3. check file for any unmatched or double matches players, and fix all the error rows
 
-
 # 5. run season_start
+
 
 ### NEW WEEK ###
 
@@ -115,63 +130,24 @@ namespace :data_additions do
     puts "DONE WITH MEGA STAT UPDATE"
   end
 
+  desc "potential matches for rankings"
+  task match_rankings: :environment do
+    ["QB", "RB", "WR", "TE"].each do |position|
+
+      Ranking.create_rankings_file_from_fpros("#{Rails.root}/lib/assets/fantasyProsRankings/2022/FantasyPros_2022_Draft_#{position}_Rankings.csv", position, 2022)
+    end
+  end
+
+  desc "refresh summer rankings"
+  task refresh_rankings: :environment do
+    year = 2022
+    Ranking.where(year: year).delete_all
+    Ranking.insert_rankings_from_file("#{Rails.root}/lib/assets/fantasyProsRankings/#{year}/#{year}_preseason_rankings.csv") 
+  end
+
   desc "debug run"
   task debug_run: :environment do
-    most_turn_over = 0;
-    turn_over_leader = 0;
-    turn_over_week = 0;
-    fantasy_teams = FantasyTeam.all
-    fantasy_teams.each do |fantasy_team|
-      starts = fantasy_team.fantasy_starts
-      week_starts = {
-        1 => {},
-        2 => {},
-        3 => {},
-        4 => {},
-        5 => {},
-        6 => {},
-        7 => {},
-        8 => {},
-        9 => {},
-        10 => {},
-        11 => {},
-        12 => {},
-        13 => {},
-        14 => {},
-        15 => {},
-        16 => {},
-      }
-      starts.each do |start|
-        week_starts[start.week][start.player_id] = true
-      end
-
-      week_starts.each do |week, player_map|
-        turnover = 0
-        if (week != 1 && week != 14 && week != 15 && week != 16 && fantasy_team.id != 111)
-          last_week_player_map = week_starts[week-1]
-          player_map.each do |id, has|
-            if (!last_week_player_map[id])
-              turnover +=1
-            end
-          end
-        end
-        puts week
-        puts fantasy_team.name
-        puts turnover
-        if turnover > most_turn_over 
-          most_turn_over = turnover
-          turn_over_leader = fantasy_team.id
-          turn_over_week = week
-        end
-      end
-    end
-    puts 'LEADER'
-    puts "turnover:"
-    puts most_turn_over
-    puts "id:"
-    puts turn_over_leader
-    puts "week:"
-    puts turn_over_week
+    Ranking.insert_rankings_from_file("#{Rails.root}/lib/assets/#{year}_preseason_rankings.csv")
   end
 end
 
