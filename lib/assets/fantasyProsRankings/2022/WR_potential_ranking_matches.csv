@@ -1,61 +1,269 @@
-year,rank,name,position,player_id
-2022,1,Cooper Kupp,WR,2557898
-2022,2,Justin Jefferson,WR,2564556
-2022,3,Ja'Marr Chase,WR,2565941
-2022,4,Davante Adams,WR,2543495
-2022,5,Stefon Diggs,WR,2552608
-2022,6,CeeDee Lamb,WR,2563848
-2022,7,Deebo Samuel,WR,2562721
-2022,8,Mike Evans,WR,2543468
-2022,9,Tyreek Hill,WR,2556214
-2022,10,A.J. Brown,WR,2562238
-2022,11,Keenan Allen,WR,2540154
-2022,12,Tee Higgins,WR,2563731
-2022,13,Michael Pittman Jr.,WR,2564136
-2022,14,Diontae Johnson,WR,2562674
-2022,15,Jaylen Waddle,WR,2566292
-2022,16,DJ Moore,WR,2560813
-2022,17,Terry McLaurin,WR,2562489
-2022,18,DK Metcalf,WR,2562685
-2022,19,Brandin Cooks,WR,2543498
-2022,20,Courtland Sutton,WR,2560888
-2022,21,Mike Williams,WR,2558846
-2022,22,Amari Cooper,WR,2552487
-2022,23,Marquise Brown,WR,2562379
-2022,24,Jerry Jeudy,WR,2563896
-2022,25,Darnell Mooney,WR,2563707
-2022,26,Allen Robinson II,WR,2543509
-2022,27,Michael Thomas,WR,2556370
-2022,28,Chris Godwin,WR,2558105
-2022,29,Rashod Bateman,WR,2565836
-2022,30,Elijah Moore,WR,2566385
-2022,31,Amon-Ra St. Brown,WR,2566073
-2022,32,JuJu Smith-Schuster,WR,2558149
-2022,33,Gabriel Davis,WR,2563602
-2022,34,Adam Thielen,WR,2541785
-2022,35,DeVonta Smith,WR,2566409
-2022,36,Tyler Lockett,WR,2552430
-2022,37,DeAndre Hopkins,WR,2540165
-2022,38,Hunter Renfrow,WR,2562712
-2022,39,Brandon Aiyuk,WR,2565093
-2022,40,Drake London,WR,2567250
-2022,41,Treylon Burks,WR,2567643
-2022,42,Christian Kirk,WR,2560781
-2022,43,Robert Woods,WR,2540169
-2022,44,Russell Gage,WR,2561061
-2022,45,Allen Lazard,WR,2560787
-2022,46,Chase Claypool,WR,2564970
-2022,47,Garrett Wilson,WR,2568048
-2022,48,Kadarius Toney,WR,2566376
-2022,49,Michael Gallup,WR,2560735
-2022,50,Chris Olave,WR,2567973
-2022,51,Tyler Boyd,WR,2555466
-2022,52,Jakobi Meyers,WR,2562492
-2022,53,Kenny Golladay,WR,2558052
-2022,54,Marquez Valdes-Scantling,WR,2560907
-2022,55,Jarvis Landry,WR,2543488
-2022,56,DeVante Parker,WR,2552409
-2022,57,Rondale Moore,WR,2566433
-2022,58,DJ Chark Jr.,WR,2561018
-2022,59,Skyy Moore,WR,2567805
-2022,60,Tim Patrick,WR,2558985
+year,rank,name,position,player_id,bye_week
+2022,1,Justin Jefferson,WR,2564556,7
+2022,2,Cooper Kupp,WR,2557898,7
+2022,3,Ja'Marr Chase,WR,2565941,10
+2022,4,Stefon Diggs,WR,2552608,7
+2022,5,Davante Adams,WR,2543495,6
+2022,6,CeeDee Lamb,WR,2563848,9
+2022,7,Deebo Samuel,WR,2562721,9
+2022,8,Mike Evans,WR,2543468,11
+2022,9,Tyreek Hill,WR,2556214,11
+2022,10,A.J. Brown,WR,2562238,7
+2022,11,Keenan Allen,WR,2540154,8
+2022,12,Tee Higgins,WR,2563731,10
+2022,13,Michael Pittman Jr.,WR,???,14
+2022,14,DJ Moore,WR,???,13
+2022,15,Diontae Johnson,WR,2562674,9
+2022,16,Jaylen Waddle,WR,2566292,11
+2022,17,Mike Williams,WR,???,8
+2022,18,Courtland Sutton,WR,2560888,9
+2022,19,Terry McLaurin,WR,2562489,14
+2022,20,Brandin Cooks,WR,2543498,6
+2022,21,DK Metcalf,WR,2562685,11
+2022,22,Allen Robinson II,WR,???,7
+2022,23,Marquise Brown,WR,2562379,13
+2022,24,Darnell Mooney,WR,2563707,14
+2022,25,Jerry Jeudy,WR,2563896,9
+2022,26,Michael Thomas,WR,2556370,14
+2022,27,Amari Cooper,WR,2552487,9
+2022,28,Rashod Bateman,WR,2565836,10
+2022,29,Chris Godwin,WR,2558105,11
+2022,30,Gabriel Davis,WR,2563602,7
+2022,31,Amon-Ra St. Brown,WR,???,6
+2022,32,JuJu Smith-Schuster,WR,2558149,8
+2022,33,Elijah Moore,WR,2566385,10
+2022,34,Adam Thielen,WR,2541785,7
+2022,35,Brandon Aiyuk,WR,2565093,9
+2022,36,DeVonta Smith,WR,2566409,7
+2022,37,Drake London,WR,2567250,14
+2022,38,Hunter Renfrow,WR,2562712,6
+2022,39,Tyler Lockett,WR,2552430,11
+2022,40,Allen Lazard,WR,2560787,14
+2022,41,Christian Kirk,WR,2560781,11
+2022,42,DeAndre Hopkins,WR,2540165,13
+2022,43,Robert Woods,WR,2540169,6
+2022,44,Kadarius Toney,WR,2566376,9
+2022,45,Treylon Burks,WR,2567643,6
+2022,46,Chris Olave,WR,2567973,14
+2022,47,Chase Claypool,WR,2564970,9
+2022,48,Skyy Moore,WR,2567805,8
+2022,49,Russell Gage,WR,2561061,11
+2022,50,Tyler Boyd,WR,2555466,10
+2022,51,Garrett Wilson,WR,2568048,10
+2022,52,Jakobi Meyers,WR,2562492,10
+2022,53,Marquez Valdes-Scantling,WR,2560907,8
+2022,54,DeVante Parker,WR,2552409,10
+2022,55,Jarvis Landry,WR,2543488,14
+2022,56,Rondale Moore,WR,2566433,13
+2022,57,Kenny Golladay,WR,2558052,9
+2022,58,DJ Chark Jr.,WR,???,6
+2022,59,Michael Gallup,WR,2560735,9
+2022,60,George Pickens,WR,2568159,9
+2022,61,Julio Jones,WR,2495454,11
+2022,62,Jahan Dotson,WR,2568321,14
+2022,63,Corey Davis,WR,2557848,10
+2022,64,Robbie Anderson,WR,???,13
+2022,65,Mecole Hardman,WR,2562580,8
+2022,66,Van Jefferson,WR,2564358,7
+2022,67,Marvin Jones Jr.,WR,???,11
+2022,68,Nico Collins,WR,2566127,6
+2022,69,Jameson Williams,WR,2567565,6
+2022,70,K.J. Osborn,WR,???,7
+2022,71,Joshua Palmer,WR,???,8
+2022,72,Christian Watson,WR,2567637,14
+2022,73,Jamison Crowder,WR,2552415,7
+2022,74,Donovan Peoples-Jones,WR,2563803,9
+2022,75,Kendrick Bourne,WR,2558914,10
+2022,76,Curtis Samuel,WR,2558066,14
+2022,77,Wan'Dale Robinson,WR,???,9
+2022,78,Parris Campbell,WR,2562495,14
+2022,79,KJ Hamler,WR,???,9
+2022,80,A.J. Green,WR,2495450,13
+2022,81,Jalen Tolbert,WR,2567508,9
+2022,82,Sterling Shepard,WR,2555295,9
+2022,83,David Bell,WR,2567460,9
+2022,84,Laviska Shenault Jr.,WR,???,11
+2022,85,Isaiah McKenzie,WR,???,7
+2022,86,Byron Pringle,WR,???,14
+2022,87,Terrace Marshall Jr.,WR,???,13
+2022,88,Alec Pierce,WR,2567715,14
+2022,89,Zay Jones,WR,2557863,11
+2022,90,Braxton Berrios,WR,2560975,10
+2022,91,Randall Cobb,WR,2495448,14
+2022,92,Bryan Edwards,WR,2564418,14
+2022,93,Cedrick Wilson Jr.,WR,???,11
+2022,94,Marquez Callaway,WR,2565310,14
+2022,95,Romeo Doubs,WR,2567586,14
+2022,96,Nelson Agholor,WR,2552600,10
+2022,97,William Fuller V,WR,???,-
+2022,98,Sammy Watkins,WR,2543457,14
+2022,99,Odell Beckham Jr.,WR,???,-
+2022,100,Tre'Quan Smith,WR,2560878,14
+2022,101,Quez Watkins,WR,???,7
+2022,102,Josh Reynolds,WR,2558194,6
+2022,103,Darius Slayton,WR,2562736,9
+2022,104,Dyami Brown,WR,???,14
+2022,105,Jalen Reagor,WR,2564850,7
+2022,106,Quintez Cephus,WR,2563926,6
+2022,107,Emmanuel Sanders,WR,497322,-
+2022,108,Velus Jones Jr.,WR,???,14
+2022,109,Cole Beasley,WR,2535698,-
+2022,110,Devin Duvernay,WR,???,10
+2022,111,Nick Westbrook-Ikhine,WR,???,6
+2022,112,Tyquan Thornton,WR,2567958,10
+2022,113,T.Y. Hilton,WR,2532865,-
+2022,114,Jalen Guyton,WR,2562844,8
+2022,115,Demarcus Robinson,WR,2555478,-
+2022,116,Amari Rodgers,WR,???,14
+2022,117,Kyle Philips,WR,???,6
+2022,118,James Proche II,WR,???,10
+2022,119,James Washington,WR,2560920,9
+2022,120,Calvin Austin III,WR,???,9
+2022,121,Khalil Shakir,WR,2567334,7
+2022,122,Danny Gray,WR,???,9
+2022,123,Tyler Johnson,WR,???,11
+2022,124,Laquon Treadwell,WR,2555214,11
+2022,125,Olamide Zaccheaus,WR,2562808,14
+2022,126,Jauan Jennings,WR,???,9
+2022,127,Dee Eskridge,WR,???,11
+2022,128,Anthony Schwartz,WR,???,9
+2022,129,John Metchie III,WR,???,6
+2022,130,Tutu Atwell,WR,???,7
+2022,131,Equanimeous St. Brown,WR,???,14
+2022,132,Zach Pascal,WR,2558877,7
+2022,133,Rashard Higgins,WR,2555468,13
+2022,134,Tylan Wallace,WR,???,10
+2022,135,Noah Brown,WR,???,9
+2022,136,Chris Conley,WR,???,6
+2022,137,Deonte Harty,WR,???,14
+2022,138,Antonio Brown,WR,2508061,-
+2022,139,Denzel Mims,WR,2564802,10
+2022,140,Ashton Dulin,WR,???,14
+2022,141,Jamal Agnew,WR,2558821,11
+2022,142,N'Keal Harry,WR,2562659,14
+2022,143,Auden Tate,WR,2560890,14
+2022,144,Freddie Swain,WR,???,11
+2022,145,Ihmir Smith-Marsette,WR,???,7
+2022,146,Keelan Cole Sr.,WR,???,6
+2022,147,Antoine Wesley,WR,???,13
+2022,148,Phillip Dorsett II,WR,???,6
+2022,149,Ben Skowronek,WR,???,7
+2022,150,Kalif Raymond,WR,2556661,6
+2022,151,Mack Hollins,WR,???,6
+2022,152,Breshad Perriman,WR,2552597,11
+2022,153,Cyril Grayson Jr.,WR,???,11
+2022,154,Preston Williams,WR,2562805,11
+2022,155,Tyrell Williams,WR,2553913,-
+2022,156,Dez Fitzpatrick,WR,???,6
+2022,157,Miles Boykin,WR,???,9
+2022,158,Ray-Ray McCloud,WR,???,9
+2022,159,Justyn Ross,WR,???,8
+2022,160,Bisi Johnson,WR,???,7
+2022,161,Erik Ezukanma,WR,???,11
+2022,162,Scotty Miller,WR,???,11
+2022,163,Simi Fehoko,WR,???,9
+2022,164,Bo Melton,WR,???,11
+2022,165,Josh Gordon,WR,2537931,8
+2022,166,Jaelon Darden,WR,???,11
+2022,167,DeSean Jackson,WR,1581,-
+2022,168,Brandon Zylstra,WR,???,13
+2022,169,Damiere Byrd,WR,???,14
+2022,170,Cam Sims,WR,???,14
+2022,171,Chris Moore,WR,???,6
+2022,172,Dezmon Patmon,WR,???,14
+2022,173,Trent Sherfield,WR,???,11
+2022,174,Tajae Sharpe,WR,2555317,14
+2022,175,Mike Thomas,WR,81308,10
+2022,176,Travis Fulgham,WR,2562653,14
+2022,177,DeAndre Carter,WR,???,8
+2022,178,Shi Smith,WR,???,13
+2022,179,Justin Watson,WR,???,8
+2022,180,Chester Rogers,WR,???,6
+2022,181,Marcus Johnson,WR,???,9
+2022,182,Dazz Newsome,WR,???,14
+2022,183,Jalen Nailor,WR,???,7
+2022,184,Collin Johnson,WR,???,9
+2022,185,Seth Williams,WR,???,9
+2022,186,KhaDarel Hodge,WR,???,14
+2022,187,Albert Wilson,WR,???,7
+2022,188,Stanley Morgan Jr.,WR,???,10
+2022,189,Kendall Hinton,WR,???,9
+2022,190,Montrell Washington,WR,???,9
+2022,191,Mike Strachan,WR,???,14
+2022,192,Greg Dortch,WR,???,13
+2022,193,Tyron Johnson,WR,???,6
+2022,194,Lil'Jordan Humphrey,WR,???,10
+2022,195,Cornell Powell,WR,???,8
+2022,196,Dante Pettis,WR,2560836,14
+2022,197,Marquise Goodwin,WR,2539964,11
+2022,198,Richie James Jr.,WR,???,9
+2022,199,Dennis Houston,WR,???,9
+2022,200,Keke Coutee,WR,2561029,14
+2022,201,Greg Ward,WR,???,7
+2022,202,Lynn Bowden Jr.,WR,???,11
+2022,203,Trent Taylor,WR,???,10
+2022,204,Jeff Smith,WR,???,10
+2022,205,Cody Hollister,WR,???,6
+2022,206,Binjimen Victor,WR,???,10
+2022,207,Malik Turner,WR,???,9
+2022,208,Slade Bolden,WR,???,10
+2022,209,Penny Hart,WR,???,11
+2022,210,Samori Toure,WR,???,14
+2022,211,Christian Blake,WR,???,9
+2022,212,T.J. Vasher,WR,???,9
+2022,213,Nsimba Webster,WR,???,14
+2022,214,Charleston Rambo,WR,???,13
+2022,215,Makai Polk,WR,???,10
+2022,216,Jason Moore Jr.,WR,???,8
+2022,217,Dax Milne,WR,???,14
+2022,218,Ja'Marcus Bradley,WR,???,9
+2022,219,Andy Isabella,WR,2562669,13
+2022,220,David Moore,WR,2558856,14
+2022,221,Devin Funchess,WR,2552458,6
+2022,222,Juwann Winfree,WR,???,14
+2022,223,Alex Erickson,WR,???,14
+2022,224,Cameron Batson,WR,???,14
+2022,225,Dontario Drummond,WR,???,9
+2022,226,Johnny Johnson III,WR,???,6
+2022,227,Gary Jennings Jr.,WR,???,8
+2022,228,Brandon Powell,WR,???,7
+2022,229,Tay Martin,WR,???,9
+2022,230,Joe Reed,WR,???,8
+2022,231,Mohamed Sanu Sr.,WR,???,11
+2022,232,Tom Kennedy,WR,???,6
+2022,233,Gunner Olszewski,WR,???,9
+2022,234,Isaiah Hodgins,WR,2563611,7
+2022,235,Jaylon Moore,WR,???,10
+2022,236,Racey McMath,WR,???,6
+2022,237,Cody White,WR,???,9
+2022,238,Isaiah Coulter,WR,???,14
+2022,239,Lawrence Cager,WR,???,10
+2022,240,Kristian Wilkerson,WR,???,10
+2022,241,Javon Wims,WR,???,9
+2022,242,Kirk Merritt,WR,???,14
+2022,243,D.J. Montgomery,WR,???,14
+2022,244,C.J. Board,WR,???,9
+2022,245,Andre Roberts,WR,497320,13
+2022,246,Jalen Camp,WR,???,6
+2022,247,Marquez Stevenson,WR,???,7
+2022,248,Jake Kumerow,WR,???,7
+2022,249,Geronimo Allison,WR,2556460,14
+2022,250,Dareke Young,WR,???,11
+2022,251,Frank Darby,WR,???,14
+2022,252,J.J. Arcega-Whiteside,WR,???,11
+2022,253,David Sills V,WR,???,9
+2022,254,DJ Turner,WR,???,6
+2022,255,Tarik Black,WR,???,10
+2022,256,Brandon Johnson,WR,???,9
+2022,257,KeeSean Johnson,WR,???,14
+2022,258,Michael Woods II,WR,???,-
+2022,259,Daurice Fountain,WR,???,8
+2022,260,Deven Thompkins,WR,???,11
+2022,261,Deon Cain,WR,???,7
+2022,262,Trenton Irwin,WR,???,10
+2022,263,Steven Sims Jr.,WR,???,9
+2022,264,Rashid Shaheed,WR,???,14
+2022,265,Michael Bandy,WR,???,8
+2022,266,Dan Chisena,WR,???,7
+2022,267,Trishton Jackson,WR,???,7
+2022,268,Tyrie Cleveland,WR,???,9

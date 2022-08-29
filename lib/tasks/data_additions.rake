@@ -12,7 +12,9 @@ require_relative "firefox_driver"
 
 # 5. copy all the matching files into one file: lib/assets/fantasyProsRankings/2022/2022_preseason_rankings.csv
 
-# 6. run 
+# 6. run refresh_rankings
+
+# 7. run Ranking.create_draft_pricing_sheet
 
 
 ### AUCTION ###
@@ -147,7 +149,7 @@ namespace :data_additions do
 
   desc "debug run"
   task debug_run: :environment do
-    Ranking.insert_rankings_from_file("#{Rails.root}/lib/assets/#{year}_preseason_rankings.csv")
+    # Ranking.insert_rankings_from_file("#{Rails.root}/lib/assets/#{year}_preseason_rankings.csv")
   end
 end
 

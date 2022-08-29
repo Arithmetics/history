@@ -18,6 +18,7 @@ class Player < ApplicationRecord
     playoff_points = 0
     finals_points = 0
     championships = 0
+    finals_appearences = 0
     total_auction_money = 0
     highest_auction_money = 0
     best_start = 0
@@ -40,6 +41,9 @@ class Player < ApplicationRecord
 
           if start.fantasy_team.won_championship?
             championships += 1
+          end
+          if start.fantasy_team.made_finals?
+            finals_appearences += 1
           end
         end
       end
@@ -76,6 +80,7 @@ class Player < ApplicationRecord
     career_stats["finals_points"] = finals_points.round(2)
     career_stats["total_points"] = total_points.round(2)
     career_stats["championships"] = championships.round(2)
+    career_stats["finals_appearences"] = finals_appearences.round(2)
 
     career_stats["total_auction_money"] = total_auction_money
     career_stats["highest_auction_money"] = highest_auction_money

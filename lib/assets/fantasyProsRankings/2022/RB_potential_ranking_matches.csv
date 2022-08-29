@@ -1,71 +1,212 @@
-year,rank,name,position,player_id
-2022,1,Jonathan Taylor,RB,2564148
-2022,2,Christian McCaffrey,RB,2557997
-2022,3,Austin Ekeler,RB,2559169
-2022,4,Derrick Henry,RB,2556075
-2022,5,Dalvin Cook,RB,2557991
-2022,6,Najee Harris,RB,2566448
-2022,7,Joe Mixon,RB,2557976
-2022,8,D'Andre Swift,RB,2563965
-2022,9,Nick Chubb,RB,2561021
-2022,10,Aaron Jones,RB,2558116
-2022,11,Leonard Fournette,RB,2557973
-2022,12,Alvin Kamara,RB,2558019
-2022,13,Javonte Williams,RB,2566049
-2022,14,Saquon Barkley,RB,2560968
-2022,15,James Conner,RB,2557978
-2022,16,David Montgomery,RB,2562502
-2022,17,Ezekiel Elliott,RB,2555224
-2022,18,Cam Akers,RB,2564319
-2022,19,Antonio Gibson,RB,2565276
-2022,20,Breece Hall,RB,2568030
-2022,21,J.K. Dobbins,RB,2563548
-2022,22,Josh Jacobs,RB,2562377
-2022,23,Travis Etienne Jr.,RB,2566157
-2022,24,Elijah Mitchell,RB,2566538
-2022,25,AJ Dillon,RB,2563986
-2022,26,Miles Sanders,RB,2562722
-2022,27,Damien Harris,RB,2562281
-2022,28,Clyde Edwards-Helaire,RB,2564271
-2022,29,Kareem Hunt,RB,2557917
-2022,30,Tony Pollard,RB,2562699
-2022,31,Devin Singletary,RB,2562734
-2022,32,Chase Edmonds,RB,2560711
-2022,33,Rashaad Penny,RB,2560835
-2022,34,Ken Walker III,RB,2568282
-2022,35,Melvin Gordon III,RB,2552469
-2022,36,Cordarrelle Patterson,RB,2540145
-2022,37,Rhamondre Stevenson,RB,2566343
-2022,38,Michael Carter,RB,2566382
-2022,39,Ronald Jones II,RB,2560770
-2022,40,James Cook,RB,2567328
-2022,41,Alexander Mattison,RB,2562682
-2022,42,Darrell Henderson Jr.,RB,2562574
-2022,43,James Robinson,RB,2564223
-2022,44,Nyheim Hines,RB,2560742
-2022,45,J.D. McKissic,RB,2556440
-2022,46,Raheem Mostert,RB,2553728
-2022,47,Isaiah Spiller,RB,2568189
-2022,48,Jamaal Williams,RB,2558204
-2022,49,Kenneth Gainwell,RB,2566397
-2022,50,Gus Edwards,RB,2561324
-2022,51,Dameon Pierce,RB,2567685
-2022,52,Sony Michel,RB,2560809
-2022,53,Khalil Herbert,RB,2565926
-2022,54,Marlon Mack,RB,2558123
-2022,55,Darrel Williams,RB,2560935
-2022,56,Tyler Allgeier,RB,2567232
-2022,57,D'Onta Foreman,RB,2557994
-2022,58,Mark Ingram II,RB,2495466
-2022,59,James White,RB,2543773
-2022,60,Rachaad White,RB,2568315
-2022,61,Kenyan Drake,RB,2555230
-2022,62,Chuba Hubbard,RB,2565899
-2022,63,Myles Gaskin,RB,2562270
-2022,64,Boston Scott,RB,2561146
-2022,65,Damien Williams,RB,2550512
-2022,66,Samaje Perine,RB,2558138
-2022,67,Trey Sermon,RB,2566544
-2022,68,Brian Robinson Jr.,RB,2568348
-2022,69,Chris Carson,RB,2558865
-2022,70,D'Ernest Johnson,RB,2563327
+year,rank,name,position,player_id,bye_week
+2022,1,Jonathan Taylor,RB,2564148,14
+2022,2,Christian McCaffrey,RB,2557997,13
+2022,3,Austin Ekeler,RB,2559169,8
+2022,4,Dalvin Cook,RB,2557991,7
+2022,5,Derrick Henry,RB,2556075,6
+2022,6,Najee Harris,RB,2566448,9
+2022,7,Joe Mixon,RB,2557976,10
+2022,8,D'Andre Swift,RB,2563965,6
+2022,9,Saquon Barkley,RB,2560968,9
+2022,10,Alvin Kamara,RB,2558019,14
+2022,11,Aaron Jones,RB,2558116,14
+2022,12,Nick Chubb,RB,2561021,9
+2022,13,Leonard Fournette,RB,2557973,11
+2022,14,Javonte Williams,RB,2566049,9
+2022,15,James Conner,RB,2557978,13
+2022,16,Ezekiel Elliott,RB,2555224,9
+2022,17,Breece Hall,RB,2568030,10
+2022,18,Cam Akers,RB,2564319,7
+2022,19,David Montgomery,RB,2562502,14
+2022,20,Travis Etienne Jr.,RB,???,11
+2022,21,Elijah Mitchell,RB,2566538,9
+2022,22,J.K. Dobbins,RB,???,10
+2022,23,AJ Dillon,RB,???,14
+2022,24,Josh Jacobs,RB,2562377,6
+2022,25,Antonio Gibson,RB,2565276,14
+2022,26,Damien Harris,RB,2562281,10
+2022,27,Miles Sanders,RB,2562722,7
+2022,28,Clyde Edwards-Helaire,RB,2564271,8
+2022,29,Chase Edmonds,RB,2560711,11
+2022,30,Rashaad Penny,RB,2560835,11
+2022,31,Kareem Hunt,RB,2557917,9
+2022,32,Tony Pollard,RB,2562699,9
+2022,33,Rhamondre Stevenson,RB,2566343,10
+2022,34,Devin Singletary,RB,2562734,7
+2022,35,Cordarrelle Patterson,RB,2540145,14
+2022,36,Melvin Gordon III,RB,???,9
+2022,37,Ken Walker III,RB,???,11
+2022,38,James Cook,RB,2567328,7
+2022,39,Dameon Pierce,RB,2567685,6
+2022,40,Michael Carter,RB,2566382,10
+2022,41,Darrell Henderson Jr.,RB,???,7
+2022,42,James Robinson,RB,2564223,11
+2022,43,Alexander Mattison,RB,2562682,7
+2022,44,Nyheim Hines,RB,2560742,14
+2022,45,Kenneth Gainwell,RB,2566397,7
+2022,46,J.D. McKissic,RB,2556440,14
+2022,47,Jamaal Williams,RB,2558204,6
+2022,48,Khalil Herbert,RB,2565926,14
+2022,49,Isaiah Spiller,RB,2568189,8
+2022,50,Raheem Mostert,RB,2553728,11
+2022,51,Tyler Allgeier,RB,2567232,14
+2022,52,Brian Robinson Jr.,RB,???,14
+2022,53,Gus Edwards,RB,2561324,10
+2022,54,Rachaad White,RB,2568315,11
+2022,55,Mark Ingram II,RB,???,14
+2022,56,Marlon Mack,RB,2558123,6
+2022,57,Ronald Jones II,RB,2560770,8
+2022,58,D'Onta Foreman,RB,2557994,13
+2022,59,Darrel Williams,RB,2560935,13
+2022,60,Sony Michel,RB,2560809,11
+2022,61,Zamir White,RB,2567883,6
+2022,62,Kenyan Drake,RB,2555230,6
+2022,63,Boston Scott,RB,2561146,7
+2022,64,Chuba Hubbard,RB,2565899,13
+2022,65,Samaje Perine,RB,2558138,10
+2022,66,Damien Williams,RB,2550512,14
+2022,67,Tyrion Davis-Price,RB,2568207,9
+2022,68,D'Ernest Johnson,RB,???,9
+2022,69,Trey Sermon,RB,2566544,9
+2022,70,Jerick McKinnon,RB,2543715,8
+2022,71,Jeff Wilson Jr.,RB,???,9
+2022,72,Rex Burkhead,RB,2539265,6
+2022,73,Zack Moss,RB,2563617,7
+2022,74,Mike Davis,RB,2553439,10
+2022,75,Matt Breida,RB,2558918,9
+2022,76,Myles Gaskin,RB,2562270,11
+2022,77,Eno Benjamin,RB,???,13
+2022,78,Hassan Haskins,RB,2567649,6
+2022,79,Isiah Pacheco,RB,???,8
+2022,80,Phillip Lindsay,RB,2559947,14
+2022,81,Ke'Shawn Vaughn,RB,2565258,11
+2022,82,Joshua Kelley,RB,2565054,8
+2022,83,Kyren Williams,RB,???,7
+2022,84,Ty Johnson,RB,2562293,10
+2022,85,Pierre Strong Jr.,RB,???,10
+2022,86,Giovani Bernard,RB,2540156,11
+2022,87,Darrynton Evans,RB,2564043,14
+2022,88,Chris Evans,RB,???,10
+2022,89,Duke Johnson Jr.,RB,???,7
+2022,90,Tevin Coleman,RB,2552453,10
+2022,91,Salvon Ahmed,RB,2565090,11
+2022,92,Jerome Ford,RB,???,9
+2022,93,Justin Jackson,RB,2560756,6
+2022,94,Jaret Patterson,RB,???,14
+2022,95,Tyler Badie,RB,???,10
+2022,96,Snoop Conner,RB,???,11
+2022,97,Malcolm Brown,RB,2552382,-
+2022,98,Dontrell Hilliard,RB,2561461,6
+2022,99,Devontae Booker,RB,2555223,-
+2022,100,David Johnson,RB,2553435,-
+2022,101,Latavius Murray,RB,2541161,-
+2022,102,Keaontay Ingram,RB,???,13
+2022,103,DeeJay Dallas,RB,???,11
+2022,104,Devonta Freeman,RB,2543583,-
+2022,105,Kene Nwangwu,RB,???,7
+2022,106,Derrick Gore,RB,???,8
+2022,107,Wayne Gallman Jr.,RB,???,-
+2022,108,Ameer Abdullah,RB,2552374,6
+2022,109,Benny Snell Jr.,RB,???,9
+2022,110,Anthony McFarland Jr.,RB,???,9
+2022,111,Abram Smith,RB,???,14
+2022,112,Jaylen Warren,RB,???,9
+2022,113,Ty Montgomery,RB,2552429,10
+2022,114,Brandon Bolden,RB,2532797,6
+2022,115,Tony Jones Jr.,RB,???,14
+2022,116,Craig Reynolds,RB,???,6
+2022,117,Mike Boone,RB,???,9
+2022,118,Trestan Ebner,RB,???,14
+2022,119,Kylin Hill,RB,???,14
+2022,120,JaMycal Hasty,RB,2565108,9
+2022,121,Kennedy Brooks,RB,???,7
+2022,122,Kevin Harris,RB,???,10
+2022,123,Jermar Jefferson,RB,2566058,6
+2022,124,Justice Hill,RB,2562407,10
+2022,125,Travis Homer,RB,???,11
+2022,126,Jordan Howard,RB,2555418,-
+2022,127,Jeremy McNichols,RB,2557977,9
+2022,128,Larry Rountree III,RB,???,8
+2022,129,Ty Chandler,RB,2567907,7
+2022,130,Carlos Hyde,RB,2543743,-
+2022,131,Rico Dowdle,RB,???,9
+2022,132,Tarik Cohen,RB,2558250,-
+2022,133,Jerrion Ealy,RB,???,8
+2022,134,Demetric Felton Jr.,RB,???,9
+2022,135,Dare Ogunbowale,RB,2559362,6
+2022,136,Le'Veon Bell,RB,2540175,-
+2022,137,Jashaun Corbin,RB,???,9
+2022,138,Kyle Juszczyk,RB,???,9
+2022,139,Qadree Ollison,RB,???,14
+2022,140,Ryquell Armstead,RB,2562622,11
+2022,141,Sincere McCormick,RB,???,6
+2022,142,Patrick Ricard,RB,???,10
+2022,143,Jake Funk,RB,???,7
+2022,144,Trayveon Williams,RB,???,10
+2022,145,Royce Freeman,RB,2560733,6
+2022,146,J.J. Taylor,RB,???,10
+2022,147,Zonovan Knight,RB,???,10
+2022,148,La'Mical Perine,RB,???,10
+2022,149,C.J. Ham,RB,???,7
+2022,150,Julius Chestnut,RB,???,6
+2022,151,Godwin Igwebuike,RB,???,6
+2022,152,Patrick Taylor Jr.,RB,???,14
+2022,153,Ty'Son Williams,RB,2565542,14
+2022,154,Alec Ingold,RB,???,11
+2022,155,Kalen Ballage,RB,2560967,-
+2022,156,Jason Huntley,RB,???,7
+2022,157,Jakob Johnson,RB,???,6
+2022,158,Keith Smith,RB,???,14
+2022,159,Deon Jackson,RB,???,14
+2022,160,Tyler Goodson,RB,???,14
+2022,161,Gary Brightwell,RB,???,9
+2022,162,Jordan Mason,RB,???,9
+2022,163,D'Vonte Price,RB,???,14
+2022,164,John Kelly Jr.,RB,???,9
+2022,165,Antonio Williams,RB,???,9
+2022,166,Devine Ozigbo,RB,2562409,14
+2022,167,Javian Hawkins,RB,???,6
+2022,168,Jonathan Williams,RB,2555227,14
+2022,169,Michael Burton,RB,???,8
+2022,170,Reggie Gilliam,RB,???,7
+2022,171,Adam Prentice,RB,???,14
+2022,172,Mataeo Durant,RB,???,9
+2022,173,Gabe Nabers,RB,???,8
+2022,174,Jalen Richard,RB,2556885,-
+2022,175,Jordan Wilkins,RB,2560933,-
+2022,176,Tory Carter,RB,???,6
+2022,177,Khari Blasingame,RB,???,14
+2022,178,Nick Bawden,RB,???,10
+2022,179,Aaron Shampklin,RB,???,9
+2022,180,Andy Janovich,RB,???,6
+2022,181,Derek Watt,RB,???,9
+2022,182,Ben Mason,RB,???,10
+2022,183,CJ Verdell,RB,???,14
+2022,184,Caleb Huntley,RB,???,14
+2022,185,Kerryon Johnson,RB,2560765,-
+2022,186,Pooka Williams Jr.,RB,???,-
+2022,187,Kenjon Barner,RB,2539289,11
+2022,188,Max Borghi,RB,???,9
+2022,189,Darwin Thompson,RB,2562832,11
+2022,190,Brian Hill,RB,2558112,-
+2022,191,Jacques Patrick,RB,???,10
+2022,192,Malik Davis,RB,???,9
+2022,193,Dwayne Washington,RB,2556118,14
+2022,194,Trenton Cannon,RB,???,6
+2022,195,ZaQuandre White,RB,???,11
+2022,196,Gerrid Doaks,RB,???,11
+2022,197,Jonathan Ward,RB,???,-
+2022,198,Greg Bell,RB,???,-
+2022,199,Bryant Koback,RB,???,7
+2022,200,Sandro Platzgummer,RB,???,9
+2022,201,Ricky Person Jr.,RB,???,-
+2022,202,Zander Horvath,RB,???,8
+2022,203,Leddie Brown,RB,???,8
+2022,204,Taiwan Jones,RB,2495467,7
+2022,205,Nate McCrary,RB,???,10
+2022,206,De'Montre Tuggle,RB,???,14
+2022,207,Tayon Fleet-Davis,RB,???,8
+2022,208,Raheem Blackshear,RB,???,7
+2022,209,Raymond Calais,RB,???,7
+2022,210,Elijah Holyfield,RB,???,10
+2022,211,Brittain Brown,RB,???,6

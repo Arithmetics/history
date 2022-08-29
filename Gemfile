@@ -60,3 +60,4 @@ gem "ruby-debug-ide"
 gem 'debase'
 gem 'devise'
 gem 'devise-jwt'
+gem 'enumerable-statistics'
