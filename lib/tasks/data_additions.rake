@@ -42,7 +42,7 @@ namespace :data_additions do
   desc "potential player id matches for auction"
   task get_auction_ids: :environment do
     begin
-      year = 2019
+      year = 2022
       Purchase.convert_raw_to_final(year)
     rescue
       raise "error getting id matches"
@@ -53,17 +53,17 @@ namespace :data_additions do
   task season_start: :environment do
     begin
       current_league_url = "https://fantasy.nfl.com/league/400302"
-      year = 2021
+      year = 2022
       driver = driver_start(current_league_url)
 
       Owner.changed_on_web?(driver, current_league_url)
       FantasyTeam.create_all_teams_on_web(driver, current_league_url, year)
-      ScheduledFantasyGame.get_year_schedule_from_web(driver, current_league_url, year)
+      # ScheduledFantasyGame.get_year_schedule_from_web(driver, current_league_url, year)
 
       Purchase.insert_auction("#{Rails.root}/lib/assets/#{year}_final_auction.csv", year)
-      Ranking.insert_rankings_from_file("#{Rails.root}/lib/assets/#{year}_preseason_rankings.csv")
-      Player.update_all_season_stats
-      SeasonStat.calculate_all_dependent_columns
+      # Ranking.insert_rankings_from_file("#{Rails.root}/lib/assets/#{year}_preseason_rankings.csv")
+      # Player.update_all_season_stats
+      # SeasonStat.calculate_all_dependent_columns
       puts "season has begun!"
     rescue
       raise "error executing data gathering tasks"

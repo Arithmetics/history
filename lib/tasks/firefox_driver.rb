@@ -8,7 +8,7 @@ def driver_start(current_league_url)
   puts "creating driver"
   driver = Selenium::WebDriver.for :firefox
   driver.manage.timeouts.implicit_wait = 20
-  driver.navigate.to "https://www.nfl.com/account/sign-in"
+  # driver.navigate.to "https://www.nfl.com/account/sign-in"
   # # username = driver.find_element(xpath: "/html/body/div[4]/main/div/div/div[2]/div/form/div[1]/div[1]/input")
   # username = driver.find_element(xpath: "/html/body/div[3]/div[3]/div/div[1]/div/div/div[2]/div/form/div[1]/div[1]/input")
   # password = driver.find_element(xpath: "/html/body/div[3]/div[3]/div/div[1]/div/div/div[2]/div/form/div[1]/div[2]/input")
@@ -20,9 +20,9 @@ def driver_start(current_league_url)
   # submit.click()
   # driver.find_element(xpath: "/html/body/div[4]/header/div/nav[2]/ul/li[4]/a/span/svg/use//svg/path")
 
-  sleep(40)
+  # sleep(40)
   driver.navigate.to(current_league_url)
-  sleep(20)
+  sleep(5)
   puts "handing off driver"
   return driver
 end

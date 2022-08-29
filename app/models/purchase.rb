@@ -9,14 +9,14 @@ class Purchase < ApplicationRecord
   def self.insert_auction(filepath, year)
     ActiveRecord::Base.transaction do
       CSV.foreach(filepath, :headers => true) do |row|
-        owner_name = row["owner_name"]
+        owner_id = row["owner_id"]
         price = row["price"].to_i
         player_name = row["player_name"]
         player_id = row["player_id"].to_i
         position = row["position"]
 
         player = Player.find(player_id)
-        owner = Owner.find_by_name(owner_name)
+        owner = Owner.find(owner_id)
         fantasy_team = FantasyTeam.where(owner: owner, year: year).first
 
         if player == nil || fantasy_team == nil
@@ -33,8 +33,9 @@ class Purchase < ApplicationRecord
     final_file = "#{Rails.root}/lib/assets/#{year}_final_auction.csv"
     CSV.open(final_file, "w+") do |writer|
       raw_file = "#{year}_raw_auction"
+      writer << ["owner_id", "price", "position", "player_name", "player_id"]
       CSV.foreach("#{Rails.root}/lib/assets/#{raw_file}.csv", :headers => true) do |row|
-        owner_name = row["owner_name"]
+        owner_id = row["owner_id"]
         price = row["price"]
         player_name = row["player_name"]
         position = row["position"]
@@ -46,8 +47,7 @@ class Purchase < ApplicationRecord
         elsif potential_id_matches.length == 1
           message = potential_id_matches[0]
         end
-        writer << ["owner_name", "price", "position", "player_name", "player_id"]
-        writer << [owner_name, price, position, player_name, message]
+        writer << [owner_id, price, position, player_name, message]
       end
     end
   end
