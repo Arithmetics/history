@@ -58,12 +58,13 @@ namespace :data_additions do
 
       Owner.changed_on_web?(driver, current_league_url)
       FantasyTeam.create_all_teams_on_web(driver, current_league_url, year)
-      # ScheduledFantasyGame.get_year_schedule_from_web(driver, current_league_url, year)
+      
+      ScheduledFantasyGame.get_year_schedule_from_web(driver, current_league_url, year)
 
       Purchase.insert_auction("#{Rails.root}/lib/assets/#{year}_final_auction.csv", year)
-      # Ranking.insert_rankings_from_file("#{Rails.root}/lib/assets/#{year}_preseason_rankings.csv")
-      # Player.update_all_season_stats
-      # SeasonStat.calculate_all_dependent_columns
+      Ranking.insert_rankings_from_file("#{Rails.root}/lib/assets/#{year}_preseason_rankings.csv")
+      Player.update_all_season_stats
+      SeasonStat.calculate_all_dependent_columns
       puts "season has begun!"
     rescue
       raise "error executing data gathering tasks"
@@ -73,8 +74,8 @@ namespace :data_additions do
   desc "add a new regular season week"
   task new_reg_week: :environment do
     begin
-      year = 2021
-      week = 14 # the week that just completed
+      year = 2022
+      week = 2 # the week that just completed
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
 
@@ -88,7 +89,7 @@ namespace :data_additions do
       Player.update_all_season_stats
       SeasonStat.calculate_all_dependent_columns
       FantasyGame.grade_season_games(year)
-      ScheduledFantasyGame.remove_last_played_week
+      # ScheduledFantasyGame.remove_last_played_week
       PlayoffOdd.save_current_playoff_odds(week, 1000)
     rescue
       raise "error adding a new league week"

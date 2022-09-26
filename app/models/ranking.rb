@@ -86,7 +86,7 @@ class Ranking < ApplicationRecord
     this_years_rankings = Ranking.where(year: year)
 
     csv_rows = [
-      ['position', 'player', 'age', 'experience', 'last year rank', 'bye week', 'low price', 'high price']
+      ['position', 'player', 'age', 'experience', 'last year rank', 'bye week', 'low price', 'high price','actual price','owner']
     ]
 
     this_years_rankings.each do |x_rank|
@@ -99,11 +99,17 @@ class Ranking < ApplicationRecord
       prices = historical_prices[x_rank.position][x_rank.ranking]
 
       low_price = prices ? prices.percentile(25).round(0) : 0
+      mid_price = prices ? prices.percentile(50).round(0) : 0
       high_price = prices ? prices.percentile(75).round(0) : 0
 
-      csv_rows.push([x_rank.position, player_name, age, experience, bye_week, low_price, high_price])
+      # after
+      actual_price = player.purchases.where(year: year).first&.price
 
-      CSV.open("#{Rails.root}/lib/assets/#{year}_draft_sheet.csv", "wb") do |csv|
+      owner = player.purchases.where(year: year).first&.fantasy_team&.owner&.name
+
+      csv_rows.push([x_rank.position, player_name, age, experience, bye_week, low_price, mid_price, high_price, actual_price, owner])
+
+      CSV.open("#{Rails.root}/lib/assets/#{year}_draft_sheet_post.csv", "wb") do |csv|
         csv_rows.each do |row|
           csv << row
         end

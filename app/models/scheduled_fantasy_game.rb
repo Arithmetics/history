@@ -17,12 +17,15 @@ class ScheduledFantasyGame < ApplicationRecord
     weeks.each do |week|
       puts "getting week #{week}"
       sleep(2)
+      puts 'getting new page source'
       doc = Nokogiri::HTML(driver.page_source)
       game_list = doc.css(".scheduleContent").css(".matchup")
       game_list.each do |game|
         away_team_name = game.css(".teamWrap")[0].css("a")[0].text
         home_team_name = game.css(".teamWrap")[1].css("a")[0].text
 
+        puts away_team_name
+        puts home_team_name
         away_team = FantasyTeam.find_by(year: year, name: away_team_name)
         if away_team == nil
           throw "Could find team with name: #{away_team_name}"
@@ -37,22 +40,9 @@ class ScheduledFantasyGame < ApplicationRecord
         new_scheduled_game.away_fantasy_team = away_team
         new_scheduled_game.home_fantasy_team = home_team
         scheduled_games.push(new_scheduled_game)
+        puts new_scheduled_game
       end
-      if week != 14
-        if week == 1
-          next_week = driver.find_element(xpath: "/html/body/div[2]/div[3]/div/div[2]/div/div[4]/div/div[2]/div/div/div[2]/div/ul[1]/li[2]/a")
-          puts 'x'
-          puts next_week
-          next_week.click()
-        else
-          next_week = driver.find_element(xpath: "/html/body/div[2]/div[3]/div/div[2]/div/div[4]/div/div[2]/div/div/div[2]/div/ul[1]/li[3]/a")
-          puts 'x'
-          puts next_week
-          next_week.click()
-        end
-
-        sleep(2)
-      end
+      driver.navigate.to "#{current_league_url}?scheduleDetail=#{week+1}&scheduleType=week&standingsTab=schedule"
     end
     ActiveRecord::Base.transaction do
       scheduled_games.each { |game| game.save! }
