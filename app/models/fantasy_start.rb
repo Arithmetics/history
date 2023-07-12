@@ -17,6 +17,7 @@ class FantasyStart < ApplicationRecord
 
   def self.get_starts_from_web_playoffs(driver, current_league_url, year, week)
     team_ids = FantasyGame.determine_playoff_week_team_ids(driver, current_league_url, week)
+    # team_ids = [3,12]
     self.get_starts_from_web(driver, current_league_url, year, week, team_ids)
     puts "get_fantasy_starts passed"
   end
@@ -26,7 +27,7 @@ class FantasyStart < ApplicationRecord
 
     team_numbers.each do |team_number|
       driver.navigate.to "#{current_league_url}/team/#{team_number}/gamecenter?gameCenterTab=track&trackType=sbs&week=#{week}"
-      # driver.navigate.to "#{current_league_url}/history/2021/teamgamecenter?teamId=#{team_number}&week=#{week}"
+      # driver.navigate.to "#{current_league_url}/history/2022/teamgamecenter?teamId=#{team_number}&week=#{week}"
       sleep(2)
       
 

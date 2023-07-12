@@ -203,6 +203,7 @@ class Player < ApplicationRecord
 
   def self.find_and_print_unknown_players_playoffs(driver, current_league_url, week)
     team_ids = FantasyGame.determine_playoff_week_team_ids(driver, current_league_url, week)
+    # team_ids = [3,12]
     self.find_and_print_unknown_players(driver, current_league_url, week, team_ids)
     puts "find_and_print_unknown_players playoffs passed"
   end
@@ -211,7 +212,7 @@ class Player < ApplicationRecord
     weeks_players = []
     team_numbers.each do |team_number|
       driver.navigate.to "#{current_league_url}/team/#{team_number}/gamecenter?gameCenterTab=track&trackType=sbs&week=#{week}"
-      # driver.navigate.to "#{current_league_url}/history/2021/teamgamecenter?teamId=#{team_number}&week=#{week}"
+      # driver.navigate.to "#{current_league_url}/history/2022/teamgamecenter?teamId=#{team_number}&week=#{week}"
       sleep(2)
       doc = Nokogiri::HTML(driver.page_source)
       box = doc.css("#teamMatchupBoxScore")

@@ -75,22 +75,22 @@ namespace :data_additions do
   task new_reg_week: :environment do
     begin
       year = 2022
-      week = 2 # the week that just completed
+      week = 14 # the week that just completed
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
 
-      Owner.changed_on_web?(driver, current_league_url)
-      Player.find_and_print_unknown_players_regular(driver, current_league_url, week)
+      # Owner.changed_on_web?(driver, current_league_url)
+      # Player.find_and_print_unknown_players_regular(driver, current_league_url, week)
       # will stop here if theres new players
-      FantasyTeam.update_team_names_and_pictures_from_web(driver, current_league_url, year)
-      FantasyGame.get_regular_season_fantasy_games(driver, current_league_url, year, week)
+      # FantasyTeam.update_team_names_and_pictures_from_web(driver, current_league_url, year)
+      # FantasyGame.get_regular_season_fantasy_games(driver, current_league_url, year, week)
       FantasyStart.get_starts_from_web_regular(driver, current_league_url, year, week)
       # # imports done
-      Player.update_all_season_stats
+      # Player.update_all_season_stats
       SeasonStat.calculate_all_dependent_columns
-      FantasyGame.grade_season_games(year)
+      # FantasyGame.grade_season_games(year)
       # ScheduledFantasyGame.remove_last_played_week
-      PlayoffOdd.save_current_playoff_odds(week, 1000)
+      # PlayoffOdd.save_current_playoff_odds(week, 1000)
     rescue
       raise "error adding a new league week"
     end
@@ -99,23 +99,23 @@ namespace :data_additions do
   desc "add a new playoff week"
   task new_playoff_week: :environment do
     begin
-      year = 2021
+      year = 2022
       week = 17 # the week that just completed
       current_league_url = "https://fantasy.nfl.com/league/400302"
       driver = driver_start(current_league_url)
-      verify_current_week(driver, current_league_url, week)
-      Owner.changed_on_web?(driver, current_league_url)
+      # verify_current_week(driver, current_league_url, week)
+      # Owner.changed_on_web?(driver, current_league_url)
       Player.find_and_print_unknown_players_playoffs(driver, current_league_url, week)
       
-      FantasyTeam.update_team_names_and_pictures_from_web(driver, current_league_url, year)
+      # FantasyTeam.update_team_names_and_pictures_from_web(driver, current_league_url, year)
       FantasyGame.get_playoff_fantasy_games(driver, current_league_url, year, week)
       FantasyStart.get_starts_from_web_playoffs(driver, current_league_url, year, week)
       #imports done
-      Player.update_all_season_stats
-      SeasonStat.calculate_all_dependent_columns
+      # Player.update_all_season_stats
+      # SeasonStat.calculate_all_dependent_columns
       FantasyGame.grade_season_games(year)
-      ScheduledFantasyGame.remove_last_played_week
-      PlayoffOdd.save_current_playoff_odds(week, 1000)
+      # ScheduledFantasyGame.remove_last_played_week
+      # PlayoffOdd.save_current_playoff_odds(week, 1000)
       puts "DONE NICE"
     rescue
       raise "error adding a new league week"

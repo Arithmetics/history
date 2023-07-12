@@ -18,6 +18,7 @@ class FantasyGame < ApplicationRecord
 
   def self.get_playoff_fantasy_games(driver, current_league_url, year, week)
     team_ids = determine_playoff_week_team_ids(driver, current_league_url, week)
+    # team_ids = [3,12]
     self.get_fantasy_games(driver, current_league_url, year, week, team_ids)
     puts "get_playoff_fantasy_games passed!"
   end
@@ -27,6 +28,7 @@ class FantasyGame < ApplicationRecord
       ActiveRecord::Base.transaction do
         team_numbers.each do |team_number|
           driver.navigate.to "#{current_league_url}/team/#{team_number}/gamecenter?gameCenterTab=track&trackType=sbs&week=#{week}"
+          # driver.navigate.to "#{current_league_url}/history/2022/teamgamecenter?teamId=#{team_number}&week=#{week}"
           sleep(2)
           doc = Nokogiri::HTML(driver.page_source)
           header = doc.css("#teamMatchupHeader")
